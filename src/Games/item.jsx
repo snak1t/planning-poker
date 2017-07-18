@@ -1,21 +1,23 @@
 import React from 'react';
-import styles from './styles.css';
-import { OutlineButton } from '../Controls/outlineButton';
+import './styles.css';
 import { Button } from '../Controls/Button';
-import { connect } from 'react-redux';
 
-export const GameItem = (
-  { title, description, onNavigateToTask, _id, onDeleteGame }
-) => {
+export const GameItem = ({
+  title,
+  description,
+  onNavigateToTask,
+  _id,
+  onDeleteGame
+}) => {
   return (
-    <article className={styles.item}>
-      <header className={styles.gameHeader}>
+    <article className="Games-item">
+      <header className="Games-gameHeader">
         {title}
       </header>
-      <div className={styles.gameDescription}>
+      <div className="Games-gameDescription">
         {description}
       </div>
-      <footer className={styles.gameFooter}>
+      <footer className="Games-gameFooter">
         <Button outline onClick={() => onNavigateToTask(_id)}>
           Play
         </Button>

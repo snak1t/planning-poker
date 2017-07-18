@@ -8,7 +8,7 @@ import { Input } from '../Controls/input';
 import { FormGroup } from '../Controls/formgroup';
 import { Label } from '../Controls/label';
 import { Button } from '../Controls/Button';
-import styles from './styles.css';
+import './styles.css';
 import { evolve, always } from 'ramda';
 
 const updatePath = path => value => evolve({ [path]: always(value) });
@@ -16,13 +16,10 @@ const updatePassword = updatePath('password');
 const updateLogin = updatePath('login');
 
 export class RegistrationComponent extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      login: '',
-      password: ''
-    };
-  }
+  state = {
+    login: '',
+    password: ''
+  };
 
   handlePasswordChange(newPass) {
     this.setState(updatePassword(newPass));
@@ -47,8 +44,8 @@ export class RegistrationComponent extends React.Component {
 
   render() {
     return (
-      <div className={styles.form}>
-        <h2 className={styles.formTitle}>Registration Component</h2>
+      <div className="form">
+        <h2 className="formTitle">Registration Component</h2>
         <form noValidate={true} onSubmit={e => this.performRegistration(e)}>
           <FormGroup>
             <Label htmlFor="login">Login</Label>

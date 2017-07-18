@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './styles.css';
 import { Item } from './item';
 import { ItemEdit } from './item.form';
 import { connect } from 'react-redux';
@@ -9,13 +8,9 @@ import { withRouter } from 'react-router-dom';
 import { evolve, always } from 'ramda';
 
 export class StoryItem extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      editMode: false
-    };
-  }
+  state = {
+    editMode: false
+  };
 
   setEditMode(mode) {
     this.setState(evolve({ editMode: always(mode) }));
@@ -42,13 +37,7 @@ export class StoryItem extends React.Component {
   }
 
   render() {
-    const {
-      title,
-      score,
-      description,
-      onlyEdit = false,
-      admin = false
-    } = this.props;
+    const { onlyEdit = false, admin = false } = this.props;
     return this.state.editMode
       ? <ItemEdit
           {...this.props}

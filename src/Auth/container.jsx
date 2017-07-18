@@ -3,34 +3,31 @@ import { Route } from 'react-router-dom';
 import NavLink from '../Controls/NavLink';
 import LoginComponent from './login';
 import RegistrationComponent from './register';
-import styles from './styles.css';
+import './styles.css';
 
-export const AuthContainer = ({ match, location }) => (
-  <div className={styles.center}>
-    <div className={styles.auth}>
-      <div className={styles.switcher}>
+export const AuthContainer = ({ match, location }) =>
+  <div className="center">
+    <div className="auth">
+      <div className="switcher">
         <NavLink
           to={`${match.url}/login`}
-          className={styles.switcherElement}
-          activeClassName={styles.switcherElementSelected}
+          className="switcherElement"
+          activeClassName="switcherElementSelected"
         >
           Login
         </NavLink>
         <NavLink
           to="/auth/registration"
-          className={styles.switcherElement}
-          activeClassName={styles.switcherElementSelected}
+          className="switcherElement"
+          activeClassName="switcherElementSelected"
         >
           Registration
         </NavLink>
-        <div className={styles.switcherSlider}>
+        <div className="switcherSlider">
           <div
             className={
-              styles.caret +
-                ' ' +
-                (location.pathname.endsWith('login')
-                  ? styles.caretLeft
-                  : styles.caretRight)
+              'caret ' +
+              (location.pathname.endsWith('login') ? 'caretLeft' : 'caretRight')
             }
           />
         </div>
@@ -44,5 +41,4 @@ export const AuthContainer = ({ match, location }) => (
         />
       </div>
     </div>
-  </div>
-);
+  </div>;

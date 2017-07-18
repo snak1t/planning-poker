@@ -7,9 +7,7 @@ import styled from 'styled-components';
 
 const module = storiesOf('Form Input', module);
 
-const DivWidth = styled.div`
-  width: 640px;
-`;
+const DivWidth = styled.div`width: 640px;`;
 
 module.add('Base Form Input', () => {
   return (

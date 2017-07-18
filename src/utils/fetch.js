@@ -1,5 +1,5 @@
-import { curry } from 'ramda'
-import axios from 'axios'
+import { curry } from 'ramda';
+import axios from 'axios';
 
 const performFetchWithDispatch = curry(
   (method, url, action, data, dispatch) => {
@@ -15,11 +15,11 @@ const performFetchWithDispatch = curry(
       .then(response => response.data)
       .then(action)
       .then(dispatch)
-      .catch(console.error)
+      .catch(console.error);
   }
-)
+);
 
-export const postFetch = performFetchWithDispatch('POST')
-export const putFetch = performFetchWithDispatch('PUT')
-export const deleteFetch = performFetchWithDispatch('DELETE')
-export const getFetch = performFetchWithDispatch('GET')
+export const postFetch = performFetchWithDispatch('POST');
+export const putFetch = performFetchWithDispatch('PUT');
+export const deleteFetch = performFetchWithDispatch('DELETE');
+export const getFetch = performFetchWithDispatch('GET');

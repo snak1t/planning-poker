@@ -7,11 +7,11 @@ import DeckContainer from '../Deck/container';
 import TableContainer from '../Table/container';
 
 import { connect } from 'react-redux';
-import { find, propEq, isNil, evolve, T, F } from 'ramda';
+import { isNil, evolve, T, F } from 'ramda';
 import { fetchGame, findGameById } from '../Games/reducer';
 import { Modal } from '../Modal/container';
 import { addUnauthorizedUser } from '../Auth/actions.js';
-import socketConst from '../../server/controllers/socket.constants.js';
+import socketConst from '../socket.constants.js';
 import { FlexContainer, FlexItem } from '../utils/FlexContainer';
 import { leaveRoom } from '../Player/reducer.js';
 import { FormGroup } from '../Controls/formgroup';
