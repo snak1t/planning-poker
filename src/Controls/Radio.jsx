@@ -3,13 +3,9 @@ import styled from 'styled-components';
 import { Label } from './label';
 import { prop, omit, merge } from 'ramda';
 
-const Row = styled.div`
-  padding: 4px;
-`;
+const Row = styled.div`padding: 4px;`;
 
-const Span = styled.span`
-  padding-left: 10px;
-`;
+const Span = styled.span`padding-left: 10px;`;
 
 export const RadioButton = props => {
   const value = prop('value', props);
@@ -18,10 +14,6 @@ export const RadioButton = props => {
 };
 
 export class RadioGroup extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   renderChildren() {
     return React.Children.map(this.props.children, (child, id) => {
       return (
@@ -31,7 +23,9 @@ export class RadioGroup extends React.Component {
               name: this.props.name,
               onChange: this.props.onChange
             })}
-            <Span>{child.props.label}</Span>
+            <Span>
+              {child.props.label}
+            </Span>
           </Label>
         </Row>
       );

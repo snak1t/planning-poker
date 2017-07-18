@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import socketConst from '../../server/controllers/socket.constants.js';
-import styled from 'styled-components';
+import socketConst from '../socket.constants.js';
 import { CardList } from './list';
 import { evolve, always } from 'ramda';
 

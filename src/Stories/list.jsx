@@ -13,7 +13,7 @@ import {
   compose
 } from 'ramda';
 import StoryItem from './item.container';
-import styles from './styles.css';
+import './styles.css';
 import { storyType } from './type.js';
 import ReportContainer from '../Report/container';
 
@@ -28,7 +28,7 @@ export const StoryList = ({ stories, admin }) => {
 
   const renderItems = curry((title, stories) =>
     <div>
-      <span className={styles.listHeader}>
+      <span className="Stories-listHeader">
         {title}
       </span>
       {renderItem(stories)}
@@ -40,7 +40,7 @@ export const StoryList = ({ stories, admin }) => {
   const [unplayedStories, playedStories] = separateStoriesByActivity(stories);
 
   return (
-    <div className={styles.stories}>
+    <div className="Stories-stories">
       {length(unplayedStories) === 0
         ? <ReportContainer />
         : renderUnplayedStories(unplayedStories)}

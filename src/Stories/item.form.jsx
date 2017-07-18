@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './styles.css';
+import './styles.css';
 
 export const ItemEdit = ({
   _id,
@@ -24,20 +24,20 @@ export const ItemEdit = ({
 
   return (
     <article>
-      <header className={styles.storyHeader}>
+      <header className="Stories-storyHeader">
         <input
           type="text"
           defaultValue={title}
           ref={input => (titleInput = input)}
         />
       </header>
-      <div className={styles.storyDescription}>
+      <div className="Stories-storyDescription">
         <textarea
           defaultValue={description}
           ref={input => (descriptionInput = input)}
         />
       </div>
-      <footer className={styles.storyFooter}>
+      <footer className="Stories-storyFooter">
         <button onClick={setEditMode}>Cancel</button>
         <button onClick={() => saveItem()}>Save</button>
       </footer>

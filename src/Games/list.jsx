@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { map, addIndex } from 'ramda';
-import styles from './styles.css';
+import './styles.css';
 import { GameItem } from './item';
 import { deleteGame } from './reducer';
 
@@ -19,7 +19,7 @@ export const GamesList = ({ games, onNavigateToTask, deleteGame }) => {
     );
   });
   return (
-    <section className={styles.list}>
+    <section className="Games-list">
       {games.length === 0 ? 'No games yet' : displayGamesList(games)}
     </section>
   );
