@@ -7,7 +7,7 @@
     "port": 3000
   },
   "scripts": {
-    "start": "cross-var cross-env PORT=$npm_package_config_port nodemon index.js",
+    "start": "cross-var cross-env PORT=$npm_package_config_port node index.js",
     "test": "jest",
     "test:watch": "npm run test -- --watch",
     "build:dev": "./node_modules/.bin/webpack --env=dev",
@@ -53,6 +53,7 @@
     "webpack-dev-server": "^2.4.1"
   },
   "dependencies": {
+    "axios": "^0.16.2",
     "bcrypt-nodejs": "^0.0.3",
     "body-parser": "^1.16.1",
     "connect-flash": "^0.1.1",
