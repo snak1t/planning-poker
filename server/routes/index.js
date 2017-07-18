@@ -10,7 +10,9 @@ module.exports = (app, passport) => {
       if (err) {
         return res.json({ error: err.message });
       }
-      res.json(getUserData(user));
+      req.login(user, () => {
+        res.json(getUserData(user));
+      });
     })(req, res);
   });
 

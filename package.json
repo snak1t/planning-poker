@@ -7,7 +7,7 @@
     "port": 3000
   },
   "scripts": {
-    "start": "cross-var cross-env PORT=$npm_package_config_port node index.js",
+    "start": "cross-var cross-env PORT=$npm_package_config_port nodemon index.js",
     "test": "jest",
     "test:watch": "npm run test -- --watch",
     "build:dev": "./node_modules/.bin/webpack --env=dev",
