@@ -1,15 +1,22 @@
 import { curry } from 'ramda';
 import { setErrorMessage } from '../Error/reducer';
+import axios from 'axios';
+
 const performFetch = curry((url, credentials, cb) => dispatch => {
-  fetch(url, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-type': 'application/json'
-    },
-    body: JSON.stringify(credentials)
-  })
-    .then(response => response.json())
+  axios
+    .post(
+      url,
+      { ...credentials },
+      {
+        credentials: 'include',
+        headers: {
+          'Content-type': 'application/json'
+        }
+      }
+    )
+    .then(response => {
+      return response.data;
+    })
     .then(user => {
       if (user.error) throw new Error(user.error);
       return user;
@@ -25,14 +32,14 @@ export const loginUser = performFetch('/api/login');
 export const registerUser = performFetch('/api/signup');
 
 export const fetchUser = _ => dispatch => {
-  fetch('/api/user', {
-    method: 'GET',
-    credentials: 'include',
-    headers: {
-      'Content-type': 'application/json'
-    }
-  })
-    .then(response => response.json())
+  axios
+    .get('/api/user', {
+      credentials: 'include',
+      headers: {
+        'Content-type': 'application/json'
+      }
+    })
+    .then(response => response.data)
     .then(data => {
       if (!data.login) throw new Error('user not logged in');
       return dispatch(addUserToStore(data));
