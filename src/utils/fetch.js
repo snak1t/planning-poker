@@ -1,4 +1,6 @@
-import { curry } from 'ramda';
+import { curry } from 'ramda'
+
+const fetch = window.fetch
 
 const performFetchWithDispatch = curry(
   (method, url, action, data, dispatch) => {
@@ -13,11 +15,11 @@ const performFetchWithDispatch = curry(
       .then(res => res.json())
       .then(action)
       .then(dispatch)
-      .catch(console.error);
+      .catch(console.error)
   }
-);
+)
 
-export const postFetch = performFetchWithDispatch('POST');
-export const putFetch = performFetchWithDispatch('PUT');
-export const deleteFetch = performFetchWithDispatch('DELETE');
-export const getFetch = performFetchWithDispatch('GET');
+export const postFetch = performFetchWithDispatch('POST')
+export const putFetch = performFetchWithDispatch('PUT')
+export const deleteFetch = performFetchWithDispatch('DELETE')
+export const getFetch = performFetchWithDispatch('GET')
