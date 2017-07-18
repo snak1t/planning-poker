@@ -12,7 +12,6 @@ import {
   identity,
   length,
   when,
-  not,
   find,
   reject,
   merge

@@ -1,5 +1,4 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 
 export const storyType = PropTypes.shape({
   _id: PropTypes.string.isRequired,
@@ -7,4 +6,4 @@ export const storyType = PropTypes.shape({
   description: PropTypes.string.isRequired,
   score: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   active: PropTypes.bool.isRequired
-});
+})
