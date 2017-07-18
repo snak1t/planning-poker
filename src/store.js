@@ -1,20 +1,20 @@
-/* global io */
-import { createStore, combineReducers, applyMiddleware } from 'redux'
-import createSocketIoMiddleware from 'redux-socket.io'
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import createSocketIoMiddleware from 'redux-socket.io';
 
-import { composeWithDevTools } from 'redux-devtools-extension'
-import thunk from 'redux-thunk'
+import { composeWithDevTools } from 'redux-devtools-extension';
+import thunk from 'redux-thunk';
 
-// reducers
-import { chatMessages } from './Chat/reducer'
-import { stories } from './Stories/reducer'
-import { user } from './Auth/reducer'
-import games from './Games/reducer'
-import { players } from './Player/reducer'
-import error from './Error/reducer'
+//reducers
+import { chatMessages } from './Chat/reducer';
+import { stories } from './Stories/reducer';
+import { user } from './Auth/reducer';
+import games from './Games/reducer';
+import { players } from './Player/reducer';
+import error from './Error/reducer';
 
-const socket = io.connect('/')
-const middlewares = [thunk, createSocketIoMiddleware(socket, '[sockets] ')]
+import openSocket from 'socket.io-client';
+const socket = openSocket('http://localhost:3000');
+const middlewares = [thunk, createSocketIoMiddleware(socket, '[sockets] ')];
 
 const reducers = {
   chatMessages,
@@ -23,9 +23,9 @@ const reducers = {
   games,
   players,
   error
-}
+};
 
 export const store = createStore(
   combineReducers(reducers),
   composeWithDevTools(applyMiddleware(...middlewares))
-)
+);

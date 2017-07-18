@@ -98,18 +98,17 @@ export class TableContainer extends React.Component {
 
         {/*Players */}
         <div style={{ display: 'flex', height: '200px' }}>
-          {players.map((p, id) => {
-            if (p.score !== null) {
-              return (
-                <Card
-                  key={id}
-                  value={p.score}
-                  name={p.login}
-                  back={!this.props.revealCards}
-                />
-              );
-            }
-          })}
+          {players.map(
+            (p, id) =>
+              p.score !== null
+                ? <Card
+                    key={id}
+                    value={p.score}
+                    name={p.login}
+                    back={!this.props.revealCards}
+                  />
+                : undefined
+          )}
         </div>
       </section>
     );

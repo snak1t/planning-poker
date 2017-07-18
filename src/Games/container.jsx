@@ -2,18 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import GamesList from './list';
 import { connect } from 'react-redux';
-import styles from './styles.css';
-import { Route, Link } from 'react-router-dom';
+import './styles.css';
 import { evolve, not } from 'ramda';
 import GameForm from './form';
 
 export class GamesConatainer extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      modal: false
-    };
-  }
+  state = {
+    modal: false
+  };
 
   navigateToGame(id) {
     this.props.history.replace(`/game/${this.props.userLogin}/${id}`);
@@ -25,11 +21,11 @@ export class GamesConatainer extends React.Component {
 
   render() {
     return (
-      <div className={styles.container}>
+      <div className="Games-container">
         {this.state.modal
           ? <GameForm onClose={() => this.toggleModalWindow()} />
           : null}
-        <div className={styles.title}>
+        <div className="Games-title">
           <h1>Your games</h1>
         </div>
         <button onClick={() => this.toggleModalWindow()}>Add Form</button>

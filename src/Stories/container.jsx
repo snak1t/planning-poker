@@ -2,22 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { isNil, evolve, always, not } from 'ramda';
+import { evolve, always } from 'ramda';
 
 import { StoriesForm } from './form';
 import { saveStory } from './reducer';
 import { StoryList } from './list';
-import styles from './styles.css';
+import './styles.css';
 import { storyType } from './type.js';
 
 export class StoriesContainer extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      addMode: false
-    };
-  }
+  state = {
+    addMode: false
+  };
 
   toggleAddMode(currentMode) {
     this.setState(evolve({ addMode: always(!currentMode) }));
@@ -32,9 +28,9 @@ export class StoriesContainer extends React.Component {
 
   render() {
     return (
-      <section className={styles.container}>
-        <header className={styles.header}>
-          <h3 className={styles.title}>Stories</h3>
+      <section className="Stories-container">
+        <header className="Stories-header">
+          <h3 className="Stories-title">Stories</h3>
         </header>
         <StoryList stories={this.props.stories} admin={this.props.admin} />
         <StoriesForm

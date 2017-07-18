@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './styles.css';
+import './styles.css';
 import { Button } from '../Controls/Button';
 
 export const Item = ({
@@ -15,17 +15,17 @@ export const Item = ({
   admin
 }) => {
   return (
-    <article className={styles.story}>
-      <header className={styles.storyHeader}>
-        <h4 className={styles.storyTitle}>
+    <article className="Stories-story">
+      <header className="Stories-storyHeader">
+        <h4 className="Stories-storyTitle">
           {title} {score !== 0 ? ` - ${score} sp` : ''}
         </h4>
       </header>
-      <div className={styles.storyDescription}>
+      <div className="Stories-storyDescription">
         {description}
       </div>
       {admin &&
-        <footer className={styles.storyFooter}>
+        <footer className="Stories-storyFooter">
           <Button small outline onClick={setEditMode}>
             Edit Story
           </Button>

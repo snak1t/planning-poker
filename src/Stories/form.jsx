@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button } from '../Controls/Button';
 import { FormGroup } from '../Controls/formgroup';
 import { TextArea } from '../Controls/input';
-import { split, length, map } from 'ramda';
+import { split, map } from 'ramda';
 
 export const StoriesForm = ({ handleSubmit, toggleMode, mode, isAdmin }) => {
   let textInput = null;

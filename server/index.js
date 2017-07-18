@@ -4,7 +4,7 @@ const path = require('path');
 const passport = require('passport');
 require('dotenv').config();
 
-const appConfig = require('./server/config/config');
+const appConfig = require('./config/config');
 
 //Databases configuration
 const mongoose = require('mongoose');
@@ -35,7 +35,7 @@ app.use(flash());
 //Passport Initialization
 app.use(passport.initialize());
 app.use(passport.session());
-require('./server/controllers/auth')(passport);
+require('./controllers/auth')(passport);
 
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -50,16 +50,15 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use(express.static(__dirname + '/build'));
 //Routes
-require('./server/routes/games')(app);
-require('./server/routes')(app, passport);
+require('./routes/games')(app);
+require('./routes')(app, passport);
 
 const socketIO = require('socket.io');
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3100;
 
-const withSocketsController = require('./server/controllers/sockets');
+const withSocketsController = require('./controllers/sockets');
 
 withSocketsController(
   socketIO.listen(

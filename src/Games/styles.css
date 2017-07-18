@@ -1,19 +1,19 @@
-.container {
+.Games-container {
   flex: 1;
 }
 
-.title {
+.Games-title {
   line-height: 2em;
   font-size: 1.4em;
   text-align: center;
 }
 
-.list {
+.Games-list {
   display: flex;
   flex-wrap: wrap;
 }
 
-.item {
+.Games-item {
   flex-basis: 300px;
   margin: 10px;
   min-height: 200px;
@@ -25,14 +25,14 @@
   box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.38);
 }
 
-.gameHeader {
+.Games-gameHeader {
   line-height: 1.6rem;
   font-size: 1.2rem;
   text-align: center;
   font-weight: bold;
 }
 
-.gameDescription {
+.Games-gameDescription {
   flex-grow: 1;
   display: flex;
   align-items: center;
@@ -40,7 +40,7 @@
   text-align: center;
 }
 
-.gameFooter {
+.Games-gameFooter {
   margin: 10px 0px;
   display: flex;
   justify-content: space-around;

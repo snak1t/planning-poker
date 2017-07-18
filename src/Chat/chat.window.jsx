@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 export const ChatWindow = styled.div`
@@ -9,6 +8,6 @@ export const ChatWindow = styled.div`
   left: 0px;
   height: 300px;
   display: flex;
-  border-top: 3px solid #00897B;
+  border-top: 3px solid #00897b;
   flex-direction: column;
 `;

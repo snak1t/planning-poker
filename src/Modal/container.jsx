@@ -34,13 +34,13 @@ const ModalTitle = styled.div`
   margin-bottom: 0.3em;
 `;
 
-const ModalButtons = styled.div`
-  width: 100%;
-  line-height: 2em;
-  font-size: 1.3em;
-  border-top: 1px solid #aaa;
-  margin-top: 0.3em;
-`;
+// const ModalButtons = styled.div`
+//   width: 100%;
+//   line-height: 2em;
+//   font-size: 1.3em;
+//   border-top: 1px solid #aaa;
+//   margin-top: 0.3em;
+// `;
 
 const ModalClose = styled.div`
   position: absolute;
