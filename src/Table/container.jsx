@@ -1,81 +1,72 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { merge, __ } from 'ramda';
-import { withRouter } from 'react-router-dom';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { merge, __ } from 'ramda'
+import { withRouter } from 'react-router-dom'
 
-import { storyType } from '../Stories/type.js';
+import { storyType } from '../Stories/type.js'
 
 // Elements
-import { Card } from '../Deck/card';
-import { TableButtons } from './buttonBar';
-import StoryItem from '../Stories/item.container';
+import { Card } from '../Deck/card'
+import { TableButtons } from './buttonBar'
+import StoryItem from '../Stories/item.container'
 // Actions
-import { getCurrentStory } from '../Stories/reducer';
-import { updateStory, selectNextStory } from '../Stories/reducer';
-import { calculateAverage } from '../utils/average.score.js';
+import { getCurrentStory } from '../Stories/reducer'
+import { updateStory, selectNextStory } from '../Stories/reducer'
+import { calculateAverage } from '../utils/average.score.js'
 import {
   emitResetBids,
   emitReadyToPlay,
   showPlayedCards
-} from '../Player/reducer';
+} from '../Player/reducer'
 
 const resetToDefault = merge(__, {
   completed: false,
   score: 0
-});
+})
 
 export class TableContainer extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      completed: false,
-      score: 0
-    };
+  state = {
+    completed: false,
+    score: 0
   }
 
   componentWillReceiveProps(nextProps) {
-    const unvotedPlayers = nextProps.players.filter(p => p.score === null);
+    const unvotedPlayers = nextProps.players.filter(p => p.score === null)
     if (nextProps.players.length !== 0 && unvotedPlayers.length === 0) {
       this.setState(prevState => ({
         completed: true,
         score: calculateAverage(nextProps.players)
-      }));
+      }))
     } else {
-      this.setState(resetToDefault);
+      this.setState(resetToDefault)
     }
   }
 
-  acceptScore() {
-    const score = this.state.score;
+  acceptScore = () => {
+    const score = this.state.score
     const story = merge(this.props.story, {
       active: true,
       score
-    });
+    })
     this.props.updateStory({
       login: this.props.match.params.user,
       gameID: this.props.match.params.gameID,
       story
-    });
-    this.props.setNextStory();
-    this.props.startToPlay(false);
+    })
+    this.props.setNextStory()
+    this.props.startToPlay(false)
   }
 
-  resetCurrent() {
-    this.props.resetBids();
-  }
+  resetCurrent = () => this.props.resetBids()
 
-  revealCards() {
-    this.props.showPlayedCards();
-  }
+  revealCards = () => this.props.showPlayedCards()
 
-  startToPlay() {
-    this.props.startToPlay(true);
-  }
+  startToPlay = () => this.props.startToPlay(true)
 
   render() {
-    const { players, story } = this.props;
-    if (!story) return null;
+    const { players, story } = this.props
+    if (!story) return null
     return (
       <section>
         {/*Current Story*/}
@@ -84,10 +75,10 @@ export class TableContainer extends React.Component {
           ? <TableButtons
               completed={this.state.completed}
               reveal={this.props.revealCards}
-              onStartToPlay={() => this.startToPlay()}
-              onRevealCards={() => this.revealCards()}
-              onResetCurrent={() => this.resetCurrent()}
-              onAcceptScore={() => this.acceptScore()}
+              onStartToPlay={this.startToPlay}
+              onRevealCards={this.revealCards}
+              onResetCurrent={this.resetCurrent}
+              onAcceptScore={this.acceptScore}
             />
           : null}
         {this.props.revealCards
@@ -111,7 +102,7 @@ export class TableContainer extends React.Component {
           )}
         </div>
       </section>
-    );
+    )
   }
 }
 
@@ -130,13 +121,13 @@ TableContainer.propTypes = {
   resetBids: PropTypes.func.isRequired,
   startToPlay: PropTypes.func.isRequired,
   showPlayedCards: PropTypes.func.isRequired
-};
+}
 
 const mapStateToProps = state => ({
   players: state.players.all,
   story: getCurrentStory(state.stories),
   revealCards: state.players.revealCards
-});
+})
 
 const mapDispatchToProps = {
   updateStory: updateStory,
@@ -144,8 +135,8 @@ const mapDispatchToProps = {
   resetBids: emitResetBids,
   startToPlay: emitReadyToPlay,
   showPlayedCards
-};
+}
 
 export default withRouter(
   connect(mapStateToProps, mapDispatchToProps)(TableContainer)
-);
+)
