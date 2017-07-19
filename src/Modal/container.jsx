@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import { when, propEq } from 'ramda';
+import React from 'react'
+import styled from 'styled-components'
+import { when, propEq } from 'ramda'
 
 const Shadow = styled.div`
   position: fixed;
@@ -10,7 +10,7 @@ const Shadow = styled.div`
   bottom: 0px;
   right: 0px;
   z-index: 100;
-`;
+`
 
 const ModalWindow = styled.div`
   width: 100%;
@@ -24,7 +24,7 @@ const ModalWindow = styled.div`
   transform: translate(-50%, -50%);
   background-color: white;
   z-index: 101;
-`;
+`
 
 const ModalTitle = styled.div`
   width: 100%;
@@ -32,7 +32,7 @@ const ModalTitle = styled.div`
   font-size: 1.3em;
   border-bottom: 1px solid #aaa;
   margin-bottom: 0.3em;
-`;
+`
 
 // const ModalButtons = styled.div`
 //   width: 100%;
@@ -49,23 +49,18 @@ const ModalClose = styled.div`
   cursor: pointer;
   font-size: 2em;
   transform: rotate(45deg);
-`;
+`
 
 export class Modal extends React.Component {
-  constructor(props) {
-    super(props);
-    this.onEscape = this.onEscape.bind(this);
-  }
-
   componentWillMount() {
-    window.addEventListener('keydown', this.onEscape);
+    window.addEventListener('keydown', this.onEscape)
   }
 
   componentWillUnmount() {
-    window.removeEventListener('keydown', this.onEscape);
+    window.removeEventListener('keydown', this.onEscape)
   }
 
-  onEscape = when(propEq('keyCode', 27), this.props.onClose);
+  onEscape = when(propEq('keyCode', 27), this.props.onClose)
 
   render() {
     return (
@@ -81,6 +76,6 @@ export class Modal extends React.Component {
           </div>
         </ModalWindow>
       </div>
-    );
+    )
   }
 }

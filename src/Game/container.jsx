@@ -1,46 +1,43 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
-import StoriesContainer from '../Stories/container';
-import PlayersContainer from '../Player/container';
-import DeckContainer from '../Deck/container';
-import TableContainer from '../Table/container';
+import StoriesContainer from '../Stories/container'
+import PlayersContainer from '../Player/container'
+import DeckContainer from '../Deck/container'
+import TableContainer from '../Table/container'
 
-import { connect } from 'react-redux';
-import { isNil, evolve, T, F } from 'ramda';
-import { fetchGame, findGameById } from '../Games/reducer';
-import { Modal } from '../Modal/container';
-import { addUnauthorizedUser } from '../Auth/actions.js';
-import socketConst from '../socket.constants.js';
-import { FlexContainer, FlexItem } from '../utils/FlexContainer';
-import { leaveRoom } from '../Player/reducer.js';
-import { FormGroup } from '../Controls/formgroup';
-import { Label } from '../Controls/label';
-import { Button } from '../Controls/Button';
-import { Input } from '../Controls/input';
+import { connect } from 'react-redux'
+import { isNil, evolve, T, F } from 'ramda'
+import { fetchGame, findGameById } from '../Games/reducer'
+import { Modal } from '../Modal/container'
+import { addUnauthorizedUser } from '../Auth/actions.js'
+import socketConst from '../socket.constants.js'
+import { FlexContainer, FlexItem } from '../utils/FlexContainer'
+import { leaveRoom } from '../Player/reducer.js'
+import { FormGroup } from '../Controls/formgroup'
+import { Label } from '../Controls/label'
+import { Button } from '../Controls/Button'
+import { Input } from '../Controls/input'
 
-const showModal = evolve({ modal: T });
-const hideModal = evolve({ modal: F });
+const showModal = evolve({ modal: T })
+const hideModal = evolve({ modal: F })
 
 export class GameContainer extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      modal: false,
-      isAdmin: !!(
-        this.props.user.login &&
-        this.props.match.params.user === this.props.user.login
-      )
-    };
-    this.emitted = false;
+  state = {
+    modal: false,
+    isAdmin: !!(
+      this.props.user.login &&
+      this.props.match.params.user === this.props.user.login
+    )
   }
+  emitted = false
 
   componentDidMount() {
     this.props.fetchGame({
       login: this.props.match.params.user,
       gameID: this.props.match.params.gameID
-    });
-    this.checkIfUserIsLoggedIn();
+    })
+    this.checkIfUserIsLoggedIn()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -48,41 +45,41 @@ export class GameContainer extends React.Component {
       this.props.fetchGame({
         login: this.props.match.params.user,
         gameID: nextProps.match.params.gameID
-      });
+      })
     }
     if (!isNil(nextProps.user.login) && !this.emitted) {
       this.props.enterRoom({
         gameID: nextProps.match.params.gameID,
         user: nextProps.user
-      });
-      this.emitted = true;
+      })
+      this.emitted = true
     }
   }
 
   componentWillUnmount() {
-    this.props.leaveRoom();
+    this.props.leaveRoom()
   }
 
   checkIfUserIsLoggedIn() {
     if (isNil(this.props.user.login)) {
-      this.setState(showModal);
+      this.setState(showModal)
     }
   }
 
   toggleModalWindow() {
-    this.setState(hideModal);
+    this.setState(hideModal)
   }
   onSubmit = e => {
-    e.preventDefault();
-    const login = this.loginInput.value;
+    e.preventDefault()
+    const login = this.loginInput.value
 
-    this.props.addUnauthorizedUser({ login });
-    this.toggleModalWindow();
-  };
+    this.props.addUnauthorizedUser({ login })
+    this.toggleModalWindow()
+  }
 
   render() {
-    const { game } = this.props;
-    if (!game) return <h1>No game</h1>;
+    const { game } = this.props
+    if (!game) return <h1>No game</h1>
     return (
       <FlexContainer vertical justify="center">
         <FlexItem basis="64px">
@@ -130,7 +127,7 @@ export class GameContainer extends React.Component {
             </Modal>
           : null}
       </FlexContainer>
-    );
+    )
   }
 }
 
@@ -140,12 +137,12 @@ GameContainer.propTypes = {
   fetchGame: PropTypes.func,
   addUnauthorizedUser: PropTypes.func,
   enterRoom: PropTypes.func
-};
+}
 
 const mapStateToProps = (state, { match }) => ({
   game: findGameById(match.params.gameID, state.games),
   user: state.user
-});
+})
 
 const mapDispatchToProps = dispatch => ({
   fetchGame: props => dispatch(fetchGame(props)),
@@ -156,6 +153,6 @@ const mapDispatchToProps = dispatch => ({
       type: socketConst.ENTER_ROOM,
       payload
     })
-});
+})
 
-export default connect(mapStateToProps, mapDispatchToProps)(GameContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(GameContainer)

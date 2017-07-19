@@ -1,5 +1,4 @@
-import React from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export const OutlineButton = styled.button`
   line-height: 1.4rem;
@@ -17,4 +16,4 @@ export const OutlineButton = styled.button`
     text-decoration: underline;
     color: #980a17;
   }
-`;
+`
