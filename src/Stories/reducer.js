@@ -1,17 +1,14 @@
-import {
-  merge,
-  lensProp,
-  over,
-  set,
-  identity,
-  prop,
-  compose,
-  ifElse,
-  propEq,
-  useWith,
-  concat,
-  map
-} from 'ramda'
+// Ramda imports
+import merge from 'ramda/src/merge'
+import omit from 'ramda/src/omit'
+import lensProp from 'ramda/src/lensProp'
+import over from 'ramda/src/over'
+import prop from 'ramda/src/prop'
+import compose from 'ramda/src/compose'
+import ifElse from 'ramda/src/ifElse'
+import propEq from 'ramda/src/propEq'
+import map from 'ramda/src/map'
+
 import socketConstants from '../socket.constants'
 import { putFetch, deleteFetch, postFetch } from '../utils/fetch'
 import { UPDATE_GAME } from '../Games/reducer'
@@ -19,40 +16,47 @@ import { UPDATE_GAME } from '../Games/reducer'
 // Helper functions
 
 const storiesLens = lensProp('all')
-const currentStoryLens = lensProp('current')
-const setCurrentStory = useWith(set(currentStoryLens), [
-  prop('story'),
-  identity
-])
-const addStory = useWith(over(storiesLens), [concat, identity])
-const updateStories = useWith(set(storiesLens), [prop('stories'), identity])
+
+const mergeStory = (acc, story) => {
+  const id = story._id
+  const ids = [...acc.ids, id]
+  const all = { ...acc.all, [id]: story }
+  return { ...acc, all, ids }
+}
+
+const addStoriesToState = (stories, state) => {
+  return stories.reduce(mergeStory, state)
+}
+
+const updateStoryInState = (story, state) => {
+  const all = { ...state.all, [story._id]: story }
+  return { ...state, all }
+}
+
+const deleteStoryFromState = (targetID, state) => {
+  const all = omit([targetID], state.all)
+  const ids = state.ids.filter(id => targetID !== id)
+  return { ...state, ids, all }
+}
 
 // Defaul State
 const defaultState = {
-  all: [],
-  current: null
+  all: {},
+  ids: []
 }
 
 //Reducer
 export const stories = (state = defaultState, { type, payload }) => {
   switch (type) {
     case socketConstants.BROADCAST_ADD_NEW_STORY:
-      return addStory(payload, state)
-    case UPDATE_GAME:
-      return updateStories(payload, state)
+      return addStoriesToState(payload, state)
+    case UPDATE_GAME: {
+      return addStoriesToState(payload.stories, defaultState)
+    }
     case socketConstants.BROADCAST_UPDATE_STORY:
-      return merge(state, {
-        all: state.all.map(
-          story => (story._id === payload._id ? payload : story)
-        )
-      })
+      return updateStoryInState(payload, state)
     case socketConstants.BROADCAST_DELETED_STORY:
-      return merge(state, {
-        all: state.all.filter(story => story._id !== payload),
-        current: null
-      })
-    case socketConstants.SET_CURRENT_STORY:
-      return setCurrentStory(payload, state)
+      return deleteStoryFromState(payload, state)
     default:
       return state
   }
@@ -129,5 +133,11 @@ export const selectNextStory = _ => {
 
 //Selectors
 
-export const getCurrentStory = ({ all, current }) =>
-  all.find(item => item._id === current)
+export const getCurrentStory = ({
+  playSession: { currentStory },
+  stories: { all }
+}) => (currentStory === '' ? null : all[currentStory])
+
+export const getAllStories = ({ stories: { all, ids } }) => {
+  return ids.map(id => all[id])
+}

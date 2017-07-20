@@ -3,7 +3,9 @@ import { Button } from '../Controls/Button'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { Report } from './component'
-import { evolve, not } from 'ramda'
+import { getAllStories } from '../Stories/reducer'
+import evolve from 'ramda/src/evolve'
+import not from 'ramda/src/not'
 
 const switchShowReport = evolve({ showReport: not })
 
@@ -34,9 +36,9 @@ export class ReportContainer extends React.Component {
   }
 }
 
-const mapStateToProp = (state, props) => ({
-  game: state.games.find(g => g._id === props.match.params.gameID),
-  stories: state.stories.all
+const mapStateToProp = (store, props) => ({
+  game: store.games.find(g => g._id === props.match.params.gameID),
+  stories: getAllStories(store)
 })
 
 const mapDispatchToProps = {}

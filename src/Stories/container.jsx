@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom'
 import { evolve, always } from 'ramda'
 
 import { StoriesForm } from './form'
-import { saveStory } from './reducer'
+import { saveStory, getAllStories } from './reducer'
 import { StoryList } from './list'
 import './styles.css'
 import { storyType } from './type.js'
@@ -49,7 +49,7 @@ StoriesContainer.propTypes = {
 }
 
 const mapStateToProps = store => ({
-  stories: store.stories.all
+  stories: getAllStories(store)
 })
 
 const mapDispatchToProps = {

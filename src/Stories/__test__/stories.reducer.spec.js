@@ -1,8 +1,8 @@
 import { stories } from '../reducer'
 
 const defaultState = {
-  all: [],
-  current: null
+  all: {},
+  ids: []
 }
 
 describe('Stories reducer', () => {
@@ -27,7 +27,8 @@ describe('Stories reducer', () => {
     }
 
     const state = stories(defaultState, action)
-    expect(state.all).toEqual([story])
+    expect(state.all).toEqual({ [story._id]: story })
+    expect(state.ids).toEqual([story._id])
   })
 
   it('should add all stories on update game', () => {
@@ -58,8 +59,8 @@ describe('Stories reducer', () => {
     }
 
     const state = stories(defaultState, action)
-    expect(state.all.length).toEqual(2)
-    expect(state.all).toEqual([story1, story2])
+    expect(state.ids.length).toEqual(2)
+    expect(state.all).toEqual({ [story1._id]: story1, [story2._id]: story2 })
   })
   it('should replace all previos items on game update', () => {
     const story1 = {
@@ -88,9 +89,14 @@ describe('Stories reducer', () => {
       }
     }
 
-    const state = stories({ all: [story2], current: null }, action)
-    expect(state.all.length).toEqual(1)
-    expect(state.all).toEqual([story1])
+    const prevState = {
+      all: { [story2._id]: story2 },
+      ids: [story2._id]
+    }
+
+    const state = stories(prevState, action)
+    expect(state.ids.length).toEqual(1)
+    expect(state.all).toEqual({ [story1._id]: story1 })
   })
 
   it('should update a specific story', () => {
@@ -114,11 +120,16 @@ describe('Stories reducer', () => {
       payload: updatedStory
     }
 
-    const state = stories({ all: [story], current: null }, action)
+    const prevState = {
+      all: { [story._id]: story },
+      ids: [story._id]
+    }
 
-    expect(state.all.length).toEqual(1)
-    expect(state.all[0]).toEqual(updatedStory)
-    expect(state.all[0].title).toEqual(updatedStory.title)
+    const state = stories(prevState, action)
+
+    expect(state.ids.length).toEqual(1)
+    expect(state.all[story._id]).toEqual(updatedStory)
+    expect(state.all[story._id].title).toEqual(updatedStory.title)
   })
 
   it('should delete story', () => {
@@ -142,52 +153,19 @@ describe('Stories reducer', () => {
       type: '[sockets] BROADCAST_DELETED_STORY',
       payload: '596f6392412aa21e78754806'
     }
-
-    const state = stories({ all: [story1, story2], current: null }, action)
-
-    expect(state.all.length).toEqual(1)
-    expect(state.all[0]).toEqual(story1)
-  })
-
-  it('should reset current story to null, it this story was deleted', () => {
-    const id = '596e2278b946b231a8417d12'
-    const story1 = {
-      title: 'First story',
-      description: '',
-      score: 0,
-      active: false,
-      _id: id
-    }
-    const action = {
-      type: '[sockets] BROADCAST_DELETED_STORY',
-      payload: id
+    const prevState = {
+      all: {
+        [story1._id]: story1,
+        [story2._id]: story2
+      },
+      ids: [story1._id, story2._id]
     }
 
-    const state = stories({ all: [story1], current: id }, action)
+    const state = stories(prevState, action)
 
-    expect(state.all.length).toEqual(0)
-    expect(state.current).toEqual(null)
-  })
-
-  it('should set a current story', () => {
-    const id = '596e2278b946b231a8417d12'
-    const story1 = {
-      title: 'First story',
-      description: '',
-      score: 0,
-      active: false,
-      _id: id
-    }
-    const action = {
-      type: '[sockets] SET_CURRENT_STORY',
-      payload: {
-        story: id,
-        isPlaying: false
-      }
-    }
-
-    const store = stories({ all: [story1], current: null }, action)
-
-    expect(store.current).toEqual(id)
+    expect(state.ids.length).toEqual(1)
+    expect(state.all[story2._id]).toBeUndefined()
+    expect(state.all[story1._id]).toBeDefined()
+    expect(state.all[story1._id]).toEqual(story1)
   })
 })

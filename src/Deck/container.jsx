@@ -72,7 +72,7 @@ DeckContainer.propTypes = {
 
 const mapStateToProps = state => ({
   user: state.user,
-  isPlaying: state.players.readyToPlay
+  isPlaying: state.playSession.isPlaying
 })
 
 const mapDispatchToProps = dispatch => ({

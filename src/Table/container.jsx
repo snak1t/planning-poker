@@ -1,8 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { merge, __ } from 'ramda'
+import merge from 'ramda/src/merge'
 import { withRouter } from 'react-router-dom'
+import {
+  isGameCompleted,
+  calculateScore,
+  getScores
+} from '../Player/reducer.js'
 
 import { storyType } from '../Stories/type.js'
 
@@ -13,38 +18,15 @@ import StoryItem from '../Stories/item.container'
 // Actions
 import { getCurrentStory } from '../Stories/reducer'
 import { updateStory, selectNextStory } from '../Stories/reducer'
-import { calculateAverage } from '../utils/average.score.js'
 import {
   emitResetBids,
   emitReadyToPlay,
   showPlayedCards
 } from '../Player/reducer'
 
-const resetToDefault = merge(__, {
-  completed: false,
-  score: 0
-})
-
 export class TableContainer extends React.Component {
-  state = {
-    completed: false,
-    score: 0
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const unvotedPlayers = nextProps.players.filter(p => p.score === null)
-    if (nextProps.players.length !== 0 && unvotedPlayers.length === 0) {
-      this.setState(prevState => ({
-        completed: true,
-        score: calculateAverage(nextProps.players)
-      }))
-    } else {
-      this.setState(resetToDefault)
-    }
-  }
-
   acceptScore = () => {
-    const score = this.state.score
+    const score = this.props.averageScore
     const story = merge(this.props.story, {
       active: true,
       score
@@ -73,7 +55,7 @@ export class TableContainer extends React.Component {
         <StoryItem onlyEdit={true} {...story} />
         {this.props.admin
           ? <TableButtons
-              completed={this.state.completed}
+              completed={this.props.completed}
               reveal={this.props.revealCards}
               onStartToPlay={this.startToPlay}
               onRevealCards={this.revealCards}
@@ -83,7 +65,7 @@ export class TableContainer extends React.Component {
           : null}
         {this.props.revealCards
           ? <h1>
-              Average Score is {this.state.score}
+              Average Score is {this.props.averageScore}
             </h1>
           : null}
 
@@ -95,7 +77,7 @@ export class TableContainer extends React.Component {
                 ? <Card
                     key={id}
                     value={p.score}
-                    name={p.login}
+                    name={p.user}
                     back={!this.props.revealCards}
                   />
                 : undefined
@@ -109,7 +91,7 @@ export class TableContainer extends React.Component {
 TableContainer.propTypes = {
   players: PropTypes.arrayOf(
     PropTypes.shape({
-      login: PropTypes.string.isRequired,
+      user: PropTypes.string.isRequired,
       score: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
     })
   ),
@@ -123,10 +105,12 @@ TableContainer.propTypes = {
   showPlayedCards: PropTypes.func.isRequired
 }
 
-const mapStateToProps = state => ({
-  players: state.players.all,
-  story: getCurrentStory(state.stories),
-  revealCards: state.players.revealCards
+const mapStateToProps = store => ({
+  players: getScores(store),
+  story: getCurrentStory(store),
+  revealCards: store.playSession.isRevealing,
+  completed: isGameCompleted(store),
+  averageScore: calculateScore(store)
 })
 
 const mapDispatchToProps = {
