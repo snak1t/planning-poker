@@ -1,18 +1,18 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React from 'react'
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 
-import { Header } from './Header/header';
-import { AuthContainer } from './Auth/container';
-import GamesContainer from './Games/container';
-import GameContainer from './Game/container';
-import ErrorContainer from './Error/container';
+import { Header } from './Shared/Components/Header/Header'
+import { AuthContainer } from './Pages/Auth/'
+import GamesContainer from './Pages/Games/'
+import BoardContainer from './Pages/Board/'
+import ErrorContainer from './Shared/Components/Error/Container'
 
-import { fetchUser } from './Auth/actions.js';
-import './default.css';
-import styles from './app.css';
-import { userType } from './Auth/type';
+import { fetchUser } from './Data/Auth/actions.js'
+import './default.css'
+import styles from './app.css'
+import { userType } from './Data/Auth/type.js'
 
 const PrivateRoute = ({ component, user, ...rest }) =>
   <Route
@@ -26,11 +26,11 @@ const PrivateRoute = ({ component, user, ...rest }) =>
             }}
           />
         : React.createElement(component, props)}
-  />;
+  />
 
 export class App extends React.Component {
   componentWillMount() {
-    this.props.fetchUser();
+    this.props.fetchUser()
   }
 
   render() {
@@ -47,25 +47,25 @@ export class App extends React.Component {
                 component={GamesContainer}
               />
               <Route path="/auth" component={AuthContainer} />
-              <Route path="/game/:user/:gameID" component={GameContainer} />
+              <Route path="/game/:user/:gameID" component={BoardContainer} />
             </main>}
           <ErrorContainer />
         </div>
       </Router>
-    );
+    )
   }
 }
 App.propTypes = {
   user: userType,
   fetchUser: PropTypes.func.isRequired
-};
+}
 
 const mapStateToProps = state => ({
   user: state.user
-});
+})
 
 const mapDispatchToProps = {
   fetchUser
-};
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App)
