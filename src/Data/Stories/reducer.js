@@ -127,10 +127,6 @@ export const emitCurrentStory = payload => ({
   payload
 })
 
-export const selectNextStory = _ => {
-  return emitCurrentStory(null)
-}
-
 //Selectors
 
 export const getCurrentStory = ({
