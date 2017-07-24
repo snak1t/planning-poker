@@ -1,27 +1,28 @@
-const { curry } = require('ramda')
+const { curry } = require('ramda/src/curry')
 const { createStore } = require('./mini-redux')
 const socketsType = require('./socket.constants')
-
-const baseEmitMessage = curry((io, room, type, message) =>
-  io.sockets.in(room).emit(type, message)
-)
 
 const SYNC_GAME_SESSION = '[sockets] SYNC_GAME_SESSION'
 
 module.exports = io => {
   const rooms = createStore()
-  const emitMessage = baseEmitMessage(io)
 
-  const broadcastSyncGameSession = id =>
-    emitMessage(id, 'action', {
+  const broadcastSyncGameSession = (id, data) =>
+    io.sockets.in(id).emit('action', {
       type: SYNC_GAME_SESSION,
-      payload: rooms.get(id)
+      payload: data
     })
 
   io.sockets.on('connection', socket => {
     let roomID = ''
     let user = null //TODO: save in session maybe?
-
+    let subscription
+    const fastForwardWithType = curry((type, payload) => {
+      io.sockets.in(roomID).emit('action', {
+        type,
+        payload
+      })
+    })
     socket.on('action', ({ type, payload }) => {
       switch (type) {
         case socketsType.ENTER_ROOM:
@@ -40,13 +41,13 @@ module.exports = io => {
           return showPlayedCards()
 
         case socketsType.MESSAGE_RECEIVED:
-          return broadcastMessage(payload)
+          return fastForwardWithType(socketsType.BROADCAST_MESSAGE)
         case socketsType.EMIT_ADD_NEW_STORY:
-          return sendNewStory(payload)
+          return fastForwardWithType(socketsType.BROADCAST_ADD_NEW_STORY)
         case socketsType.EMIT_UPDATE_STORY:
-          return sendUpdatedStory(payload)
+          return fastForwardWithType(socketsType.BROADCAST_UPDATE_STORY)
         case socketsType.EMIT_DELETED_STORY:
-          return sendDeletedStory(payload)
+          return fastForwardWithType(socketsType.BROADCAST_DELETED_STORY)
         default:
           return
       }
@@ -65,9 +66,12 @@ module.exports = io => {
         score: null
       }
       room.scores = [...room.scores, user]
-      rooms.update(roomID, room)
+
       socket.join(roomID)
-      return broadcastSyncGameSession(roomID)
+      subscription = rooms.subscribe(roomID, data =>
+        broadcastSyncGameSession(roomID, data)
+      )
+      return rooms.update(roomID, room)
     }
 
     const setScore = user => {
@@ -79,85 +83,58 @@ module.exports = io => {
               ? { user: user.login, score: user.score }
               : player
         )
-      rooms.update(roomID, { scores })
-      return broadcastSyncGameSession(roomID)
+      return rooms.update(roomID, { scores })
     }
 
+    const dropScores = (roomID, rooms) =>
+      rooms.get(roomID).scores.map(p => Object.assign({}, p, { score: null }))
+
     const sendCurrentStory = story => {
-      const scores = rooms
-        .get(roomID)
-        .scores.map(p => Object.assign({}, p, { score: null }))
+      const scores = dropScores(roomID, rooms)
       const currentStory = story
       const isPlaying = false
       const isRevealing = false
-      rooms.update(roomID, { scores, currentStory, isPlaying, isRevealing })
-      return broadcastSyncGameSession(roomID)
+      return rooms.update(roomID, {
+        scores,
+        currentStory,
+        isPlaying,
+        isRevealing
+      })
     }
 
     const sendResetBids = _ => {
-      const scores = rooms
-        .get(roomID)
-        .scores.map(p => Object.assign({}, p, { score: null }))
+      const scores = dropScores(roomID, rooms)
       const isPlaying = true
       const isRevealing = false
-      rooms.update(roomID, { scores, isPlaying, isRevealing })
-      return broadcastSyncGameSession(roomID)
+      return rooms.update(roomID, { scores, isPlaying, isRevealing })
     }
 
     const sendReadyToPlay = () => {
       const isPlaying = true
       const isRevealing = false
-      rooms.update(roomID, { isPlaying, isRevealing })
-      return broadcastSyncGameSession(roomID)
+      return rooms.update(roomID, { isPlaying, isRevealing })
     }
 
     const showPlayedCards = () => {
       const isPlaying = false
       const isRevealing = true
-      rooms.update(roomID, { isPlaying, isRevealing })
-      return broadcastSyncGameSession(roomID)
+      return rooms.update(roomID, { isPlaying, isRevealing })
     }
 
     const leaveRoom = () => {
       const room = rooms.get(roomID)
+      if (typeof subscription === 'function') {
+        subscription()
+      }
       if (typeof room === 'undefined') {
         return
       }
       if (room.scores.length !== 0) {
         const scores = room.scores.filter(player => player.user !== user.user)
-        rooms.update(roomID, { scores })
-        return broadcastSyncGameSession(roomID)
+        return rooms.update(roomID, { scores })
       }
       rooms.purge(roomID)
       user = null
-    }
-
-    const broadcastMessage = payload => {
-      io.sockets.in(roomID).emit('action', {
-        type: socketsType.BROADCAST_MESSAGE,
-        payload
-      })
-    }
-
-    const sendNewStory = payload => {
-      io.sockets.in(roomID).emit('action', {
-        type: socketsType.BROADCAST_ADD_NEW_STORY,
-        payload
-      })
-    }
-
-    const sendUpdatedStory = payload => {
-      io.sockets.in(roomID).emit('action', {
-        type: socketsType.BROADCAST_UPDATE_STORY,
-        payload
-      })
-    }
-
-    const sendDeletedStory = payload => {
-      io.sockets.in(roomID).emit('action', {
-        type: socketsType.BROADCAST_DELETED_STORY,
-        payload
-      })
     }
 
     socket.on('disconnect', () => {
