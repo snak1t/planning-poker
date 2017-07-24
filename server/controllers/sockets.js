@@ -1,4 +1,4 @@
-const { curry } = require('ramda/src/curry')
+const curry = require('ramda/src/curry')
 const { createStore } = require('./mini-redux')
 const socketsType = require('./socket.constants')
 

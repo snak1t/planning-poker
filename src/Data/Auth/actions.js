@@ -44,14 +44,33 @@ export const fetchUser = _ => dispatch => {
       return dispatch(addUserToStore(data))
     })
     .catch(err => {
-      console.error(err)
-      dispatch(addUserToStore(null))
+      dispatch(removeUserFromStore())
+    })
+}
+
+export const doLogout = () => dispatch => {
+  axios
+    .get('/api/logout', {
+      credentials: 'include',
+      headers: {
+        'Content-type': 'application/json'
+      }
+    })
+    .then(r => r.data)
+    .then(data => {
+      if (data.logout === true) {
+        dispatch(removeUserFromStore())
+      }
     })
 }
 
 export const addUserToStore = user => ({
   type: '[user] LOGIN_USER',
   payload: user
+})
+
+export const removeUserFromStore = _ => ({
+  type: '[user] LOGOUT_USER'
 })
 
 export const addUnauthorizedUser = user => ({

@@ -37,9 +37,10 @@ export class BoardContainer extends React.Component {
   emitted = false
 
   componentDidMount() {
+    const { user, gameID } = this.props.match.params
     this.props.fetchGame({
-      login: this.props.match.params.user,
-      gameID: this.props.match.params.gameID
+      login: user,
+      gameID: gameID
     })
     this.checkIfUserIsLoggedIn()
   }
@@ -65,7 +66,7 @@ export class BoardContainer extends React.Component {
   }
 
   checkIfUserIsLoggedIn() {
-    if (this.props.user.login === '') {
+    if (this.props.user.logStatus !== 'LOGGED_IN') {
       this.setState(showModal)
     }
   }
