@@ -29,14 +29,15 @@ module.exports = (app, passport) => {
 
   app.get('/api/user', (req, res) => {
     let sessionUser = req.session.passport
-    if (!sessionUser) return res.json({ user: null })
+    if (!sessionUser || !sessionUser.user) return res.json({ user: null })
     let id = sessionUser.user
     User.findOne({ _id: id }, function(err, user) {
       res.json(getUserData(user))
     })
   })
 
-  app.get('/**/*', (req, res) => {
-    res.status(200).sendFile(path.resolve(__dirname, '../../build/index.html'))
+  app.get('/api/logout', (req, res) => {
+    req.logout()
+    res.json({ logout: true })
   })
 }
