@@ -1,6 +1,6 @@
 import React from 'react'
 import '../styles.css'
-import { Button } from '../../../Shared/Components/Controls/Button'
+import { Button } from '../../../Shared/Components/Controls'
 
 export const GameItem = ({
   title,

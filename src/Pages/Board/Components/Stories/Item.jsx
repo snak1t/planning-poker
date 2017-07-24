@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { Button } from '../../../../Shared/Components/Controls/Button'
+import { Button } from '../../../../Shared/Components/Controls'
 import './styles.css'
 
 export const Item = ({

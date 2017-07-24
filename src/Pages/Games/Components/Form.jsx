@@ -3,14 +3,15 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import { Modal } from '../../../Shared/Components/Modal/Container'
-import { Input, TextArea } from '../../../Shared/Components/Controls/Input'
-import { FormGroup } from '../../../Shared/Components/Controls/Form.group'
-import { Label } from '../../../Shared/Components/Controls/Label'
-import { Button } from '../../../Shared/Components/Controls/Button'
 import {
+  Input,
+  TextArea,
+  FormGroup,
+  Label,
+  Button,
   RadioButton,
   RadioGroup
-} from '../../../Shared/Components/Controls/Radio'
+} from '../../../Shared/Components/Controls'
 import { saveGame } from '../../../Data/Games/reducer.js'
 
 export const GameForm = ({ onClose, saveGame }) => {

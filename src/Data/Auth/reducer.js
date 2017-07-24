@@ -1,4 +1,5 @@
-import { omit, merge } from 'ramda'
+import omit from 'ramda/src/omit'
+import merge from 'ramda/src/merge'
 
 export const user = (state = null, { type, payload }) => {
   switch (type) {

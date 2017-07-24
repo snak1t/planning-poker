@@ -1,21 +1,19 @@
-import {
-  compose,
-  converge,
-  pluck,
-  map,
-  sum,
-  length,
-  divide,
-  ifElse,
-  is,
-  cond,
-  contains,
-  always,
-  groupBy,
-  prop,
-  isNil,
-  T
-} from 'ramda'
+import compose from 'ramda/src/compose'
+import converge from 'ramda/src/converge'
+import map from 'ramda/src/map'
+import pluck from 'ramda/src/pluck'
+import sum from 'ramda/src/sum'
+import length from 'ramda/src/length'
+import divide from 'ramda/src/divide'
+import ifElse from 'ramda/src/ifElse'
+import is from 'ramda/src/is'
+import cond from 'ramda/src/cond'
+import contains from 'ramda/src/contains'
+import always from 'ramda/src/always'
+import groupBy from 'ramda/src/groupBy'
+import prop from 'ramda/src/prop'
+import isNil from 'ramda/src/isNil'
+import T from 'ramda/src/T'
 
 const goldenRatio = (1 + Math.sqrt(5)) / 2
 

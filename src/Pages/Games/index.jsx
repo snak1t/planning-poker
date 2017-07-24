@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { evolve, not } from 'ramda'
+import evolve from 'ramda/src/evolve'
+import not from 'ramda/src/not'
 
 import './styles.css'
 import GamesList from './Components/List'

@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 import evolve from 'ramda/src/evolve'
 import not from 'ramda/src/not'
 
-import { Button } from '../../../../Shared/Components/Controls/Button'
+import { Button } from '../../../../Shared/Components/Controls'
 import { Report } from './Component'
 import { getAllStories } from '../../../../Data/Stories/reducer'
 

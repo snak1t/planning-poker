@@ -1,7 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { isNil, evolve, T, F } from 'ramda'
+import evolve from 'ramda/src/evolve'
+import T from 'ramda/src/T'
+import F from 'ramda/src/F'
 
 import StoriesContainer from './Components/Stories/Container'
 import PlayersContainer from './Components/Player/Container'
@@ -14,10 +16,12 @@ import { leaveRoom } from '../../Data/PlaySession/reducer.js'
 import { addUnauthorizedUser } from '../../Data/Auth/actions'
 import socketConst from '../../socket.constants.js'
 import { FlexContainer, FlexItem } from '../../utils/FlexContainer'
-import { FormGroup } from '../../Shared/Components/Controls/Form.group'
-import { Label } from '../../Shared/Components/Controls/Label'
-import { Button } from '../../Shared/Components/Controls/Button'
-import { Input } from '../../Shared/Components/Controls/Input'
+import {
+  FormGroup,
+  Label,
+  Button,
+  Input
+} from '../../Shared/Components/Controls'
 
 const showModal = evolve({ modal: T })
 const hideModal = evolve({ modal: F })
@@ -47,7 +51,7 @@ export class BoardContainer extends React.Component {
         gameID: nextProps.match.params.gameID
       })
     }
-    if (!isNil(nextProps.user.login) && !this.emitted) {
+    if (nextProps.user.login && !this.emitted) {
       this.props.enterRoom({
         gameID: nextProps.match.params.gameID,
         user: nextProps.user
@@ -61,7 +65,7 @@ export class BoardContainer extends React.Component {
   }
 
   checkIfUserIsLoggedIn() {
-    if (isNil(this.props.user.login)) {
+    if (this.props.user.login === '') {
       this.setState(showModal)
     }
   }
