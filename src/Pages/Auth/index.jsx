@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
 
-import NavLink from '../../Shared/Components/Controls/Navigation.link'
+import { NavigationLink } from '../../Shared/Components/Controls'
 import LoginComponent from './Components/Login'
 import RegistrationComponent from './Components/Registration'
 import './styles.css'
@@ -13,20 +13,20 @@ export const AuthContainer = ({ match: { url }, location }) =>
   <div className="center">
     <div className="auth">
       <div className="switcher">
-        <NavLink
+        <NavigationLink
           to={`${url}/login`}
           className="switcherElement"
           activeClassName="switcherElementSelected"
         >
           Login
-        </NavLink>
-        <NavLink
+        </NavigationLink>
+        <NavigationLink
           to="/auth/registration"
           className="switcherElement"
           activeClassName="switcherElementSelected"
         >
           Registration
-        </NavLink>
+        </NavigationLink>
         <div className="switcherSlider">
           <div className={calculateSliderClassame(location)} />
         </div>

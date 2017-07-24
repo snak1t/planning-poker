@@ -1,16 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-
 import { compose as composeHOC, withHandlers } from 'recompose'
 
-import { loginUser } from '../../../Data/Auth/actions.js'
-
-import { Input } from '../../../Shared/Components/Controls/Input'
-import { FormGroup } from '../../../Shared/Components/Controls/Form.group'
-import { Label } from '../../../Shared/Components/Controls/Label'
-import { Button } from '../../../Shared/Components/Controls/Button'
 import '../styles.css'
+
+import { loginUser } from '../../../Data/Auth/actions.js'
+import {
+  Input,
+  FormGroup,
+  Label,
+  Button
+} from '../../../Shared/Components/Controls'
 import {
   handleLoginChange,
   handlePasswordChange,

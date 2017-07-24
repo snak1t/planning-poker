@@ -1,8 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Button } from '../../../../Shared/Components/Controls/Button'
-import { FormGroup } from '../../../../Shared/Components/Controls/Form.group'
-import { TextArea } from '../../../../Shared/Components/Controls/Input'
+import {
+  TextArea,
+  FormGroup,
+  Button
+} from '../../../../Shared/Components/Controls'
 import split from 'ramda/src/split'
 import map from 'ramda/src/map'
 

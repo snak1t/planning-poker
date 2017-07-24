@@ -3,14 +3,15 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { withHandlers, compose as composeHOC } from 'recompose'
 
-import { registerUser } from '../../../Data/Auth/actions.js'
-
-import { Input } from '../../../Shared/Components/Controls/Input'
-import { FormGroup } from '../../../Shared/Components/Controls/Form.group'
-import { Label } from '../../../Shared/Components/Controls/Label'
-import { Button } from '../../../Shared/Components/Controls/Button'
 import '../styles.css'
 
+import { registerUser } from '../../../Data/Auth/actions.js'
+import {
+  Input,
+  FormGroup,
+  Label,
+  Button
+} from '../../../Shared/Components/Controls'
 import {
   withLogin,
   withPassword,

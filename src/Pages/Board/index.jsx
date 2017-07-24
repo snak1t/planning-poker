@@ -16,10 +16,12 @@ import { leaveRoom } from '../../Data/PlaySession/reducer.js'
 import { addUnauthorizedUser } from '../../Data/Auth/actions'
 import socketConst from '../../socket.constants.js'
 import { FlexContainer, FlexItem } from '../../utils/FlexContainer'
-import { FormGroup } from '../../Shared/Components/Controls/Form.group'
-import { Label } from '../../Shared/Components/Controls/Label'
-import { Button } from '../../Shared/Components/Controls/Button'
-import { Input } from '../../Shared/Components/Controls/Input'
+import {
+  FormGroup,
+  Label,
+  Button,
+  Input
+} from '../../Shared/Components/Controls'
 
 const showModal = evolve({ modal: T })
 const hideModal = evolve({ modal: F })
