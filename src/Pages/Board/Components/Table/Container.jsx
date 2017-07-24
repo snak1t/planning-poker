@@ -18,7 +18,7 @@ import { TableButtons } from './ButtonBar'
 import StoryItem from '../Stories/Item.container'
 // Actions
 import { getCurrentStory } from '../../../../Data/Stories/reducer'
-import { updateStory, selectNextStory } from '../../../../Data/Stories/reducer'
+import { updateStory, emitCurrentStory } from '../../../../Data/Stories/reducer'
 import {
   emitResetBids,
   emitReadyToPlay,
@@ -37,15 +37,14 @@ export class TableContainer extends React.Component {
       gameID: this.props.match.params.gameID,
       story
     })
-    this.props.setNextStory()
-    this.props.startToPlay(false)
+    this.props.setNextStory('')
   }
 
   resetCurrent = () => this.props.resetBids()
 
   revealCards = () => this.props.showPlayedCards()
 
-  startToPlay = () => this.props.startToPlay(true)
+  startToPlay = () => this.props.startToPlay()
 
   render() {
     const { players, story } = this.props
@@ -116,7 +115,7 @@ const mapStateToProps = store => ({
 
 const mapDispatchToProps = {
   updateStory: updateStory,
-  setNextStory: selectNextStory,
+  setNextStory: emitCurrentStory,
   resetBids: emitResetBids,
   startToPlay: emitReadyToPlay,
   showPlayedCards
