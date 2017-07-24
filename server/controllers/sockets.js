@@ -41,13 +41,22 @@ module.exports = io => {
           return showPlayedCards()
 
         case socketsType.MESSAGE_RECEIVED:
-          return fastForwardWithType(socketsType.BROADCAST_MESSAGE)
+          return fastForwardWithType(socketsType.BROADCAST_MESSAGE, payload)
         case socketsType.EMIT_ADD_NEW_STORY:
-          return fastForwardWithType(socketsType.BROADCAST_ADD_NEW_STORY)
+          return fastForwardWithType(
+            socketsType.BROADCAST_ADD_NEW_STORY,
+            payload
+          )
         case socketsType.EMIT_UPDATE_STORY:
-          return fastForwardWithType(socketsType.BROADCAST_UPDATE_STORY)
+          return fastForwardWithType(
+            socketsType.BROADCAST_UPDATE_STORY,
+            payload
+          )
         case socketsType.EMIT_DELETED_STORY:
-          return fastForwardWithType(socketsType.BROADCAST_DELETED_STORY)
+          return fastForwardWithType(
+            socketsType.BROADCAST_DELETED_STORY,
+            payload
+          )
         default:
           return
       }

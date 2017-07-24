@@ -1,6 +1,7 @@
 import curry from 'ramda/src/curry'
 import { setErrorMessage } from '../Error/reducer'
 import axios from 'axios'
+import socketTypes from '../../socket.constants'
 
 const performFetch = curry((url, credentials) => dispatch => {
   axios
@@ -76,4 +77,9 @@ export const removeUserFromStore = _ => ({
 export const addUnauthorizedUser = user => ({
   type: '[user] ADD_ANAUTHORIZED_USER',
   payload: user
+})
+
+export const enterRoom = payload => ({
+  type: socketTypes.ENTER_ROOM,
+  payload
 })
