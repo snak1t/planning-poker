@@ -1,7 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { isNil, evolve, T, F } from 'ramda'
+import evolve from 'ramda/src/evolve'
+import T from 'ramda/src/T'
+import F from 'ramda/src/F'
 
 import StoriesContainer from './Components/Stories/Container'
 import PlayersContainer from './Components/Player/Container'
@@ -47,7 +49,7 @@ export class BoardContainer extends React.Component {
         gameID: nextProps.match.params.gameID
       })
     }
-    if (!isNil(nextProps.user.login) && !this.emitted) {
+    if (nextProps.user.login && !this.emitted) {
       this.props.enterRoom({
         gameID: nextProps.match.params.gameID,
         user: nextProps.user
@@ -61,7 +63,7 @@ export class BoardContainer extends React.Component {
   }
 
   checkIfUserIsLoggedIn() {
-    if (isNil(this.props.user.login)) {
+    if (this.props.user.login === '') {
       this.setState(showModal)
     }
   }

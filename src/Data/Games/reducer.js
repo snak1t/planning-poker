@@ -1,21 +1,19 @@
-import {
-  nthArg,
-  ifElse,
-  compose,
-  equals,
-  append,
-  useWith,
-  prop,
-  propOr,
-  propEq,
-  map,
-  identity,
-  length,
-  when,
-  find,
-  reject,
-  merge
-} from 'ramda'
+import merge from 'ramda/src/merge'
+import reject from 'ramda/src/reject'
+import find from 'ramda/src/find'
+import when from 'ramda/src/when'
+import length from 'ramda/src/length'
+import identity from 'ramda/src/identity'
+import map from 'ramda/src/map'
+import propEq from 'ramda/src/propEq'
+import propOr from 'ramda/src/propOr'
+import prop from 'ramda/src/prop'
+import useWith from 'ramda/src/useWith'
+import append from 'ramda/src/append'
+import nthArg from 'ramda/src/nthArg'
+import ifElse from 'ramda/src/ifElse'
+import compose from 'ramda/src/compose'
+import equals from 'ramda/src/equals'
 import { postFetch, deleteFetch } from '../../utils/fetch'
 
 // Helper functions

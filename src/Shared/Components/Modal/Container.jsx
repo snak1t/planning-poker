@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { when, propEq } from 'ramda'
+import when from 'ramda/src/when'
+import propEq from 'ramda/src/propEq'
 
 const Shadow = styled.div`
   position: fixed;

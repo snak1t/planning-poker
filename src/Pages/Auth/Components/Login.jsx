@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
-import { compose as composeHOC, withState, withHandlers } from 'recompose'
+import { compose as composeHOC, withHandlers } from 'recompose'
 
 import { loginUser } from '../../../Data/Auth/actions.js'
 
@@ -11,32 +11,28 @@ import { FormGroup } from '../../../Shared/Components/Controls/Form.group'
 import { Label } from '../../../Shared/Components/Controls/Label'
 import { Button } from '../../../Shared/Components/Controls/Button'
 import '../styles.css'
-
-const withLogin = withState('login', 'setLogin', '')
-const withPassword = withState('password', 'setPassword', '')
+import {
+  handleLoginChange,
+  handlePasswordChange,
+  withLogin,
+  withPassword
+} from './helpers.js'
 
 const handlers = withHandlers({
-  handleLoginChange: ({ setLogin }) => ({ target: { value } }) =>
-    setLogin(value),
-  handlePasswordChange: ({ setPassword }) => ({ target: { value } }) =>
-    setPassword(value),
+  handleLoginChange,
+  handlePasswordChange,
   performLogin: ({ doLogin, login, password, history }) => e => {
     e.preventDefault()
-    doLogin(
-      {
-        login,
-        password
-      },
-      () => {
-        history.replace('/')
-      }
-    )
+    doLogin({
+      login,
+      password
+    })
   }
 })
 
-const mapDispatchToProps = dispatch => ({
-  doLogin: (credenetials, cb) => dispatch(loginUser(credenetials, cb))
-})
+const mapDispatchToProps = {
+  doLogin: loginUser
+}
 
 const enhancer = composeHOC(
   connect(null, mapDispatchToProps),

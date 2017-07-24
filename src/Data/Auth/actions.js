@@ -1,8 +1,8 @@
-import { curry } from 'ramda'
+import curry from 'ramda/src/curry'
 import { setErrorMessage } from '../Error/reducer'
 import axios from 'axios'
 
-const performFetch = curry((url, credentials, cb) => dispatch => {
+const performFetch = curry((url, credentials) => dispatch => {
   axios
     .post(
       url,
@@ -24,7 +24,6 @@ const performFetch = curry((url, credentials, cb) => dispatch => {
     .then(user => {
       return dispatch(addUserToStore(user))
     })
-    .then(() => cb())
     .catch(err => dispatch(setErrorMessage(err)))
 })
 
@@ -45,7 +44,7 @@ export const fetchUser = _ => dispatch => {
       return dispatch(addUserToStore(data))
     })
     .catch(err => {
-      console.log(err)
+      console.error(err)
       dispatch(addUserToStore(null))
     })
 }

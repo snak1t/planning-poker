@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { map, addIndex } from 'ramda'
+import map from 'ramda/src/map'
+import addIndex from 'ramda/src/addIndex'
 import '../styles.css'
 import { GameItem } from './Item'
 import { deleteGame } from '../../../Data/Games/reducer'

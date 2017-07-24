@@ -11,7 +11,7 @@ import ErrorContainer from './Shared/Components/Error/Container'
 
 import { fetchUser } from './Data/Auth/actions.js'
 import './default.css'
-import styles from './app.css'
+import './app.css'
 import { userType } from './Data/Auth/type.js'
 
 const PrivateRoute = ({ component, user, ...rest }) =>
@@ -29,24 +29,36 @@ const PrivateRoute = ({ component, user, ...rest }) =>
   />
 
 export class App extends React.Component {
-  componentWillMount() {
+  componentDidMount() {
     this.props.fetchUser()
   }
 
   render() {
+    const { user } = this.props
     return (
       <Router>
-        <div className={styles.app}>
+        <div className="app">
           <Header />
-          {this.props.user &&
+          {user &&
             <main>
               <PrivateRoute
-                user={this.props.user}
+                user={user}
                 exact={true}
                 path="/"
                 component={GamesContainer}
               />
-              <Route path="/auth" component={AuthContainer} />
+              <Route
+                path="/auth"
+                render={props =>
+                  user.login
+                    ? <Redirect
+                        to={{
+                          pathname: '/',
+                          state: { from: props.location }
+                        }}
+                      />
+                    : <AuthContainer {...props} />}
+              />
               <Route path="/game/:user/:gameID" component={BoardContainer} />
             </main>}
           <ErrorContainer />
