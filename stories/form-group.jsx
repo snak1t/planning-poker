@@ -1,13 +1,11 @@
-import React from 'react';
-import { storiesOf, action, linkTo } from '@kadira/storybook';
-import { FormGroup } from '../src/Controls/formgroup';
-import { Input } from '../src/Controls/input';
-import { Label } from '../src/Controls/label';
-import styled from 'styled-components';
+import React from 'react'
+import { storiesOf } from '@kadira/storybook'
+import { FormGroup, Input, Label } from '../src/Shared/Components/Controls'
+import styled from 'styled-components'
 
-const module = storiesOf('Form Input', module);
+const module = storiesOf('Form Input', module)
 
-const DivWidth = styled.div`width: 640px;`;
+const DivWidth = styled.div`width: 640px;`
 
 module.add('Base Form Input', () => {
   return (
@@ -23,5 +21,5 @@ module.add('Base Form Input', () => {
         />
       </FormGroup>
     </DivWidth>
-  );
-});
+  )
+})
