@@ -14,7 +14,6 @@ import PlayersContainer from './Components/Player/Container'
 import StoriesContainer from './Components/Stories/Container'
 import { TemporaryLoginForm } from './Components/Player/ModalForm'
 
-import socketConst from '../../socket.constants.js'
 import { leaveRoom } from '../../Data/PlaySession/reducer.js'
 import { addUnauthorizedUser, isAdmin, enterRoom } from '../../Data/Auth'
 import { fetchGame, findGameById } from '../../Data/Games/reducer'

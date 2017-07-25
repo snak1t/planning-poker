@@ -22,7 +22,7 @@ module.exports = passport => {
       async (req, login, password, done) => {
         try {
           const user = await User.findOne({ login: login })
-          if (user) throw new Error('This login was already taken')
+          if (user) throw new Error('This login has already been taken')
           const newUser = new User()
           newUser.login = login
           newUser.password = newUser.generateHash(password)

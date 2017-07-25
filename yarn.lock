@@ -6267,7 +6267,7 @@ react-virtualized@^9.9.0:
     loose-envify "^1.3.0"
     prop-types "^15.5.4"
 
-react@^15.6.1:
+react@15.6.1, react@^15.6.1:
   version "15.6.1"
   resolved "https://registry.yarnpkg.com/react/-/react-15.6.1.tgz#baa8434ec6780bde997cdc380b79cd33b96393df"
   dependencies:
@@ -6490,6 +6490,12 @@ regjsparser@^0.1.4:
   resolved "https://registry.yarnpkg.com/regjsparser/-/regjsparser-0.1.5.tgz#7ee8f84dc6fa792d3fd0ae228d24bd949ead205c"
   dependencies:
     jsesc "~0.5.0"
+
+rehoc@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/rehoc/-/rehoc-0.1.1.tgz#f3a840156638457799e6e146b95348e521512b4e"
+  dependencies:
+    react "15.6.1"
 
 relateurl@0.2.x:
   version "0.2.7"

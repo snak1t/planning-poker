@@ -1,6 +1,9 @@
 import styled from 'styled-components'
 
-export const AuthFormContainer = styled.div`margin-top: 1rem;`
+export const AuthFormContainer = styled.div`
+  margin-top: 1rem;
+  position: relative;
+`
 export const AuthFormTitle = styled.h2`
   text-align: center;
   display: block;

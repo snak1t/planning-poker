@@ -26,6 +26,7 @@
     "redux": "^3.7.2",
     "redux-socket.io": "^1.4.0",
     "redux-thunk": "^2.2.0",
+    "rehoc": "^0.1.1",
     "rxjs": "^5.4.2",
     "socket.io": "^2.0.3",
     "socket.io-client": "^2.0.3",
