@@ -5,14 +5,20 @@ import { NavigationLink } from '../../Shared/Components/Controls'
 import LoginComponent from './Components/Login'
 import RegistrationComponent from './Components/Registration'
 import './styles.css'
+import {
+  AuthBlock,
+  AuthCenterBlock,
+  Switcher,
+  SwitcherSliderContainer,
+  SwitcherCaret
+} from './Styled.components'
 
-const calculateSliderClassame = ({ pathname }) =>
-  `caret ${pathname.endsWith('login') ? 'caretLeft' : 'caretRight'}`
+const calculateSliderClassame = ({ pathname }) => pathname.endsWith('login')
 
 export const AuthContainer = ({ match: { url }, location }) =>
-  <div className="center">
-    <div className="auth">
-      <div className="switcher">
+  <AuthCenterBlock>
+    <AuthBlock>
+      <Switcher>
         <NavigationLink
           to={`${url}/login`}
           className="switcherElement"
@@ -27,13 +33,13 @@ export const AuthContainer = ({ match: { url }, location }) =>
         >
           Registration
         </NavigationLink>
-        <div className="switcherSlider">
-          <div className={calculateSliderClassame(location)} />
-        </div>
-      </div>
+        <SwitcherSliderContainer>
+          <SwitcherCaret left={calculateSliderClassame(location)} />
+        </SwitcherSliderContainer>
+      </Switcher>
       <div>
         <Route path={`${url}/login`} component={LoginComponent} />
         <Route path={`${url}/registration`} component={RegistrationComponent} />
       </div>
-    </div>
-  </div>
+    </AuthBlock>
+  </AuthCenterBlock>

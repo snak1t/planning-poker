@@ -18,6 +18,7 @@ import {
   handleLoginChange,
   handlePasswordChange
 } from './helpers'
+import { AuthFormContainer, AuthFormTitle } from '../Styled.components'
 
 const mapDispatchToProps = {
   doRegistration: registerUser
@@ -47,8 +48,8 @@ export const RegistrationComponent = ({
   password,
   handlePasswordChange
 }) =>
-  <div className="form">
-    <h2 className="formTitle">Registration Component</h2>
+  <AuthFormContainer>
+    <AuthFormTitle>Registration Component</AuthFormTitle>
     <form noValidate={true} onSubmit={performRegistration}>
       <FormGroup>
         <Label htmlFor="login">Login</Label>
@@ -74,6 +75,6 @@ export const RegistrationComponent = ({
         <Button>Register</Button>
       </FormGroup>
     </form>
-  </div>
+  </AuthFormContainer>
 
 export default enhancer(RegistrationComponent)

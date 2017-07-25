@@ -18,6 +18,7 @@ import {
   withLogin,
   withPassword
 } from './helpers.js'
+import { AuthFormContainer, AuthFormTitle } from '../Styled.components'
 
 const handlers = withHandlers({
   handleLoginChange,
@@ -50,8 +51,8 @@ export const LoginComponent = ({
   password,
   handlePasswordChange
 }) =>
-  <div className="form">
-    <h2 className="formTitle">Login Component</h2>
+  <AuthFormContainer>
+    <AuthFormTitle>Login Component</AuthFormTitle>
     <form noValidate={true} onSubmit={performLogin}>
       <FormGroup>
         <Label htmlFor="login">Login</Label>
@@ -77,6 +78,6 @@ export const LoginComponent = ({
         <Button>Do Login</Button>
       </FormGroup>
     </form>
-  </div>
+  </AuthFormContainer>
 
 export default enhancer(LoginComponent)
