@@ -6491,9 +6491,9 @@ regjsparser@^0.1.4:
   dependencies:
     jsesc "~0.5.0"
 
-rehoc@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/rehoc/-/rehoc-0.1.1.tgz#f3a840156638457799e6e146b95348e521512b4e"
+rehoc-validator@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/rehoc-validator/-/rehoc-validator-0.1.2.tgz#8864a025b68f717d7322843ff15eb609095260f2"
   dependencies:
     react "15.6.1"
 

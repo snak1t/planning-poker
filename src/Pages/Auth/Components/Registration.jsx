@@ -13,7 +13,7 @@ import {
   Button
 } from '../../../Shared/Components/Controls'
 import { AuthFormContainer, AuthFormTitle } from '../Styled.components'
-import { withValidation } from 'rehoc'
+import { withValidation } from 'rehoc-validator'
 import { registrationValidationConfig } from './validators.config'
 import { showErrorsForRegistrationComponent } from './helpers'
 

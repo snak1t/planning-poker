@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { minLength, sameAs } from 'rehoc'
+import { minLength, sameAs } from 'rehoc-validator'
 
 const checkLoginForExistance = (login, done) =>
   axios
