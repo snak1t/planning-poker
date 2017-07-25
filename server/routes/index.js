@@ -16,6 +16,14 @@ module.exports = (app, passport) => {
     })(req, res)
   })
 
+  app.post('/api/login/check', (req, res) => {
+    const login = req.body.login
+    User.findOne({ login }, function(err, user) {
+      const exist = user !== null
+      res.json({ exist: exist })
+    })
+  })
+
   app.post('/api/login', (req, res) => {
     passport.authenticate('local-login', (err, user) => {
       if (err) {

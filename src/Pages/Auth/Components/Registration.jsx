@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { withHandlers, compose as composeHOC } from 'recompose'
+import { compose as composeHOC } from 'recompose'
 
 import '../styles.css'
 
@@ -13,109 +13,109 @@ import {
   Button
 } from '../../../Shared/Components/Controls'
 import { AuthFormContainer, AuthFormTitle } from '../Styled.components'
-import { withValidation } from './Validation'
+import { withValidation } from 'rehoc'
+import { registrationValidationConfig } from './validators.config'
+import { showErrorsForRegistrationComponent } from './helpers'
 
 const mapDispatchToProps = {
   doRegistration: registerUser
 }
 
-const config = {
-  login: {
-    validators: [
-      { rule: val => val.length > 3, message: 'Too short' },
-      { rule: val => val.startsWith('sn'), message: 'Must start with sn' }
-    ]
-  },
-  password: {
-    validators: [
-      {
-        rule: val => val.length > 4,
-        message: 'Password must be longer than 4 symbols'
-      }
-    ]
-  },
-  passwordConfirm: {
-    validators: [
-      {
-        rule: (val, password) => val === password,
-        message: 'Passwords not equal',
-        withFields: ['password']
-      }
-    ]
-  }
-}
-
 const enhancer = composeHOC(
   withRouter,
   connect(null, mapDispatchToProps),
-  withValidation(config)
+  withValidation(registrationValidationConfig)
 )
 
-export class RegistrationComponent extends React.Component {
-  performRegistration = e => {
+export const RegistrationComponent = ({
+  login,
+  password,
+  passwordConfirm,
+  valid,
+  amount,
+  array,
+  doRegistration
+}) => {
+  const performRegistration = e => {
     e.preventDefault()
-    this.props.doRegistration({
-      login: this.props.login.value,
-      password: this.props.password.value
+    doRegistration({
+      login: login.value,
+      password: password.value
     })
   }
-
-  displayErrors = key =>
-    this.props[key].errors.length !== 0
-      ? <div style={{ backgorundColor: 'red' }}>
-          {this.props[key].errors.map((e, i) =>
-            <div key={i}>
-              {e}
-            </div>
-          )}
-        </div>
-      : null
-
-  render() {
-    return (
-      <AuthFormContainer>
-        <AuthFormTitle>Registration Component</AuthFormTitle>
-        <form noValidate={true} onSubmit={this.performRegistration}>
-          {this.displayErrors('login')}
-          <FormGroup>
-            <Label htmlFor="login">Login</Label>
-            <Input
-              id="login"
-              type="text"
-              placeholder="login"
-              value={this.props.login.value}
-              onChange={this.props.login.handler}
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="password"
-              value={this.props.password.value}
-              onChange={this.props.password.handler}
-            />
-            {this.displayErrors('password')}
-          </FormGroup>
-          <FormGroup>
-            <Label htmlFor="passwordConfirm">Password Confirmation</Label>
-            <Input
-              id="passwordConfirm"
-              type="password"
-              placeholder="password confirmation"
-              value={this.props.passwordConfirm.value}
-              onChange={this.props.passwordConfirm.handler}
-            />
-            {this.displayErrors('passwordConfirm')}
-          </FormGroup>
-          <FormGroup>
-            {this.props.valid ? <Button>Register</Button> : null}
-          </FormGroup>
-        </form>
-      </AuthFormContainer>
-    )
+  const handleArray = ({ target: { value } }) => {
+    const words = value.split(' ')
+    array.handler(words)
   }
+
+  return (
+    <AuthFormContainer>
+      {showErrorsForRegistrationComponent(
+        login,
+        password,
+        passwordConfirm,
+        amount,
+        array
+      )}
+      <AuthFormTitle>Registration Component</AuthFormTitle>
+      <form noValidate={true} onSubmit={performRegistration}>
+        <FormGroup>
+          <Label htmlFor="login">Login</Label>
+          <Input
+            id="login"
+            type="text"
+            placeholder="login"
+            value={login.value}
+            onChange={login.handler}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="password">Password</Label>
+          <Input
+            id="password"
+            type="password"
+            placeholder="password"
+            value={password.value}
+            onChange={password.handler}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="amount">Amount</Label>
+          <Input
+            id="amount"
+            type="text"
+            placeholder="amount"
+            value={amount.value}
+            onChange={({ target: { value } }) =>
+              amount.handler(parseInt(value, 10) || 0)}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="array">Array</Label>
+          <Input
+            id="array"
+            type="text"
+            placeholder="array"
+            value={array.value.join(' ')}
+            onChange={handleArray}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="passwordConfirm">Password Confirmation</Label>
+          <Input
+            id="passwordConfirm"
+            type="password"
+            placeholder="password confirmation"
+            value={passwordConfirm.value}
+            onChange={passwordConfirm.handler}
+          />
+        </FormGroup>
+        <FormGroup>
+          {valid ? <Button>Register</Button> : null}
+        </FormGroup>
+      </form>
+    </AuthFormContainer>
+  )
 }
 
 export default enhancer(RegistrationComponent)
