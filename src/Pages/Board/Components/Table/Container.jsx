@@ -15,7 +15,8 @@ import { storyType } from '../../../../Data/Stories/type'
 // Elements
 import { Card } from '../Deck/Card'
 import { TableButtons } from './ButtonBar'
-import StoryItem from '../Stories/Item.container'
+import { CurrentStory } from '../Stories/Current.story'
+
 // Actions
 import { getCurrentStory } from '../../../../Data/Stories/reducer'
 import { updateStory, emitCurrentStory } from '../../../../Data/Stories/reducer'
@@ -37,29 +38,27 @@ export class TableContainer extends React.Component {
       gameID: this.props.match.params.gameID,
       story
     })
-    this.props.setNextStory('')
+    this.props.setCurrentStory('')
   }
 
-  resetCurrent = () => this.props.resetBids()
-
+  resetBids = () => this.props.resetBids()
   revealCards = () => this.props.showPlayedCards()
-
   startToPlay = () => this.props.startToPlay()
+  resetCurrentStory = () => this.props.setCurrentStory('')
 
   render() {
     const { players, story } = this.props
     if (!story) return null
     return (
       <section>
-        {/*Current Story*/}
-        <StoryItem onlyEdit={true} {...story} />
+        <CurrentStory {...story} onResetCurrent={this.resetCurrentStory} />
         {this.props.admin
           ? <TableButtons
               completed={this.props.completed}
               reveal={this.props.revealCards}
               onStartToPlay={this.startToPlay}
               onRevealCards={this.revealCards}
-              onResetCurrent={this.resetCurrent}
+              onResetCurrent={this.resetBids}
               onAcceptScore={this.acceptScore}
             />
           : null}
@@ -99,7 +98,7 @@ TableContainer.propTypes = {
   admin: PropTypes.bool.isRequired,
   revealCards: PropTypes.bool.isRequired,
   updateStory: PropTypes.func.isRequired,
-  setNextStory: PropTypes.func.isRequired,
+  setCurrentStory: PropTypes.func.isRequired,
   resetBids: PropTypes.func.isRequired,
   startToPlay: PropTypes.func.isRequired,
   showPlayedCards: PropTypes.func.isRequired
@@ -115,7 +114,7 @@ const mapStateToProps = store => ({
 
 const mapDispatchToProps = {
   updateStory: updateStory,
-  setNextStory: emitCurrentStory,
+  setCurrentStory: emitCurrentStory,
   resetBids: emitResetBids,
   startToPlay: emitReadyToPlay,
   showPlayedCards

@@ -10,16 +10,8 @@ export const handlePasswordChange = ({ setPassword }) => ({
   target: { value }
 }) => setPassword(value)
 
-const prepareErrorsForRegistration = (
-  login,
-  password,
-  passwordConfirm,
-  amount,
-  array
-) => [
+const prepareErrorsForRegistration = (login, password, passwordConfirm) => [
   { title: 'Login', messages: login.errors },
-  { title: 'Amount', messages: amount.errors },
-  { title: 'Array', messages: array.errors },
   { title: 'Password', messages: password.errors },
   { title: 'Confirmation password', messages: passwordConfirm.errors }
 ]
@@ -42,3 +34,5 @@ const showErrorComponent = type => (...values) =>
 export const showErrorsForRegistrationComponent = showErrorComponent(
   'registration'
 )
+
+export const showErrorsForLoginComponent = showErrorComponent('login')

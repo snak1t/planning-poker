@@ -69,7 +69,7 @@ StoryItem.propTypes = {
 }
 
 const mapDispatchToProps = {
-  updateStory: updateStory,
+  updateStory,
   deleteStory: removeStory,
   setCurrentStory: emitCurrentStory
 }
