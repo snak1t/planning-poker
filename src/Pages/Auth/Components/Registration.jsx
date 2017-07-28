@@ -32,8 +32,6 @@ export const RegistrationComponent = ({
   password,
   passwordConfirm,
   valid,
-  amount,
-  array,
   doRegistration
 }) => {
   const performRegistration = e => {
@@ -43,20 +41,9 @@ export const RegistrationComponent = ({
       password: password.value
     })
   }
-  const handleArray = ({ target: { value } }) => {
-    const words = value.split(' ')
-    array.handler(words)
-  }
-
   return (
     <AuthFormContainer>
-      {showErrorsForRegistrationComponent(
-        login,
-        password,
-        passwordConfirm,
-        amount,
-        array
-      )}
+      {showErrorsForRegistrationComponent(login, password, passwordConfirm)}
       <AuthFormTitle>Registration Component</AuthFormTitle>
       <form noValidate={true} onSubmit={performRegistration}>
         <FormGroup>
@@ -80,27 +67,6 @@ export const RegistrationComponent = ({
           />
         </FormGroup>
         <FormGroup>
-          <Label htmlFor="amount">Amount</Label>
-          <Input
-            id="amount"
-            type="text"
-            placeholder="amount"
-            value={amount.value}
-            onChange={({ target: { value } }) =>
-              amount.handler(parseInt(value, 10) || 0)}
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label htmlFor="array">Array</Label>
-          <Input
-            id="array"
-            type="text"
-            placeholder="array"
-            value={array.value.join(' ')}
-            onChange={handleArray}
-          />
-        </FormGroup>
-        <FormGroup>
           <Label htmlFor="passwordConfirm">Password Confirmation</Label>
           <Input
             id="passwordConfirm"
@@ -111,7 +77,7 @@ export const RegistrationComponent = ({
           />
         </FormGroup>
         <FormGroup>
-          {valid ? <Button>Register</Button> : null}
+          <Button disabled={!valid}>Register</Button>
         </FormGroup>
       </form>
     </AuthFormContainer>

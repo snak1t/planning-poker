@@ -7,6 +7,18 @@ const module = storiesOf('Buttons', module)
 module.add('simple button', () => {
   return <Button>Simple Button</Button>
 })
+
+module.add('disabled button', () => {
+  return (
+    <div>
+      <div>disabled true</div>
+      <Button disabled={true}>Simple Button</Button>
+      <div>disabled false</div>
+      <Button disabled={false}>Simple Button</Button>
+    </div>
+  )
+})
+
 module.add('submit button', () => {
   return <Button primary>Submit button</Button>
 })

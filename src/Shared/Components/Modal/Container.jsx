@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import when from 'ramda/src/when'
 import propEq from 'ramda/src/propEq'
+import { CloseButton } from '../Controls'
 
 const Shadow = styled.div`
   position: fixed;
@@ -68,7 +69,7 @@ export class Modal extends React.Component {
       <div>
         <Shadow />
         <ModalWindow>
-          <ModalClose onClick={() => this.props.onClose()}>+</ModalClose>
+          <CloseButton onClick={this.props.onClose} topRight />
           <ModalTitle>
             {this.props.title}
           </ModalTitle>

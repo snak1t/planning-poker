@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { minLength, sameAs } from 'rehoc-validator'
+import { minLength, sameAs, oneOf } from 'rehoc-validator'
 
 const checkLoginForExistance = (login, done) =>
   axios
@@ -7,9 +7,8 @@ const checkLoginForExistance = (login, done) =>
     .then(response => response.data)
     .then(data => done(!data.exist))
 
-export const registrationValidationConfig = [
-  {
-    field: 'login',
+export const registrationValidationConfig = {
+  login: {
     validators: [
       minLength(3),
       {
@@ -19,29 +18,15 @@ export const registrationValidationConfig = [
       }
     ]
   },
-  {
-    field: 'amount',
-    initialValue: 60,
+  password: {
     validators: [
-      { rule: val => val > 100, message: 'Value must be greater then 100' }
+      oneOf([
+        minLength(2),
+        minLength(4, 'Password must be longer than 4 symbols')
+      ])
     ]
   },
-  {
-    field: 'array',
-    initialValue: [],
-    validators: [
-      {
-        rule: val => val.length > 3,
-        message: 'Array length must be greater then 3'
-      }
-    ]
-  },
-  {
-    field: 'password',
-    validators: [minLength(4, 'Password must be longer than 4 symbols')]
-  },
-  {
-    field: 'passwordConfirm',
+  passwordConfirm: {
     validators: [
       sameAs(
         ['password'],
@@ -49,15 +34,14 @@ export const registrationValidationConfig = [
       )
     ]
   }
-]
+}
 
-export const loginValidationConfig = [
-  {
+export const loginValidationConfig = {
+  login: {
     field: 'login',
     validators: [minLength(3)]
   },
-  {
-    field: 'password',
-    validators: [minLength(4, 'Password must be longer than 4 symbols')]
+  password: {
+    validators: [minLength(3, 'Password must be longer than 4 symbols')]
   }
-]
+}

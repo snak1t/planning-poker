@@ -23,6 +23,9 @@ export const Button = styled.button`
     box-shadow: ${props => (props.outline ? '0px 2px 0px 0px' : '0 0 2px 1px')}
       ${colors.primaryColor};
   }
+  &:disabled {
+    cursor: not-allowed;
+  }
   &:focus {
     box-shadow: ${props => (props.outline ? '0px 2px 0px 0px' : '0 0 2px 1px')}
       ${colors.primaryColor};

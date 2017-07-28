@@ -1,9 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 import map from 'ramda/src/map'
+import compose from 'ramda/src/compose'
 import addIndex from 'ramda/src/addIndex'
 import pluck from 'ramda/src/pluck'
 import sum from 'ramda/src/sum'
+import { CloseButton } from '../../../../Shared/Components/Controls'
 
 import { colors } from '../../../../utils/color-palette'
 
@@ -58,13 +60,7 @@ const Footer = styled.footer`
   padding: 0px 20px;
 `
 
-const Close = styled.div`
-  position: absolute;
-  right: 20px;
-  top: 4px;
-  font-size: 2rem;
-  cursor: pointer;
-`
+const showTotalScore = compose(sum, pluck('score'))
 
 export const Report = ({ game, stories, onClose }) => {
   const displayStory = indexedMap((st, idx) => {
@@ -86,7 +82,7 @@ export const Report = ({ game, stories, onClose }) => {
   })
   return (
     <FixedDiv>
-      <Close onClick={() => onClose()}>x</Close>
+      <CloseButton onClick={() => onClose()} topRight />
       <Header>
         <h1>
           Report for "{game.title}"
@@ -103,7 +99,7 @@ export const Report = ({ game, stories, onClose }) => {
           <header>
             <span>Total Score</span>
             <span>
-              {sum(pluck('score', stories))}
+              {showTotalScore(stories)}
             </span>
           </header>
         </Story>
