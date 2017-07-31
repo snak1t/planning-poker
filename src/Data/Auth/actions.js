@@ -1,69 +1,8 @@
-import curry from 'ramda/src/curry'
+import ifElse from 'ramda/src/ifElse'
+
 import { setErrorMessage } from '../Error/reducer'
-import axios from 'axios'
 import socketTypes from '../../socket.constants'
-
-const performFetch = curry((url, credentials) => dispatch => {
-  axios
-    .post(
-      url,
-      { ...credentials },
-      {
-        credentials: 'include',
-        headers: {
-          'Content-type': 'application/json'
-        }
-      }
-    )
-    .then(response => {
-      return response.data
-    })
-    .then(user => {
-      if (user.error) throw new Error(user.error)
-      return user
-    })
-    .then(user => {
-      return dispatch(addUserToStore(user))
-    })
-    .catch(err => dispatch(setErrorMessage(err)))
-})
-
-export const loginUser = performFetch('/api/login')
-export const registerUser = performFetch('/api/signup')
-
-export const fetchUser = _ => dispatch => {
-  axios
-    .get('/api/user', {
-      credentials: 'include',
-      headers: {
-        'Content-type': 'application/json'
-      }
-    })
-    .then(response => response.data)
-    .then(data => {
-      if (!data.login) throw new Error('user not logged in')
-      return dispatch(addUserToStore(data))
-    })
-    .catch(err => {
-      dispatch(removeUserFromStore())
-    })
-}
-
-export const doLogout = () => dispatch => {
-  axios
-    .get('/api/logout', {
-      credentials: 'include',
-      headers: {
-        'Content-type': 'application/json'
-      }
-    })
-    .then(r => r.data)
-    .then(data => {
-      if (data.logout === true) {
-        dispatch(removeUserFromStore())
-      }
-    })
-}
+import { postFetch, getFetch } from '../../utils/fetch'
 
 export const addUserToStore = user => ({
   type: '[user] LOGIN_USER',
@@ -83,3 +22,23 @@ export const enterRoom = payload => ({
   type: socketTypes.ENTER_ROOM,
   payload
 })
+
+const addUserToStoreAction = ifElse(
+  user => user.error,
+  ({ error }) => setErrorMessage(error),
+  addUserToStore
+)
+
+export const loginUser = postFetch('/api/login', addUserToStoreAction)
+export const registerUser = postFetch('/api/signup', addUserToStoreAction)
+
+export const fetchUser = getFetch(
+  '/api/user',
+  ifElse(user => !user.login, removeUserFromStore, addUserToStore),
+  {}
+)
+export const doLogout = getFetch(
+  '/api/logout',
+  ifElse(data => data.logout === true, removeUserFromStore, setErrorMessage),
+  {}
+)

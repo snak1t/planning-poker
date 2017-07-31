@@ -28,11 +28,13 @@ const enhancer = composeHOC(
 )
 
 export const LoginComponent = ({ doLogin, login, password, valid }) => {
-  const performLogin = () =>
+  const performLogin = e => {
+    e.preventDefault()
     doLogin({
       login: login.value,
       password: password.value
     })
+  }
   return (
     <AuthFormContainer>
       {showErrorsForLoginComponent(login, password)}

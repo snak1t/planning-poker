@@ -36,23 +36,6 @@ const ModalTitle = styled.div`
   margin-bottom: 0.3em;
 `
 
-// const ModalButtons = styled.div`
-//   width: 100%;
-//   line-height: 2em;
-//   font-size: 1.3em;
-//   border-top: 1px solid #aaa;
-//   margin-top: 0.3em;
-// `;
-
-const ModalClose = styled.div`
-  position: absolute;
-  right: 20px;
-  top: 10px;
-  cursor: pointer;
-  font-size: 2em;
-  transform: rotate(45deg);
-`
-
 export class Modal extends React.Component {
   componentWillMount() {
     window.addEventListener('keydown', this.onEscape)
