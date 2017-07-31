@@ -11,10 +11,11 @@ export const Item = ({
   description,
   setEditMode,
   deleteStory,
-  playStory,
-  onlyEdit,
+  setCurrentStory,
+  currentStory,
   admin
 }) => {
+  const isCurrentStory = currentStory === _id
   return (
     <article className="Stories-story">
       <header className="Stories-storyHeader">
@@ -25,22 +26,23 @@ export const Item = ({
       <div className="Stories-storyDescription">
         {description}
       </div>
-      {admin &&
-        <footer className="Stories-storyFooter">
-          <Button small outline onClick={setEditMode}>
-            Edit Story
-          </Button>
-          {onlyEdit
-            ? null
-            : <Button small outline onClick={() => playStory(_id)}>
-                Play Story
-              </Button>}
-          {onlyEdit
-            ? null
-            : <Button small outline onClick={() => deleteStory(_id)}>
-                Delete Story
-              </Button>}
-        </footer>}
+      {admin
+        ? <footer className="Stories-storyFooter">
+            <Button small outline onClick={setEditMode}>
+              Edit Story
+            </Button>
+            {isCurrentStory
+              ? null
+              : <Button small outline onClick={() => setCurrentStory(_id)}>
+                  Play Story
+                </Button>}
+            {isCurrentStory
+              ? null
+              : <Button small outline onClick={() => deleteStory(_id)}>
+                  Delete Story
+                </Button>}
+          </footer>
+        : null}
     </article>
   )
 }
@@ -52,7 +54,5 @@ Item.propTypes = {
   description: PropTypes.string,
   setEditMode: PropTypes.func.isRequired,
   deleteStory: PropTypes.func.isRequired,
-  playStory: PropTypes.func.isRequired,
-  onlyEdit: PropTypes.bool,
   admin: PropTypes.bool
 }
