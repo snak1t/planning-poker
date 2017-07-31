@@ -1,26 +1,26 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import './styles.css';
+import React from 'react'
+import PropTypes from 'prop-types'
+import './styles.css'
 
 export const ItemEdit = ({
   _id,
   title,
   description,
   setEditMode,
-  updateItem
+  updateStory
 }) => {
-  let titleInput = null;
-  let descriptionInput = null;
+  let titleInput = null
+  let descriptionInput = null
 
   const saveItem = () => {
     const data = {
       _id,
       title: titleInput.value,
       description: descriptionInput.value
-    };
-    updateItem(data);
-    setEditMode();
-  };
+    }
+    updateStory(data)
+    setEditMode()
+  }
 
   return (
     <article>
@@ -42,13 +42,13 @@ export const ItemEdit = ({
         <button onClick={() => saveItem()}>Save</button>
       </footer>
     </article>
-  );
-};
+  )
+}
 
 ItemEdit.propTypes = {
   _id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string,
   setEditMode: PropTypes.func.isRequired,
-  updateItem: PropTypes.func.isRequired
-};
+  updateStory: PropTypes.func.isRequired
+}
