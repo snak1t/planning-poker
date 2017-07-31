@@ -23,9 +23,9 @@ const mapStateToProps = state => ({
   isLoggedIn: isUserLoggedIn(state)
 })
 
-const mapDispatchToProps = {
-  doLogout
-}
+const mapDispatchToProps = dispatch => ({
+  doLogout: () => dispatch(doLogout())
+})
 
 export const Header = ({ doLogout, isLoggedIn }) =>
   <HeaderDiv>
