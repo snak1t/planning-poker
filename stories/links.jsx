@@ -1,15 +1,14 @@
-import React from 'react';
-import { storiesOf, action, linkTo } from '@kadira/storybook';
-import Link from '../src/Controls/NavLink';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import React from 'react'
+import { storiesOf } from '@kadira/storybook'
+import { NavigationLink } from '../src/Shared/Components/Controls/Navigation.link'
+import { BrowserRouter as Router } from 'react-router-dom'
 
-const module = storiesOf('Links from router', module);
+const module = storiesOf('Links from router', module)
 
 module.add('Simple Links', () => {
   return (
     <Router>
-      <Link to="/">Simple link</Link>
-      {/*<Route exact path*/}
+      <NavigationLink to="/">Simple link</NavigationLink>
     </Router>
-  );
-});
+  )
+})

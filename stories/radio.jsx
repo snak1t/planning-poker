@@ -1,8 +1,8 @@
-import React from 'react';
-import { storiesOf, action, linkTo } from '@kadira/storybook';
-import { RadioGroup, RadioButton } from '../src/Controls/Radio';
+import React from 'react'
+import { storiesOf } from '@kadira/storybook'
+import { RadioGroup, RadioButton } from '../src/Shared/Components/Controls'
 
-const module = storiesOf('Radio Group', module);
+const module = storiesOf('Radio Group', module)
 
 module.add('Radio Group', () => {
   return (
@@ -11,5 +11,5 @@ module.add('Radio Group', () => {
       <RadioButton value="2" label="Warcraft" />
       <RadioButton value="3" label="Grand Thieft Auto" />
     </RadioGroup>
-  );
-});
+  )
+})
