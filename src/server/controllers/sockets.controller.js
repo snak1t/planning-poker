@@ -1,5 +1,5 @@
 const curry = require('ramda/src/curry');
-const { createStore } = require('./mini-redux');
+const { createStore } = require('../utils/mini-redux');
 const socketsType = require('../../socket.constants');
 
 const SYNC_GAME_SESSION = '[sockets] SYNC_GAME_SESSION';
