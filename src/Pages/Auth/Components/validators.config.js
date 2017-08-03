@@ -1,11 +1,11 @@
-import axios from 'axios'
-import { minLength, sameAs, oneOf } from 'rehoc-validator'
+import axios from 'axios';
+import { minLength, sameAs, oneOf } from 'rehoc-validator';
 
 const checkLoginForExistance = (login, done) =>
   axios
-    .post('/api/login/check', { login })
+    .post(`/${process.env.REACT_APP_API_ENDPOINT}/login/check`, { login })
     .then(response => response.data)
-    .then(data => done(!data.exist))
+    .then(data => done(!data.exist));
 
 export const registrationValidationConfig = {
   login: {
@@ -34,7 +34,7 @@ export const registrationValidationConfig = {
       )
     ]
   }
-}
+};
 
 export const loginValidationConfig = {
   login: {
@@ -44,4 +44,4 @@ export const loginValidationConfig = {
   password: {
     validators: [minLength(3, 'Password must be longer than 4 symbols')]
   }
-}
+};
