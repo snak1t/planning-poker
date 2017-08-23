@@ -8,6 +8,8 @@ import './styles.css'
 import GamesList from './Components/List'
 import GameForm from './Components/Form'
 
+import { Button } from '../../Shared/Components/Controls/Button'
+
 export class GamesConatainer extends React.Component {
   state = {
     modal: false
@@ -27,7 +29,7 @@ export class GamesConatainer extends React.Component {
         <div className="Games-title">
           <h1>Your games</h1>
         </div>
-        <button onClick={this.toggleModalWindow}>Add Form</button>
+        <Button onClick={this.toggleModalWindow}>Add Game</Button>
         <GamesList onNavigateToTask={this.navigateToGame} />
       </div>
     )
