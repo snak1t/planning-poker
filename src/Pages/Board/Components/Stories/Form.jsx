@@ -12,12 +12,14 @@ export const StoriesForm = ({ handleSubmit, toggleMode, mode, isAdmin }) => {
   let textInput = null
 
   const handleKeyPress = event => {
-    if (event.charCode === 13) {
+    if (event.charCode === 13 && !event.shiftKey) {
+      event.preventDefault();
       const allTasks = map(
         item => ({ title: item }),
         split('\n', textInput.value)
       )
       handleSubmit(allTasks)
+      toggleMode(mode)
       return (textInput.value = '')
     }
   }
