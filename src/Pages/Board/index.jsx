@@ -32,6 +32,10 @@ const mapDispatchToProps = {
   enterRoom
 }
 
+const MainContainer = FlexItem.extend`
+  min-height: 400px;
+`
+
 const enhancer = composeHOC(
   connect(mapStateToProps, mapDispatchToProps),
   branch(
@@ -75,7 +79,7 @@ export const BoardContainer = ({ game, isAdmin }) => {
           </h2>
         </header>
       </FlexItem>
-      <FlexItem asContainer grow="1">
+      <MainContainer asContainer grow="1">
         <StoriesContainer admin={isAdmin} />
         <FlexItem grow="1">
           <TableContainer admin={isAdmin} />
@@ -83,7 +87,7 @@ export const BoardContainer = ({ game, isAdmin }) => {
         <FlexItem basis="340px" style={{ position: 'relative' }}>
           <PlayersContainer />
         </FlexItem>
-      </FlexItem>
+      </MainContainer>
       <FlexItem basis="20vh">
         <DeckContainer />
       </FlexItem>
