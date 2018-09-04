@@ -14,6 +14,7 @@ import './default.css';
 import './app.css';
 import { userType } from './Data/Auth/type.js';
 import { forNotLogged, forLoggedOnly } from './utils/router.guards';
+import { PageLayout } from './components/Layout';
 
 const mapStateToProps = state => ({
     user: state.user,
@@ -37,8 +38,8 @@ export class App extends React.Component {
         const { user } = this.props;
         return (
             <Router>
-                <div className="app">
-                    <Header />
+                <PageLayout>
+                    {/* <Header /> */}
                     {user.logStatus !== 'NOT_ASKED' ? (
                         <main>
                             <Route
@@ -61,7 +62,10 @@ export class App extends React.Component {
                         </main>
                     ) : null}
                     <ErrorContainer />
-                </div>
+                </PageLayout>
+                {/* <div className="app">
+                    
+                </div> */}
             </Router>
         );
     }

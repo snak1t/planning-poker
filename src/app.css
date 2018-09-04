@@ -1,12 +1,14 @@
+@import '~antd/dist/antd.css';
+
 main {
-  flex-grow: 1;
-  padding: 10px;
-  display: flex;
-  background-color: #fafafa;
+    flex-grow: 1;
+    padding: 10px;
+    display: flex;
+    background-color: #fafafa;
 }
 
 .app {
-  display: flex;
-  height: 100%;
-  flex-direction: column;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
 }

@@ -1,52 +1,13 @@
-.Stories-container {
-  flex-basis: 340px;
-  padding: 10px;
-  box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.15);
-  background-color: #fff;
-}
-
-.Stories-header {
-  line-height: 1.8rem;
-  font-size: 1.2rem;
-  text-align: center;
-}
-
-.Stories-stories {
-  display: flex;
-  flex-direction: column;
-}
-
-.Stories-story {
-  padding: 20px 10px;
-  font-family: "Helvetica";
-  box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.15);
-  margin-bottom: 10px;
-  background-color: #fff;
-}
-
 .Stories-storyHeader {
-  line-height: 2rem;
-}
-
-.Stories-storyTitle {
-  padding: 0px;
-  margin: 0px;
-  font-size: 1.2rem;
-  text-align: center;
+    line-height: 2rem;
 }
 
 .Stories-storyDescription {
-  margin: 10px 0px;
+    margin: 10px 0px;
 }
 
 .Stories-storyFooter {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
-
-.Stories-listHeader {
-  display: block;
-  line-height: 2rem;
-  text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
 }
