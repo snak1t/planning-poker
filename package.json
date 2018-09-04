@@ -38,19 +38,17 @@
         "cross-env": "^5.2.0"
     },
     "scripts": {
-        "start": "run-s build serve:prod",
+        "start": "run-p build start:server",
         "dev": "run-p start:devserver start:client",
         "start:client": "react-scripts start",
-        "start:server": "cross-env PORT=3000 node ./src/server/index.js",
-        "start:devserver": "nodemon ./src/server/index.js",
+        "start:server": "cross-env NODE_ENV=production node ./src/server/index.js",
+        "start:devserver": "cross-env PORT=3000 nodemon ./src/server/index.js",
         "build": "react-scripts build",
         "clean": "rimraf build",
         "test": "react-scripts test --env=jsdom",
         "eject": "react-scripts eject",
         "storybook": "start-storybook -p 6006",
-        "build-storybook": "build-storybook",
-        "serve:client": "serve -s build",
-        "serve:prod": "run-p serve:client start:server"
+        "build-storybook": "build-storybook"
     },
     "devDependencies": {
         "nodemon": "1.18.4",

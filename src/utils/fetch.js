@@ -4,7 +4,7 @@ import axios from 'axios';
 const performFetchWithDispatch = curry((method, url, action, data, dispatch) => {
     axios({
         method,
-        url: `http://localhost:3000${url}`,
+        url: `http://localhost:${process.env.PORT || 3000}${url}`,
         data,
         credentials: 'include',
         headers: {
