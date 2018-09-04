@@ -35,8 +35,8 @@
         "styled-components": "3.4.5"
     },
     "scripts": {
-        "deploy": "run-s build serve:prod",
-        "start": "run-p start:devserver start:client",
+        "start": "run-s build serve:prod",
+        "dev": "run-p start:devserver start:client",
         "start:client": "react-scripts start",
         "start:server": "cross-env PORT=3000 node ./src/server/index.js",
         "start:devserver": "nodemon ./src/server/index.js",
