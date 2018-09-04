@@ -1,45 +1,41 @@
-import React from 'react'
-import { Route } from 'react-router-dom'
+import React from 'react';
+import { Route } from 'react-router-dom';
+import { Tabs } from 'antd';
 
-import { NavigationLink } from '../../Shared/Components/Controls'
-import LoginComponent from './Components/Login'
-import RegistrationComponent from './Components/Registration'
-import './styles.css'
-import {
-  AuthBlock,
-  AuthCenterBlock,
-  Switcher,
-  SwitcherSliderContainer,
-  SwitcherCaret
-} from './Styled.components'
+import LoginComponent from './Components/Login';
+import RegistrationComponent from './Components/Registration';
+import { CenterContent, AuthFormWrapper } from './atoms';
 
-const calculateSliderClassame = ({ pathname }) => pathname.endsWith('login')
+export class AuthContainer extends React.Component {
+    state = {
+        activeKey: 'sign-in',
+    };
 
-export const AuthContainer = ({ match: { url }, location }) =>
-  <AuthCenterBlock>
-    <AuthBlock>
-      <Switcher>
-        <NavigationLink
-          to={`${url}/login`}
-          className="switcherElement"
-          activeClassName="switcherElementSelected"
-        >
-          Login
-        </NavigationLink>
-        <NavigationLink
-          to="/auth/registration"
-          className="switcherElement"
-          activeClassName="switcherElementSelected"
-        >
-          Registration
-        </NavigationLink>
-        <SwitcherSliderContainer>
-          <SwitcherCaret left={calculateSliderClassame(location)} />
-        </SwitcherSliderContainer>
-      </Switcher>
-      <div>
-        <Route path={`${url}/login`} component={LoginComponent} />
-        <Route path={`${url}/registration`} component={RegistrationComponent} />
-      </div>
-    </AuthBlock>
-  </AuthCenterBlock>
+    onChange = activeKey => this.setState({ activeKey });
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.activeKey !== this.state.activeKey) {
+            this.props.history.push(`/auth/${this.state.activeKey}`);
+        }
+    }
+
+    render() {
+        const {
+            match: { url },
+        } = this.props;
+        return (
+            <CenterContent>
+                <AuthFormWrapper>
+                    <Tabs activeKey={this.state.activeKey} onChange={this.onChange} animated={false}>
+                        <Tabs.TabPane tab="Sign in" key="sign-in">
+                            <Route path={`${url}/sign-in`} component={LoginComponent} />
+                        </Tabs.TabPane>
+                        <Tabs.TabPane tab="Sign up" key="sign-up">
+                            <Route path={`${url}/sign-up`} component={RegistrationComponent} />
+                        </Tabs.TabPane>
+                    </Tabs>
+                </AuthFormWrapper>
+            </CenterContent>
+        );
+    }
+}

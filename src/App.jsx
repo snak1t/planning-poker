@@ -26,7 +26,7 @@ const mapDispatchToProps = {
 
 const enhancer = connect(
     mapStateToProps,
-    mapDispatchToProps
+    mapDispatchToProps,
 );
 
 export class App extends React.Component {
@@ -41,25 +41,15 @@ export class App extends React.Component {
                 <PageLayout>
                     {/* <Header /> */}
                     {user.logStatus !== 'NOT_ASKED' ? (
-                        <main>
+                        <React.Fragment>
                             <Route
                                 exact={true}
                                 path="/"
-                                render={forLoggedOnly(
-                                    GamesContainer,
-                                    '/auth/login',
-                                    user
-                                )}
+                                render={forLoggedOnly(GamesContainer, '/auth/sign-in', user)}
                             />
-                            <Route
-                                path="/game/:user/:gameID"
-                                component={BoardContainer}
-                            />
-                            <Route
-                                path="/auth"
-                                render={forNotLogged(AuthContainer, '/', user)}
-                            />
-                        </main>
+                            <Route path="/game/:user/:gameID" component={BoardContainer} />
+                            <Route path="/auth" render={forNotLogged(AuthContainer, '/', user)} />
+                        </React.Fragment>
                     ) : null}
                     <ErrorContainer />
                 </PageLayout>
