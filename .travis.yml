@@ -9,6 +9,4 @@ deploy:
     api_key: $DEPLOY_KEY
     on: master
     app: snaks-planning-poker
-    run:
-        - 'npm run start'
     skip_cleanup: true
