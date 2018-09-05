@@ -2,3 +2,13 @@ language: node_js
 node_js:
     - '10'
 cache: yarn
+before_deploy:
+    - 'npm run build'
+deploy:
+    provider: heroku
+    api_key: $DEPLOY_KEY
+    on: master
+    app: snaks-planning-poker
+    run:
+        - 'npm run start'
+    skip_cleanup: true
