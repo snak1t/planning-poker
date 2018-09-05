@@ -41,7 +41,7 @@
         "start": "cross-env NODE_ENV=production node ./src/server/index.js",
         "dev": "run-p dev:devserver dev:client",
         "dev:client": "react-scripts start",
-        "dev:devserver": "cross-env PORT=3000 nodemon ./src/server/index.js",
+        "dev:devserver": "cross-env PORT=3100 nodemon ./src/server/index.js",
         "build": "react-scripts build",
         "clean": "rimraf build",
         "test": "react-scripts test --env=jsdom",

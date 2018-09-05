@@ -1,30 +1,24 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import pick from 'ramda/src/pick'
-import map from 'ramda/src/map'
-import addIndex from 'ramda/src/addIndex'
+import React from 'react';
+import { connect } from 'react-redux';
+import pick from 'ramda/src/pick';
 
-import ChatContainer from '../Chat/Container'
-const indexedMap = addIndex(map)
+import ChatContainer from '../Chat/Container';
+import PlayersList from './PlayersList';
 
 export const PlayersContainer = ({ playSession: { scores } }) => {
-  const displayPlayers = indexedMap((p, id) =>
-    <li key={id}>
-      User = {p.user}, score = {JSON.stringify(p.score)}
-    </li>
-  )
-  return (
-    <div>
-      <ul>
-        {displayPlayers(scores)}
-      </ul>
-      <ChatContainer />
-    </div>
-  )
-}
+    return (
+        <div>
+            <PlayersList players={scores} />
+            <ChatContainer />
+        </div>
+    );
+};
 
-const mapStateToProps = pick(['playSession'])
+const mapStateToProps = pick(['playSession']);
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(PlayersContainer)
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(PlayersContainer);

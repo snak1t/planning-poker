@@ -1,39 +1,47 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import { Divider, Button, Input } from 'antd';
+import { InputGroup } from './atoms';
 
-const StyledDiv = styled.div`
-  width: 100%;
-  padding: 10px;
-  box-sizing: border-box;
-  border-top: 3px solid #00897b;
-`;
-
-export const ChatInputArea = ({ onSendMessage }) => {
-  let textInput = null;
-  const handleKeyDown = event => {
-    if (event.charCode === 13) {
-      return handleSubmit(textInput.value);
+export class ChatInputArea extends React.Component {
+    state = {
+        value: '',
+    };
+    handleChange = ({ target }) => this.setState({ value: target.value });
+    handleSubmit = () => {
+        if (this.state.value === '') return;
+        this.props.onSendMessage(this.state.value);
+        this.setState({ value: '' });
+    };
+    handleKeyDown = event => {
+        if (event.charCode === 13) {
+            return this.handleSubmit(this.state.value);
+        }
+    };
+    render() {
+        return (
+            <React.Fragment>
+                <Divider />
+                <InputGroup>
+                    <Input
+                        name="chat"
+                        onKeyPress={this.handleKeyDown}
+                        value={this.state.value}
+                        onChange={this.handleChange}
+                    />
+                    <Button
+                        type="primary"
+                        shape="circle"
+                        icon="enter"
+                        onClick={this.handleSubmit}
+                        style={{ flexShrink: 0, marginLeft: '0.6rem' }}
+                    />
+                </InputGroup>
+            </React.Fragment>
+        );
     }
-  };
-  const handleSubmit = message => {
-    if (message === '') return;
-    textInput.value = '';
-    return onSendMessage(message);
-  };
-  return (
-    <StyledDiv>
-      <input
-        type="text"
-        name="chat"
-        ref={input => (textInput = input)}
-        onKeyPress={handleKeyDown}
-      />
-      <button onClick={() => handleSubmit(textInput.value)}>Send</button>
-    </StyledDiv>
-  );
-};
+}
 
 ChatInputArea.propTypes = {
-  onSendMessage: PropTypes.func.isRequired
+    onSendMessage: PropTypes.func.isRequired,
 };
