@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import Header from './Shared/Components/Header/Header';
+// import Header from './Shared/Components/Header/Header';
 import { AuthContainer } from './Pages/Auth/';
 import GamesContainer from './Pages/Games/';
 import BoardContainer from './Pages/Board/';
