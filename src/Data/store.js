@@ -13,7 +13,7 @@ import playSession from './PlaySession/reducer';
 import error from './Error/reducer';
 
 import openSocket from 'socket.io-client';
-const socket = openSocket(`http://localhost:${process.env.PORT || 3000}`);
+const socket = openSocket('/');
 const middlewares = [thunk, createSocketIoMiddleware(socket, '[sockets] ')];
 
 const reducers = {
