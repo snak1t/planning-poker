@@ -37,7 +37,9 @@ export class PageLayout extends React.Component {
                     </Menu>
                 </Sider>
                 <Layout>
-                    <Content style={{ margin: '16px', height: '100%' }}>{this.props.children}</Content>
+                    <Content style={{ margin: '16px', height: '100%', position: 'relative' }}>
+                        {this.props.children}
+                    </Content>
                     <Footer style={{ textAlign: 'center' }}>Planning Poker</Footer>
                 </Layout>
             </Layout>

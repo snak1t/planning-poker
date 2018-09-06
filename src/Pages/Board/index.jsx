@@ -85,9 +85,7 @@ export const BoardContainer = ({ game, isAdmin }) => {
                     <PlayersContainer />
                 </PlayersWrapper>
             </FlexItem>
-            <FlexItem basis="20vh">
-                <DeckContainer />
-            </FlexItem>
+            <DeckContainer />
         </FlexContainer>
     );
 };
