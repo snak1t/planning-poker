@@ -34,8 +34,8 @@ export class StoriesContainer extends React.Component {
 
     render() {
         return (
-            <Wrapper title="Game stories">
-                <ScollableContent limit="25rem">
+            <ScollableContent limit="100%">
+                <Wrapper title="Game stories">
                     <StoryList stories={this.props.stories} admin={this.props.admin} />
                     <StoriesForm
                         handleSubmit={this.addStory}
@@ -43,8 +43,8 @@ export class StoriesContainer extends React.Component {
                         isAdmin={this.props.admin}
                         mode={this.state.addMode}
                     />
-                </ScollableContent>
-            </Wrapper>
+                </Wrapper>
+            </ScollableContent>
         );
     }
 }

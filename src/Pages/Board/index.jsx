@@ -13,6 +13,7 @@ import { leaveRoom } from '../../Data/PlaySession/reducer.js';
 import { addUnauthorizedUser, isAdmin, enterRoom } from '../../Data/Auth';
 import { fetchGame, findGameById } from '../../Data/Games/reducer';
 import { FlexContainer, FlexItem } from '../../utils/FlexContainer';
+import styled from 'styled-components';
 
 const mapStateToProps = (state, { match: { params } }) => ({
     game: findGameById(params.gameID, state.games),
@@ -59,6 +60,13 @@ const enhancer = composeHOC(
     }),
 );
 
+const PlayersWrapper = styled.div`
+    flex-basis: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+`;
+
 export const BoardContainer = ({ game, isAdmin }) => {
     if (!game) return <h1>No game</h1>;
     return (
@@ -68,14 +76,14 @@ export const BoardContainer = ({ game, isAdmin }) => {
                     <h2>{game.title}</h2>
                 </header>
             </FlexItem>
-            <FlexItem asContainer grow="1">
+            <FlexItem asContainer grow="1" style={{ maxHeight: '38rem' }}>
                 <StoriesContainer admin={isAdmin} />
                 <FlexItem grow="1">
                     <TableContainer admin={isAdmin} />
                 </FlexItem>
-                <FlexItem basis="350px" style={{ position: 'relative' }}>
+                <PlayersWrapper>
                     <PlayersContainer />
-                </FlexItem>
+                </PlayersWrapper>
             </FlexItem>
             <FlexItem basis="20vh">
                 <DeckContainer />

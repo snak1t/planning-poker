@@ -7,10 +7,10 @@ import PlayersList from './PlayersList';
 
 export const PlayersContainer = ({ playSession: { scores } }) => {
     return (
-        <div>
+        <React.Fragment>
             <PlayersList players={scores} />
             <ChatContainer />
-        </div>
+        </React.Fragment>
     );
 };
 
