@@ -10,7 +10,7 @@ import { StoryList } from './List';
 import './styles.css';
 import { storyType } from '../../../../Data/Stories/type';
 import { compose } from 'recompose';
-import { Wrapper, ScollableContent } from './atoms';
+import { Wrapper, ScollableContent, Panel } from './atoms';
 import { StoriesForm } from './Form';
 
 export class StoriesContainer extends React.Component {
@@ -34,17 +34,19 @@ export class StoriesContainer extends React.Component {
 
     render() {
         return (
-            <ScollableContent limit="100%">
-                <Wrapper title="Game stories">
-                    <StoryList stories={this.props.stories} admin={this.props.admin} />
-                    <StoriesForm
-                        handleSubmit={this.addStory}
-                        toggleMode={this.toggleAddMode}
-                        isAdmin={this.props.admin}
-                        mode={this.state.addMode}
-                    />
-                </Wrapper>
-            </ScollableContent>
+            <Panel>
+                <StoriesForm
+                    handleSubmit={this.addStory}
+                    toggleMode={this.toggleAddMode}
+                    isAdmin={this.props.admin}
+                    mode={this.state.addMode}
+                />
+                <ScollableContent limit="100%">
+                    <Wrapper title="Game stories">
+                        <StoryList stories={this.props.stories} admin={this.props.admin} />
+                    </Wrapper>
+                </ScollableContent>
+            </Panel>
         );
     }
 }

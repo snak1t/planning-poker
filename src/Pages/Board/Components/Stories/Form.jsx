@@ -1,50 +1,53 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import {
-  TextArea,
-  FormGroup,
-  Button
-} from '../../../../Shared/Components/Controls'
-import split from 'ramda/src/split'
-import map from 'ramda/src/map'
+import React from 'react';
+import PropTypes from 'prop-types';
+import split from 'ramda/src/split';
+import map from 'ramda/src/map';
+import { Button, Input } from 'antd';
+import { FormWrapper } from './atoms';
 
-export const StoriesForm = ({ handleSubmit, toggleMode, mode, isAdmin }) => {
-  let textInput = null
+export class StoriesForm extends React.Component {
+    state = {
+        value: '',
+    };
 
-  const handleKeyPress = event => {
-    if (event.charCode === 13) {
-      const allTasks = map(
-        item => ({ title: item }),
-        split('\n', textInput.value)
-      )
-      handleSubmit(allTasks)
-      return (textInput.value = '')
+    static propTypes = {
+        mode: PropTypes.bool.isRequired,
+        isAdmin: PropTypes.bool.isRequired,
+        toggleMode: PropTypes.func.isRequired,
+        handleSubmit: PropTypes.func.isRequired,
+    };
+
+    handleChange = ({ target }) => this.setState({ value: target.value });
+    handleToggleMode = () => this.props.toggleMode(this.props.mode);
+
+    handleKeyPress = ({ charCode }) => {
+        if (charCode !== 13) {
+            return;
+        }
+        const allTasks = map(item => ({ title: item }), split('\n', this.state.value));
+        this.props.handleSubmit(allTasks);
+        this.props.toggleMode(this.props.mode);
+        this.setState({ value: '' });
+    };
+
+    render() {
+        const { isAdmin, mode } = this.props;
+        if (!isAdmin) {
+            return null;
+        }
+        return (
+            <FormWrapper>
+                {mode ? (
+                    <Input.TextArea
+                        placeholder="Story title"
+                        value={this.state.value}
+                        onKeyPress={this.handleKeyPress}
+                        onChange={this.handleChange}
+                    />
+                ) : (
+                    <Button onClick={this.handleToggleMode}>Add new Story</Button>
+                )}
+            </FormWrapper>
+        );
     }
-  }
-
-  if (!isAdmin) return null
-
-  return (
-    <div>
-      {mode
-        ? <FormGroup>
-            <TextArea
-              type="text"
-              placeholder="Story title"
-              innerRef={input => (textInput = input)}
-              onKeyPress={e => handleKeyPress(e)}
-            />
-          </FormGroup>
-        : <FormGroup>
-            <Button onClick={() => toggleMode(mode)}> Add new Story</Button>
-          </FormGroup>}
-    </div>
-  )
-}
-
-StoriesForm.propTypes = {
-  mode: PropTypes.bool.isRequired,
-  isAdmin: PropTypes.bool.isRequired,
-  toggleMode: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired
 }
