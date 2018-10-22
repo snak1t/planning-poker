@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import map from 'ramda/src/map';
 import addIndex from 'ramda/src/addIndex';
 import '../styles.css';
-import { GameItem } from './Item';
 import { deleteGame } from '../../../Data/Games/reducer';
 import { Row, Col } from 'antd';
+import GameItem from '../GameItem.bs';
 
 const indexedMap = addIndex(map);
 
@@ -21,11 +21,7 @@ export const GamesList = ({ games, onNavigateToTask, deleteGame }) => {
             </Col>
         );
     });
-    return (
-        <Row gutter={16}>
-            {games.length === 0 ? 'No games yet' : displayGamesList(games)}
-        </Row>
-    );
+    return <Row gutter={16}>{games.length === 0 ? 'No games yet' : displayGamesList(games)}</Row>;
 };
 
 const mapStateToProps = state => ({
@@ -36,5 +32,5 @@ const mapDispatchToProps = { deleteGame };
 
 export default connect(
     mapStateToProps,
-    mapDispatchToProps
+    mapDispatchToProps,
 )(GamesList);

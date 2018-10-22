@@ -1,23 +1,15 @@
 import React from 'react';
 import '../styles.css';
-import { Card, Icon } from 'antd';
+import { Icon } from 'antd';
+import Card from 'antd/es/card';
 
-export const GameItem = ({
-    title,
-    description,
-    onNavigateToTask,
-    _id,
-    onDeleteGame,
-}) => {
+export const GameItem = ({ title, description, onNavigateToTask, _id, onDeleteGame }) => {
     return (
         <Card
             style={{ margin: '0.4rem' }}
             title={title}
             actions={[
-                <Icon
-                    type="play-circle"
-                    onClick={() => onNavigateToTask(_id)}
-                />,
+                <Icon type="play-circle" onClick={() => onNavigateToTask(_id)} />,
                 <Icon type="delete" onClick={() => onDeleteGame(_id)} />,
             ]}
         >
