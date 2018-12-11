@@ -9,7 +9,7 @@ import { useTextField } from '../../../../utils/hooks/useTextField';
 export function StoriesForm({ mode, toggleMode, isAdmin, handleSubmit }) {
     const [value, setValue] = useTextField('');
 
-    const handleToggleMode = () => toggleMode(mode);
+    const handleToggleMode = () => toggleMode(!mode);
 
     const handleKeyPress = ({ charCode }) => {
         if (charCode !== 13) {

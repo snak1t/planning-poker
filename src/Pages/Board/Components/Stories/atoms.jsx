@@ -5,7 +5,7 @@ const Wrapper = styled(Card)`
     width: 340px;
 `;
 
-const ScollableContent = styled.div`
+const ScrollableContent = styled.div`
     max-height: ${props => props.limit || '100%'};
     overflow: auto;
 `;
@@ -19,4 +19,4 @@ const FormWrapper = styled.div`
     margin: 1rem 0;
 `;
 
-export { Wrapper, ScollableContent, Panel, FormWrapper };
+export { Wrapper, ScrollableContent, Panel, FormWrapper };

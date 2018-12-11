@@ -20,59 +20,52 @@ import { updateStory, emitCurrentStory } from '../../../../Data/Stories/reducer'
 import { emitResetBids, emitReadyToPlay, showPlayedCards } from '../../../../Data/PlaySession/reducer';
 import { Divider } from 'antd';
 
-export class TableContainer extends React.Component {
-    acceptScore = () => {
-        const score = this.props.averageScore;
-        const story = merge(this.props.story, {
+export function TableContainer(props) {
+    const resetCurrentStory = () => props.setCurrentStory('');
+
+    const acceptScore = () => {
+        const score = props.averageScore;
+        const story = merge(props.story, {
             active: true,
             score,
         });
-        this.props.updateStory({
-            login: this.props.match.params.user,
-            gameID: this.props.match.params.gameID,
+        props.updateStory({
+            login: props.match.params.user,
+            gameID: props.match.params.gameID,
             story,
         });
-        this.props.setCurrentStory('');
+        resetCurrentStory();
     };
 
-    resetBids = () => this.props.resetBids();
-    revealCards = () => this.props.showPlayedCards();
-    startToPlay = () => this.props.startToPlay();
-    resetCurrentStory = () => this.props.setCurrentStory('');
+    if (!props.story) return null;
+    return (
+        <section style={{ margin: '0 10px' }}>
+            <CurrentStory {...props.story} onResetCurrent={resetCurrentStory}>
+                {props.admin ? (
+                    <TableButtons
+                        completed={props.completed}
+                        reveal={props.revealCards}
+                        onStartToPlay={props.startToPlay}
+                        onRevealCards={props.showPlayedCards}
+                        onResetCurrent={props.resetBids}
+                        onAcceptScore={acceptScore}
+                    />
+                ) : null}
+                {props.revealCards ? <Divider>Average Score is {props.averageScore}</Divider> : null}
+            </CurrentStory>
 
-    render() {
-        const { players, story } = this.props;
-        if (!story) return null;
-        return (
-            <section style={{ margin: '0 10px' }}>
-                <CurrentStory {...story} onResetCurrent={this.resetCurrentStory}>
-                    {this.props.admin ? (
-                        <TableButtons
-                            completed={this.props.completed}
-                            reveal={this.props.revealCards}
-                            onStartToPlay={this.startToPlay}
-                            onRevealCards={this.revealCards}
-                            onResetCurrent={this.resetBids}
-                            onAcceptScore={this.acceptScore}
-                        />
-                    ) : null}
-                    {this.props.revealCards ? <Divider>Average Score is {this.props.averageScore}</Divider> : null}
-                </CurrentStory>
-
-                {/*Players */}
-                <div style={{ display: 'flex', height: '200px' }}>
-                    {players.map(
-                        (p, id) =>
-                            p.score !== null ? (
-                                <Card key={id} value={p.score} name={p.user} back={!this.props.revealCards} />
-                            ) : (
-                                undefined
-                            ),
-                    )}
-                </div>
-            </section>
-        );
-    }
+            {/*Players */}
+            <div style={{ display: 'flex', height: '200px' }}>
+                {props.players.map((p, id) =>
+                    p.score !== null ? (
+                        <Card key={id} value={p.score} name={p.user} back={!props.revealCards} />
+                    ) : (
+                        undefined
+                    ),
+                )}
+            </div>
+        </section>
+    );
 }
 
 TableContainer.propTypes = {

@@ -18,7 +18,7 @@ const StyledFooter = styled(Footer)`
 `;
 
 export function PageLayout({ children }) {
-    const [collapsed, setCollapsedState] = useState(false);
+    const [collapsed, setCollapsedState] = useState(true);
 
     return (
         <StyledLayout>

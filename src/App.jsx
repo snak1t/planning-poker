@@ -40,7 +40,7 @@ export function App({ fetchUser, user }) {
                 {user.logStatus !== 'NOT_ASKED' ? (
                     <Suspense fallback={<div>loading ...</div>}>
                         <Route exact={true} path="/" render={forLoggedOnly(GamesContainer, '/auth/sign-in', user)} />
-                        <Route path="/game/:user/:gameID" component={BoardContainer} />
+                        <Route path="/game/:user/:gameID" render={props => <BoardContainer {...props} />} />
                         <Route path="/auth" render={forNotLogged(AuthContainer, '/', user)} />
                     </Suspense>
                 ) : null}
