@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 // import Header from './Shared/Components/Header/Header';
 import { AuthContainer } from './Pages/Auth/';
-import GamesContainer from './Pages/Games/';
 import BoardContainer from './Pages/Board/';
 import ErrorContainer from './Shared/Components/Error/Container';
 
@@ -15,6 +14,9 @@ import './app.css';
 import { userType } from './Data/Auth/type.js';
 import { forNotLogged, forLoggedOnly } from './utils/router.guards';
 import { PageLayout } from './components/Layout';
+
+// Async Page Components
+const GamesContainer = React.lazy(() => import('./Pages/Games/'));
 
 const mapStateToProps = state => ({
     user: state.user,
@@ -29,36 +31,23 @@ const enhancer = connect(
     mapDispatchToProps,
 );
 
-export class App extends React.Component {
-    componentDidMount() {
-        this.props.fetchUser();
-    }
-
-    render() {
-        const { user } = this.props;
-        return (
-            <Router>
-                <PageLayout>
-                    {/* <Header /> */}
-                    {user.logStatus !== 'NOT_ASKED' ? (
-                        <React.Fragment>
-                            <Route
-                                exact={true}
-                                path="/"
-                                render={forLoggedOnly(GamesContainer, '/auth/sign-in', user)}
-                            />
-                            <Route path="/game/:user/:gameID" component={BoardContainer} />
-                            <Route path="/auth" render={forNotLogged(AuthContainer, '/', user)} />
-                        </React.Fragment>
-                    ) : null}
-                    <ErrorContainer />
-                </PageLayout>
-                {/* <div className="app">
-                    
-                </div> */}
-            </Router>
-        );
-    }
+export function App({ fetchUser, user }) {
+    useEffect(fetchUser, []);
+    return (
+        <Router>
+            <PageLayout>
+                {/* <Header /> */}
+                {user.logStatus !== 'NOT_ASKED' ? (
+                    <Suspense fallback={<div>loading ...</div>}>
+                        <Route exact={true} path="/" render={forLoggedOnly(GamesContainer, '/auth/sign-in', user)} />
+                        <Route path="/game/:user/:gameID" component={BoardContainer} />
+                        <Route path="/auth" render={forNotLogged(AuthContainer, '/', user)} />
+                    </Suspense>
+                ) : null}
+                <ErrorContainer />
+            </PageLayout>
+        </Router>
+    );
 }
 
 App.propTypes = {

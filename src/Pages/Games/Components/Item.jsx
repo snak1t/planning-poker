@@ -2,36 +2,14 @@ import React from 'react';
 import '../styles.css';
 import { Card, Icon } from 'antd';
 
-export const GameItem = ({
-    title,
-    description,
-    onNavigateToTask,
-    _id,
-    onDeleteGame,
-}) => {
+export const GameItem = ({ game, onPlayGame, onDeleteGame }) => {
     return (
         <Card
             style={{ margin: '0.4rem' }}
-            title={title}
-            actions={[
-                <Icon
-                    type="play-circle"
-                    onClick={() => onNavigateToTask(_id)}
-                />,
-                <Icon type="delete" onClick={() => onDeleteGame(_id)} />,
-            ]}
+            title={game.title}
+            actions={[<Icon type="play-circle" onClick={onPlayGame} />, <Icon type="delete" onClick={onDeleteGame} />]}
         >
-            {description}
+            {game.description}
         </Card>
-        // <article className="Games-item">
-        //   <footer className="Games-gameFooter">
-        //     <Button outline onClick={() => onNavigateToTask(_id)}>
-        //       Play
-        //     </Button>
-        //     <Button outline onClick={() => onDeleteGame(_id)}>
-        //       Delete
-        //     </Button>
-        //   </footer>
-        // </article>
     );
 };
