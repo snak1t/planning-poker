@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { branch, compose as composeHOC, renderComponent, lifecycle } from 'recompose';
+import { branch, compose as composeHOC, renderComponent } from 'recompose';
 
 import DeckContainer from './Components/Deck/Container';
 import TableContainer from './Components/Table/Container';
@@ -19,6 +19,7 @@ const mapStateToProps = (state, { match: { params } }) => ({
     game: findGameById(params.gameID, state.games),
     isAdmin: isAdmin(state, params.user),
     user: state.user,
+    isPlaying: state.playSession.isPlaying,
 });
 
 const mapDispatchToProps = {
@@ -34,30 +35,6 @@ const enhancer = composeHOC(
         mapDispatchToProps,
     ),
     branch(({ user: { logStatus } }) => logStatus !== 'LOGGED_IN', renderComponent(TemporaryLoginForm)),
-    lifecycle({
-        componentDidMount() {
-            const { user, gameID } = this.props.match.params;
-            this.props.fetchGame({
-                login: user,
-                gameID: gameID,
-            });
-            this.props.enterRoom({
-                gameID: gameID,
-                user: this.props.user,
-            });
-        },
-        componentWillReceiveProps(nextProps) {
-            if (this.props.match.params.gameID !== nextProps.match.params.gameID) {
-                this.props.fetchGame({
-                    login: this.props.match.params.user,
-                    gameID: nextProps.match.params.gameID,
-                });
-            }
-        },
-        componentWillUnmount() {
-            this.props.leaveRoom();
-        },
-    }),
 );
 
 const PlayersWrapper = styled.div`
@@ -67,8 +44,25 @@ const PlayersWrapper = styled.div`
     justify-content: space-between;
 `;
 
-export const BoardContainer = ({ game, isAdmin }) => {
-    if (!game) return <h1>No game</h1>;
+export const BoardContainer = ({ game, isAdmin, isPlaying, match, enterRoom, leaveRoom, fetchGame, user }) => {
+    const { gameID } = match.params;
+    useEffect(() => {
+        enterRoom({ gameID, user });
+        return leaveRoom;
+    }, []);
+    useEffect(
+        () => {
+            fetchGame({
+                login: match.params.user,
+                gameID,
+            });
+        },
+        [gameID],
+    );
+
+    if (!game) {
+        return <h1>No game</h1>;
+    }
     return (
         <FlexContainer vertical justify="center">
             <FlexItem basis="64px">
@@ -85,7 +79,7 @@ export const BoardContainer = ({ game, isAdmin }) => {
                     <PlayersContainer />
                 </PlayersWrapper>
             </FlexItem>
-            <DeckContainer />
+            {isPlaying ? <DeckContainer /> : null}
         </FlexContainer>
     );
 };

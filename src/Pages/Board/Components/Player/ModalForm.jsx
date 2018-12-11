@@ -1,45 +1,23 @@
-import React from 'react'
-import {
-  FormGroup,
-  Label,
-  Input,
-  Button
-} from '../../../../Shared/Components/Controls'
-import { Modal } from '../../../../Shared/Components/Modal/Container'
+import React from 'react';
+import { Modal, Input } from 'antd';
+import { FormGroup } from '../../../../Shared/Components/Controls';
+import { useTextField } from '../../../../utils/hooks/useTextField';
 
-export const TemporaryLoginForm = ({
-  addUnauthorizedUser,
-  history: { replace }
-}) => {
-  let loginInput
+export const TemporaryLoginForm = ({ addUnauthorizedUser, history: { replace } }) => {
+    const [login, setLogin] = useTextField('');
 
-  const onSubmit = event => {
-    event.preventDefault()
-    const login = loginInput.value
-    addUnauthorizedUser({ login })
-  }
+    const onSubmit = event => {
+        event.preventDefault();
+        addUnauthorizedUser({ login });
+    };
 
-  return (
-    <div>
-      <Modal title="Please, enter your name" onClose={() => replace('/')}>
-        <form onSubmit={onSubmit}>
-          <FormGroup>
-            <Label htmlFor="login">Your Login</Label>
-            <Input
-              id="login"
-              name="login"
-              type="text"
-              innerRef={element => (loginInput = element)}
-              placeholder="Your desired login"
-            />
-          </FormGroup>
-          <FormGroup>
-            <Button primary type="submit">
-              Enter room
-            </Button>
-          </FormGroup>
-        </form>
-      </Modal>
-    </div>
-  )
-}
+    return (
+        <div>
+            <Modal visible={true} title="Sit a game in progress" onCancel={() => replace('/')} onOk={onSubmit}>
+                <FormGroup>
+                    <Input id="login" name="login" placeholder="Your desired login" value={login} onChange={setLogin} />
+                </FormGroup>
+            </Modal>
+        </div>
+    );
+};

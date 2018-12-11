@@ -1,17 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Modal, Input, Icon, Radio } from 'antd';
 import { FormGroup } from '../../../Shared/Components/Controls';
 import { saveGame } from '../../../Data/Games/reducer.js';
-import { Modal, Input, Icon, Radio } from 'antd';
+import { useTextField } from '../../../utils/hooks/useTextField';
 
 const auditIcon = <Icon type="audit" style={{ color: 'rgba(0,0,0,.25)' }} />;
-
-const useTextField = initialValue => {
-    const [value, setValue] = useState(initialValue);
-    const handler = ({ target }) => setValue(target.value);
-    return [value, handler];
-};
 
 export function GameForm({ saveGame, onClose }) {
     const [description, setDescription] = useTextField('');

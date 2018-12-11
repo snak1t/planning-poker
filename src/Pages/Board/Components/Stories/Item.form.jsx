@@ -3,60 +3,38 @@ import PropTypes from 'prop-types';
 import './styles.css';
 
 import { Input, Button, Form } from 'antd';
+import { useTextField } from '../../../../utils/hooks/useTextField';
 
-export class ItemEdit extends React.Component {
-    state = {
-        title: '',
-        description: '',
-    };
+export function ItemEdit({ title, description, _id, updateStory, setEditMode }) {
+    const [newTitle, setTitle] = useTextField(title || '');
+    const [newDescription, setDescription] = useTextField(description || '');
 
-    componentDidMount() {
-        this.setState({
-            title: this.props.title || '',
-            description: this.props.description || '',
-        });
-    }
-
-    handleTitleChange = ({ target }) => this.setState({ title: target.value });
-
-    handleDescriptionChange = ({ target }) => this.setState({ description: target.value });
-
-    saveItem = e => {
+    const saveItem = e => {
         e.preventDefault();
-        this.props.updateStory({
-            _id: this.props._id,
-            ...this.state,
+        updateStory({
+            _id,
+            title: newTitle,
+            description: newDescription,
         });
-        this.props.setEditMode();
+        setEditMode();
     };
 
-    render() {
-        const { setEditMode } = this.props;
-        return (
-            <Form onSubmit={this.saveItem}>
-                <header className="Stories-storyHeader">
-                    <Input
-                        placeholder="title of the story"
-                        value={this.state.title}
-                        onChange={this.handleTitleChange}
-                    />
-                </header>
-                <div className="Stories-storyDescription">
-                    <Input.TextArea
-                        placeholder="Descripition"
-                        value={this.state.description}
-                        onChange={this.handleDescriptionChange}
-                    />
-                </div>
-                <footer className="Stories-storyFooter">
-                    <Button onClick={setEditMode}>Cancel</Button>
-                    <Button htmlType="submit" type="primary">
-                        Save
-                    </Button>
-                </footer>
-            </Form>
-        );
-    }
+    return (
+        <Form onSubmit={saveItem}>
+            <header className="Stories-storyHeader">
+                <Input placeholder="title of the story" value={newTitle} onChange={setTitle} />
+            </header>
+            <div className="Stories-storyDescription">
+                <Input.TextArea placeholder="Description" value={newDescription} onChange={setDescription} />
+            </div>
+            <footer className="Stories-storyFooter">
+                <Button onClick={setEditMode}>Cancel</Button>
+                <Button htmlType="submit" type="primary">
+                    Save
+                </Button>
+            </footer>
+        </Form>
+    );
 }
 
 ItemEdit.propTypes = {

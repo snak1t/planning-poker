@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 
 // import Header from './Shared/Components/Header/Header';
 import { AuthContainer } from './Pages/Auth/';
-import BoardContainer from './Pages/Board/';
 import ErrorContainer from './Shared/Components/Error/Container';
 
 import { fetchUser } from './Data/Auth/actions.js';
@@ -17,6 +16,7 @@ import { PageLayout } from './components/Layout';
 
 // Async Page Components
 const GamesContainer = React.lazy(() => import('./Pages/Games/'));
+const BoardContainer = React.lazy(() => import('./Pages/Board/'));
 
 const mapStateToProps = state => ({
     user: state.user,

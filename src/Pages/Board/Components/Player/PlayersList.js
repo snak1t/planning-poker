@@ -1,44 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { UserList, UserItem, UserAvatar, UserName } from './atoms';
 
-class PlayersList extends React.Component {
-    state = {
-        players: [],
-    };
+const generateRandomId = () => Math.round(Math.random() * 23);
 
-    static generateRandomId() {
-        return Math.round(Math.random() * 23);
-    }
+function PlayersList({ players }) {
+    const [playersWithAvatar, setPlayersWithAvatar] = useState([]);
 
-    static getDerivedStateFromProps(nextProps, prevState) {
-        const players = nextProps.players.map(player => {
-            const playerInState = prevState.players.find(({ user }) => player.user === user);
-            if (playerInState) {
-                return playerInState;
-            }
-            return {
-                ...player,
-                avatarId: PlayersList.generateRandomId(),
-            };
-        });
-        return {
-            players,
-        };
-    }
+    useEffect(
+        () => {
+            const playerToSet = players.map(player => {
+                const playerInState = playersWithAvatar.find(({ user }) => player.user === user);
+                return playerInState
+                    ? playerInState
+                    : {
+                          ...player,
+                          avatarId: generateRandomId(),
+                      };
+            });
+            setPlayersWithAvatar(playerToSet);
+        },
+        [players],
+    );
 
-    render() {
-        const { players } = this.state;
-        return (
-            <UserList>
-                {players.map(({ user, avatarId }, key) => (
-                    <UserItem key={key}>
-                        <UserAvatar avatar={avatarId} />
-                        <UserName>{user}</UserName>
-                    </UserItem>
-                ))}
-            </UserList>
-        );
-    }
+    return (
+        <UserList>
+            {playersWithAvatar.map(({ user, avatarId }, key) => (
+                <UserItem key={key}>
+                    <UserAvatar avatar={avatarId} />
+                    <UserName>{user}</UserName>
+                </UserItem>
+            ))}
+        </UserList>
+    );
 }
 
 export default PlayersList;
