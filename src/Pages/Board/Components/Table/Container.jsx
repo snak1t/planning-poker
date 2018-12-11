@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import merge from 'ramda/src/merge';
 import { withRouter } from 'react-router-dom';
@@ -101,12 +100,7 @@ const mapDispatchToProps = {
     showPlayedCards,
 };
 
-const enhancer = compose(
-    connect(
-        mapStateToProps,
-        mapDispatchToProps,
-    ),
-    withRouter,
-);
-
-export default enhancer(TableContainer);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(withRouter(TableContainer));

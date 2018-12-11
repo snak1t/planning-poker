@@ -28,7 +28,7 @@ export function ItemEdit({ title, description, _id, updateStory, setEditMode }) 
                 <Input.TextArea placeholder="Description" value={newDescription} onChange={setDescription} />
             </div>
             <footer className="Stories-storyFooter">
-                <Button onClick={setEditMode}>Cancel</Button>
+                <Button onClick={() => setEditMode(false)}>Cancel</Button>
                 <Button htmlType="submit" type="primary">
                     Save
                 </Button>

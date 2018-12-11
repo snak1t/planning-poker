@@ -1,55 +1,42 @@
-import { withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
-import {
-  compose as composeHOC,
-  withState,
-  withHandlers,
-  branch,
-  renderComponent
-} from 'recompose'
+import React, { useState } from 'react';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-import { Item } from './Item'
-import { ItemEdit } from './Item.form'
-import {
-  updateStory,
-  removeStory,
-  emitCurrentStory
-} from '../../../../Data/Stories/reducer'
+import { Item } from './Item';
+import { ItemEdit } from './Item.form';
+import { updateStory, removeStory, emitCurrentStory } from '../../../../Data/Stories/reducer';
 
 const mapStateToProps = state => ({
-  currentStory: state.playSession.currentStory
-})
+    currentStory: state.playSession.currentStory,
+});
 
 const mapDispatchToProps = {
-  updateStory,
-  deleteStory: removeStory,
-  setCurrentStory: emitCurrentStory
+    updateStory,
+    deleteStory: removeStory,
+    setCurrentStory: emitCurrentStory,
+};
+
+function StoryItem(props) {
+    const [editMode, setEditMode] = useState(false);
+    const updateStory = story =>
+        props.updateStory({
+            login: props.match.params.user,
+            gameID: props.match.params.gameID,
+            story,
+        });
+    const deleteStory = id =>
+        deleteStory({
+            login: props.match.params.user,
+            gameID: props.match.params.gameID,
+            storyID: id,
+        });
+    const allProps = { ...props, updateStory, deleteStory, setEditMode, editMode };
+    return editMode ? <ItemEdit {...allProps} /> : <Item {...allProps} />;
 }
 
-const withEditState = withState('editMode', 'toggleEdit', false)
-
-const handlers = withHandlers({
-  updateStory: ({ updateStory, match: { params } }) => story =>
-    updateStory({
-      login: params.user,
-      gameID: params.gameID,
-      story
-    }),
-  deleteStory: ({ deleteStory, match: { params } }) => id =>
-    deleteStory({
-      login: params.user,
-      gameID: params.gameID,
-      storyID: id
-    }),
-  setEditMode: ({ editMode, toggleEdit }) => () => toggleEdit(!editMode)
-})
-
-const enhancer = composeHOC(
-  withRouter,
-  connect(mapStateToProps, mapDispatchToProps),
-  withEditState,
-  handlers,
-  branch(({ editMode }) => editMode, renderComponent(ItemEdit))
-)
-
-export default enhancer(Item)
+export default withRouter(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    )(StoryItem),
+);

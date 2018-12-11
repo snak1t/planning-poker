@@ -45,19 +45,18 @@ const PlayersWrapper = styled.div`
 `;
 
 export const BoardContainer = ({ game, isAdmin, isPlaying, match, enterRoom, leaveRoom, fetchGame, user }) => {
-    const { gameID } = match.params;
     useEffect(() => {
-        enterRoom({ gameID, user });
+        enterRoom({ gameID: match.params.gameID, user });
         return leaveRoom;
     }, []);
     useEffect(
         () => {
             fetchGame({
                 login: match.params.user,
-                gameID,
+                gameID: match.params.gameID,
             });
         },
-        [gameID],
+        [match.params.gameID],
     );
 
     if (!game) {

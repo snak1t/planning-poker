@@ -7,7 +7,6 @@ import { saveStory, getAllStories } from '../../../../Data/Stories/reducer';
 import { StoryList } from './List';
 import './styles.css';
 import { storyType } from '../../../../Data/Stories/type';
-import { compose } from 'recompose';
 import { Wrapper, ScrollableContent, Panel } from './atoms';
 import { StoriesForm } from './Form';
 
@@ -46,12 +45,7 @@ const mapDispatchToProps = {
     saveStory,
 };
 
-const enhancer = compose(
-    connect(
-        mapStateToProps,
-        mapDispatchToProps,
-    ),
-    withRouter,
-);
-
-export default enhancer(StoriesContainer);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(withRouter(StoriesContainer));
