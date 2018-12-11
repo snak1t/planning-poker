@@ -1,48 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Layout, Menu, Icon } from 'antd';
-import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import { SimpleLink } from '../Shared/Components/Controls';
 
 const { Content, Footer, Sider } = Layout;
 
-export class PageLayout extends React.Component {
-    state = {
-        collapsed: false,
-    };
+const StyledLayout = styled(Layout)`
+    min-height: 100vh !important;
+`;
+const StyledContent = styled(Content)`
+    margin: 16px;
+    height: 100%;
+    position: relative;
+`;
+const StyledFooter = styled(Footer)`
+    text-align: center;
+`;
 
-    static propTypes = {
-        renderMenu: PropTypes.func,
-    };
+export function PageLayout({ children }) {
+    const [collapsed, setCollapsedState] = useState(false);
 
-    static defaultProps = {
-        renderMenu: () => null,
-    };
-
-    onCollapse = collapsed => {
-        this.setState({ collapsed });
-    };
-
-    render() {
-        return (
-            <Layout style={{ minHeight: '100vh' }}>
-                <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
-                    <div className="logo" />
-                    <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-                        <Menu.Item key="1">
-                            <SimpleLink to="/">
-                                <Icon type="pie-chart" />
-                                <span>Main</span>
-                            </SimpleLink>
-                        </Menu.Item>
-                    </Menu>
-                </Sider>
-                <Layout>
-                    <Content style={{ margin: '16px', height: '100%', position: 'relative' }}>
-                        {this.props.children}
-                    </Content>
-                    <Footer style={{ textAlign: 'center' }}>Planning Poker</Footer>
-                </Layout>
+    return (
+        <StyledLayout>
+            <Sider collapsible collapsed={collapsed} onCollapse={setCollapsedState}>
+                <div className="logo" />
+                <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+                    <Menu.Item key="1">
+                        <SimpleLink to="/">
+                            <Icon type="pie-chart" />
+                            <span>Main</span>
+                        </SimpleLink>
+                    </Menu.Item>
+                </Menu>
+            </Sider>
+            <Layout>
+                <StyledContent>{children}</StyledContent>
+                <StyledFooter>Planning Poker</StyledFooter>
             </Layout>
-        );
-    }
+        </StyledLayout>
+    );
 }
