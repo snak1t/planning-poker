@@ -1,64 +1,70 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { compose as composeHOC } from 'recompose';
+import { Formik, Form as FForm } from 'formik';
+import * as Yup from 'yup';
 
 import { loginUser } from '../../../Data/Auth/actions.js';
-import { withValidation } from 'rehoc-validator';
-import { loginValidationConfig } from './validators.config';
-import { showErrorsForLoginComponent } from './helpers';
 import { Form, Input, Icon, Button } from 'antd';
+import { getFormItemAttributes } from './helpers.js';
 
 const mapDispatchToProps = {
     doLogin: loginUser,
 };
 
-const enhancer = composeHOC(
-    connect(
-        null,
-        mapDispatchToProps,
-    ),
-    withRouter,
-    withValidation(loginValidationConfig),
-);
+const loginSchema = Yup.object().shape({
+    login: Yup.string().min(3, 'User login is too short'),
+    password: Yup.string().min(3, 'Password must be longer than 4 symbols'),
+});
 
-export const LoginComponent = ({ doLogin, login, password, valid }) => {
-    const performLogin = e => {
-        e.preventDefault();
-        doLogin({
-            login: login.value,
-            password: password.value,
-        });
-    };
+export const LoginComponent = ({ doLogin }) => {
     return (
-        <Form onSubmit={performLogin}>
-            {showErrorsForLoginComponent(login, password)}
-            <Form.Item>
-                <Input
-                    id="login"
-                    prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                    placeholder="Username"
-                    value={login.value}
-                    onChange={login.handler}
-                />
-            </Form.Item>
-            <Form.Item>
-                <Input
-                    prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                    type="password"
-                    placeholder="Password"
-                    id="password"
-                    value={password.value}
-                    onChange={password.handler}
-                />
-            </Form.Item>
-            <Form.Item>
-                <Button type="primary" htmlType="submit" style={{ width: '100%' }} disabled={!valid}>
-                    Sign in
-                </Button>
-            </Form.Item>
-        </Form>
+        <Formik
+            initialValues={{ login: '', password: '' }}
+            onSubmit={values => {
+                doLogin({
+                    login: values.login,
+                    password: values.password,
+                });
+            }}
+            validationSchema={loginSchema}
+        >
+            {props => {
+                const { values, errors, initialValues, isValid, handleChange } = props;
+                return (
+                    <FForm>
+                        <Form.Item {...getFormItemAttributes(values, errors, initialValues, 'login')}>
+                            <Input
+                                name="login"
+                                onChange={handleChange}
+                                value={values.login}
+                                prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                                placeholder="Username"
+                            />
+                        </Form.Item>
+                        <Form.Item {...getFormItemAttributes(values, errors, initialValues, 'password')}>
+                            <Input
+                                name="password"
+                                type="password"
+                                onChange={handleChange}
+                                value={values.password}
+                                prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                                placeholder="Password"
+                            />
+                        </Form.Item>
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit" style={{ width: '100%' }} disabled={!isValid}>
+                                Sign in
+                            </Button>
+                        </Form.Item>
+                    </FForm>
+                );
+            }}
+        </Formik>
     );
 };
 
-export default enhancer(LoginComponent);
+export default connect(
+    null,
+    mapDispatchToProps,
+)(withRouter(LoginComponent));

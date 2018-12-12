@@ -13,6 +13,7 @@
         "dotenv": "6.2.0",
         "express": "4.16.4",
         "express-session": "1.15.6",
+        "formik": "^1.4.0",
         "http-proxy-middleware": "^0.19.1",
         "mongoose": "5.3.15",
         "npm-run-all": "^4.1.5",
@@ -31,12 +32,12 @@
         "redux-devtools-extension": "2.13.7",
         "redux-socket.io": "1.4.0",
         "redux-thunk": "2.3.0",
-        "rehoc-validator": "^0.2.0",
         "rxjs": "^6.3.3",
         "serve": "^10.1.1",
         "socket.io": "2.2.0",
         "socket.io-client": "2.2.0",
-        "styled-components": "4.1.2"
+        "styled-components": "4.1.2",
+        "yup": "^0.26.6"
     },
     "scripts": {
         "start": "cross-env NODE_ENV=production node ./src/server/index.js",
