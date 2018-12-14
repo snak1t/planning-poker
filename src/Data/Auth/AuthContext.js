@@ -4,7 +4,11 @@ import Axios from 'axios';
 import { addUserToStore } from './actions';
 import { message } from 'antd';
 
-// TODO: temporary
+/**
+ * TODO: Right now during the fetch of the user,
+ * we also get the games array that currently stored inside redux.
+ * During Games Store refactoring remove the connect from here
+ */
 const mapDTP = {
     addUserToStore,
 };

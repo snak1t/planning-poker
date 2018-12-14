@@ -15,7 +15,6 @@ const BoardContainer = React.lazy(() => import('./Pages/Board'));
 
 export default function App() {
     const user = useContext(AuthContext);
-    console.log(user);
     return (
         <Router>
             <PageLayout>
