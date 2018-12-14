@@ -1,37 +1,20 @@
-import React, { useEffect, Suspense } from 'react';
+import React, { useContext, Suspense } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 
 import { AuthContainer } from './Pages/Auth';
-import ErrorContainer from './Shared/Components/Error/Container';
-
-import { fetchUser } from './Data/Auth/actions.js';
-import './default.css';
-import './app.css';
-import { userType } from './Data/Auth/type.js';
 import { forNotLogged, forLoggedOnly } from './utils/router.guards';
 import { PageLayout } from './components/Layout';
+import { AuthContext } from './Data/Auth/AuthContext';
+
+import './app.css';
+import './default.css';
 
 // Async Page Components
 const GamesContainer = React.lazy(() => import('./Pages/Games'));
 const BoardContainer = React.lazy(() => import('./Pages/Board'));
 
-const mapStateToProps = state => ({
-    user: state.user,
-});
-
-const mapDispatchToProps = {
-    fetchUser,
-};
-
-const enhancer = connect(
-    mapStateToProps,
-    mapDispatchToProps,
-);
-
-export function App({ fetchUser, user }) {
-    useEffect(fetchUser, []);
+export default function App() {
+    const user = useContext(AuthContext);
     return (
         <Router>
             <PageLayout>
@@ -42,15 +25,7 @@ export function App({ fetchUser, user }) {
                         <Route path="/auth" render={forNotLogged(AuthContainer, '/', user)} />
                     </Suspense>
                 ) : null}
-                <ErrorContainer />
             </PageLayout>
         </Router>
     );
 }
-
-App.propTypes = {
-    user: userType,
-    fetchUser: PropTypes.func.isRequired,
-};
-
-export default enhancer(App);

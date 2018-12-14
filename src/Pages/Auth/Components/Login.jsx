@@ -1,34 +1,20 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import React, { useContext } from 'react';
 import { Formik, Form as FForm } from 'formik';
 import * as Yup from 'yup';
-
-import { loginUser } from '../../../Data/Auth/actions.js';
 import { Form, Input, Icon, Button } from 'antd';
-import { getFormItemAttributes } from './helpers.js';
 
-const mapDispatchToProps = {
-    doLogin: loginUser,
-};
+import { getFormItemAttributes } from './helpers';
+import { AuthContext } from '../../../Data/Auth/AuthContext';
 
 const loginSchema = Yup.object().shape({
     login: Yup.string().min(3, 'User login is too short'),
     password: Yup.string().min(3, 'Password must be longer than 4 symbols'),
 });
 
-export const LoginComponent = ({ doLogin }) => {
+export default function LoginComponent() {
+    const { signIn } = useContext(AuthContext);
     return (
-        <Formik
-            initialValues={{ login: '', password: '' }}
-            onSubmit={values => {
-                doLogin({
-                    login: values.login,
-                    password: values.password,
-                });
-            }}
-            validationSchema={loginSchema}
-        >
+        <Formik initialValues={{ login: '', password: '' }} onSubmit={signIn} validationSchema={loginSchema}>
             {props => {
                 const { values, errors, initialValues, isValid, handleChange } = props;
                 return (
@@ -62,9 +48,4 @@ export const LoginComponent = ({ doLogin }) => {
             }}
         </Formik>
     );
-};
-
-export default connect(
-    null,
-    mapDispatchToProps,
-)(withRouter(LoginComponent));
+}

@@ -1,14 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Modal, Input } from 'antd';
 import { FormGroup } from '../../../../Shared/Components/Controls';
 import { useTextField } from '../../../../utils/hooks/useTextField';
+import { AuthContext, LOG_STATUS } from '../../../../Data/Auth/AuthContext';
 
-export const TemporaryLoginForm = ({ addUnauthorizedUser, history: { replace } }) => {
+export const TemporaryLoginForm = ({ history: { replace } }) => {
     const [login, setLogin] = useTextField('');
+    const { setUser } = useContext(AuthContext);
 
     const onSubmit = event => {
         event.preventDefault();
-        addUnauthorizedUser({ login });
+        setUser({
+            login,
+            logStatus: LOG_STATUS.LOGGED_IN,
+        });
     };
 
     return (

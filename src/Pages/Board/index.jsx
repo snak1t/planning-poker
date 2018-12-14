@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { branch, compose as composeHOC, renderComponent } from 'recompose';
 
 import DeckContainer from './Components/Deck/Container';
 import TableContainer from './Components/Table/Container';
@@ -10,32 +9,22 @@ import StoriesContainer from './Components/Stories/Container';
 import { TemporaryLoginForm } from './Components/Player/ModalForm';
 
 import { leaveRoom } from '../../Data/PlaySession/reducer.js';
-import { addUnauthorizedUser, isAdmin, enterRoom } from '../../Data/Auth';
+import { enterRoom } from '../../Data/Auth';
 import { fetchGame, findGameById } from '../../Data/Games/reducer';
 import { FlexContainer, FlexItem } from '../../utils/FlexContainer';
 import styled from 'styled-components';
+import { AuthContext, checkIsAdmin, LOG_STATUS } from '../../Data/Auth/AuthContext';
 
 const mapStateToProps = (state, { match: { params } }) => ({
     game: findGameById(params.gameID, state.games),
-    isAdmin: isAdmin(state, params.user),
-    user: state.user,
     isPlaying: state.playSession.isPlaying,
 });
 
 const mapDispatchToProps = {
     fetchGame,
-    addUnauthorizedUser,
     leaveRoom,
     enterRoom,
 };
-
-const enhancer = composeHOC(
-    connect(
-        mapStateToProps,
-        mapDispatchToProps,
-    ),
-    branch(({ user: { logStatus } }) => logStatus !== 'LOGGED_IN', renderComponent(TemporaryLoginForm)),
-);
 
 const PlayersWrapper = styled.div`
     flex-basis: 350px;
@@ -44,7 +33,8 @@ const PlayersWrapper = styled.div`
     justify-content: space-between;
 `;
 
-export const BoardContainer = ({ game, isAdmin, isPlaying, match, enterRoom, leaveRoom, fetchGame, user }) => {
+export const BoardContainer = ({ game, isPlaying, match, enterRoom, leaveRoom, fetchGame }) => {
+    const user = useContext(AuthContext);
     useEffect(() => {
         enterRoom({ gameID: match.params.gameID, user });
         return leaveRoom;
@@ -58,7 +48,7 @@ export const BoardContainer = ({ game, isAdmin, isPlaying, match, enterRoom, lea
         },
         [match.params.gameID],
     );
-
+    const isAdmin = checkIsAdmin(user, match.params.user);
     if (!game) {
         return <h1>No game</h1>;
     }
@@ -91,4 +81,15 @@ BoardContainer.propTypes = {
     enterRoom: PropTypes.func,
 };
 
-export default enhancer(BoardContainer);
+function BranchBoard(props) {
+    const { logStatus } = useContext(AuthContext);
+    if ([LOG_STATUS.LOGGED_IN, LOG_STATUS.TEMP_USER].includes(logStatus)) {
+        return <BoardContainer {...props} />;
+    }
+    return <TemporaryLoginForm {...props} />;
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(BranchBoard);
