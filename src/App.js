@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-// import Header from './Shared/Components/Header/Header';
 import { AuthContainer } from './Pages/Auth';
 import ErrorContainer from './Shared/Components/Error/Container';
 
@@ -36,7 +35,6 @@ export function App({ fetchUser, user }) {
     return (
         <Router>
             <PageLayout>
-                {/* <Header /> */}
                 {user.logStatus !== 'NOT_ASKED' ? (
                     <Suspense fallback={<div>loading ...</div>}>
                         <Route exact={true} path="/" render={forLoggedOnly(GamesContainer, '/auth/sign-in', user)} />

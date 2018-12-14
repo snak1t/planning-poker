@@ -1,15 +1,16 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { message } from 'antd';
 
 import { setErrorMessage } from '../../../Data/Error/reducer';
 
 export const ErrorContainer = ({ error, setErrorMessage }) => {
-    React.useEffect(
-        async () => {
+    useEffect(
+        () => {
             if (error) {
-                await message.error(error, 3);
-                setErrorMessage(null);
+                message.error(error, 3).then(() => {
+                    setErrorMessage(null);
+                });
             }
         },
         [error],
