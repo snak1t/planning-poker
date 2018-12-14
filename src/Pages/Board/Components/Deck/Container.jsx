@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import socketConst from '../../../../socket.constants.js';
 import { CardList } from './List';
 import { CardListWrapper } from './atoms';
+import { AuthContext } from '../../../../Data/Auth/AuthContext.js';
 
 const DECK = [
     { value: 1 },
@@ -22,7 +23,8 @@ const DECK = [
     { value: 'coffee' },
 ];
 
-export function DeckContainer({ user, setScore }) {
+export function DeckContainer({ setScore }) {
+    const user = useContext(AuthContext);
     const [myScore, setMyScore] = useState(null);
     const handleCardPick = score => {
         setMyScore(score);
@@ -37,14 +39,7 @@ export function DeckContainer({ user, setScore }) {
 
 DeckContainer.propTypes = {
     setScore: PropTypes.func.isRequired,
-    user: PropTypes.shape({
-        login: PropTypes.string,
-    }),
 };
-
-const mapStateToProps = state => ({
-    user: state.user,
-});
 
 const mapDispatchToProps = dispatch => ({
     setScore: payload =>
@@ -55,6 +50,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(
-    mapStateToProps,
+    null,
     mapDispatchToProps,
 )(DeckContainer);
