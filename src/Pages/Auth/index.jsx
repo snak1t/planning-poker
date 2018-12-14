@@ -7,7 +7,7 @@ import RegistrationComponent from './Components/Registration';
 import { CenterContent, AuthFormWrapper } from './atoms';
 
 export function AuthContainer({ history, match }) {
-    const [activeKey, setActiveKey] = useState('sign-up');
+    const [activeKey, setActiveKey] = useState('sign-in');
 
     useEffect(
         () => {

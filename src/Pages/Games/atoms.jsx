@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const GamesHeader = styled.section`
+export const GamesHeader = styled.header`
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -11,4 +11,19 @@ const GamesHeader = styled.section`
     }
 `;
 
-export { GamesHeader };
+export const GamesGrid = styled.section`
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 1rem;
+    min-height: 0;
+    min-width: 0;
+    @media screen and (max-width: 400px) {
+        padding: 0.2rem;
+        grid-template-columns: 1fr;
+    }
+`;
+
+export const GameGridItem = styled.article`
+    min-width: 0;
+`;

@@ -1,25 +1,29 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import React from 'react';
+import { connect } from 'react-redux';
+import { message } from 'antd';
 
-import { setErrorMessage } from '../../../Data/Error/reducer'
-import { ErrorComponent } from './Component'
+import { setErrorMessage } from '../../../Data/Error/reducer';
 
 export const ErrorContainer = ({ error, setErrorMessage }) => {
-  const displayError = error => {
-    setTimeout(() => setErrorMessage(null), 3000)
-    return <ErrorComponent error={error} />
-  }
-  return (
-    <div>
-      {error && displayError(error)}
-    </div>
-  )
-}
+    React.useEffect(
+        async () => {
+            if (error) {
+                await message.error(error, 3);
+                setErrorMessage(null);
+            }
+        },
+        [error],
+    );
+    return null;
+};
 
 const mapStateToProp = state => ({
-  error: state.error
-})
+    error: state.error,
+});
 
-const mapDispatchToProps = { setErrorMessage }
+const mapDispatchToProps = { setErrorMessage };
 
-export default connect(mapStateToProp, mapDispatchToProps)(ErrorContainer)
+export default connect(
+    mapStateToProp,
+    mapDispatchToProps,
+)(ErrorContainer);

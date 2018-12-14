@@ -4,22 +4,22 @@ import map from 'ramda/src/map';
 import '../styles.css';
 import { GameItem } from './Item';
 import { deleteGame } from '../../../Data/Games/reducer';
-import { Row, Col } from 'antd';
+import { GamesGrid, GameGridItem } from '../atoms';
 
 export const GamesList = ({ games, onNavigateToTask, deleteGame }) => {
     const displayGamesList = map(game => {
         const { _id } = game;
         return (
-            <Col key={_id} span={8}>
+            <GameGridItem key={_id}>
                 <GameItem
                     game={game}
                     onPlayGame={() => onNavigateToTask(_id)}
                     onDeleteGame={() => deleteGame({ gameID: _id })}
                 />
-            </Col>
+            </GameGridItem>
         );
     });
-    return <Row gutter={16}>{games.length === 0 ? 'No games yet' : displayGamesList(games)}</Row>;
+    return <GamesGrid>{games.length === 0 ? 'No games yet' : displayGamesList(games)}</GamesGrid>;
 };
 
 const mapStateToProps = state => ({

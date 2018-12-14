@@ -18,8 +18,8 @@ export function GamesContainer({ history, userLogin }) {
         <div className="Games-container">
             {modalWindow ? <GameForm onClose={toggleModalWindow} /> : null}
             <GamesHeader>
-                <h1>Your games</h1>
-                <Icon type="folder-add" style={{ fontSize: '1.4rem', cursor: 'pointer' }} onClick={toggleModalWindow} />
+                <h2>Your games</h2>
+                <Icon type="folder-add" style={{ fontSize: '1.4rem', cursor: 'pointer' }} onClick={toggleModalWindow} title="Add new game" />
             </GamesHeader>
             <GamesList onNavigateToTask={navigateToGame} />
         </div>
