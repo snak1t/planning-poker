@@ -39,7 +39,7 @@ const deleteStoryFromState = (targetID, state) => {
     return { ...state, ids, all };
 };
 
-// Defaul State
+// Default State
 const defaultState = {
     all: {},
     ids: [],
@@ -68,20 +68,17 @@ export const emitAddStories = stories => ({
     payload: stories,
 });
 
-const addMissingFields = over(
-    storiesLens,
-    map(merge({ description: '', active: false, score: 0 }))
-);
+const addMissingFields = over(storiesLens, map(merge({ description: '', active: false, score: 0 })));
 
 export const saveStory = compose(
     postFetch(
         '/api/game/story',
         compose(
             emitAddStories,
-            prop('stories')
-        )
+            prop('stories'),
+        ),
     ),
-    addMissingFields
+    addMissingFields,
 );
 
 /**
@@ -104,8 +101,8 @@ export const updateStory = putFetch(
     '/api/game/story',
     compose(
         setUpdatatedStory,
-        prop('story')
-    )
+        prop('story'),
+    ),
 );
 
 /**
@@ -130,12 +127,12 @@ export const removeStory = deleteFetch(
         propEq('deleted', true),
         compose(
             emitDeletedStory,
-            prop('id')
+            prop('id'),
         ),
         () => {
             throw new Error('Item wasnt deleted');
-        }
-    )
+        },
+    ),
 );
 
 export const emitCurrentStory = payload => ({
@@ -145,10 +142,7 @@ export const emitCurrentStory = payload => ({
 
 //Selectors
 
-export const getCurrentStory = ({
-    playSession: { currentStory },
-    stories: { all },
-}) => (currentStory === '' ? null : all[currentStory]);
+export const getCurrentStory = ({ playSession: { currentStory }, stories: { all } }) =>
+    currentStory === '' ? null : all[currentStory];
 
-export const getAllStories = ({ stories: { all, ids } }) =>
-    ids.map(id => all[id]);
+export const getAllStories = ({ stories: { all, ids } }) => ids.map(id => all[id]);

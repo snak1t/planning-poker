@@ -5,8 +5,8 @@ import not from 'ramda/src/not';
 import { Icon, Button } from 'antd';
 
 import './styles.css';
-import GamesList from './Components/List';
-import GameForm from './Components/Form';
+import { GamesList } from './Components/List';
+import { GameForm } from './Components/Form';
 import { GamesHeader } from './atoms';
 import { QuickGame } from '../../components/Game/Quick.game';
 import { AuthContext } from '../../Data/Auth/AuthContext';
@@ -27,12 +27,11 @@ export default function GamesContainer({ history }) {
             {modalWindow ? <GameForm onClose={toggleModalWindow} /> : null}
             <GamesHeader>
                 <h2>Your games</h2>
-
                 <QuickGame />
                 <Button onClick={signOut}>Sign out</Button>
                 <AddGameIcon type="folder-add" onClick={toggleModalWindow} title="Add new game" />
             </GamesHeader>
-            <GamesList onNavigateToTask={navigateToGame} />
+            <GamesList onPlayGame={navigateToGame} />
         </div>
     );
 }

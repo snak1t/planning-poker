@@ -10,20 +10,23 @@ import { TemporaryLoginForm } from './Components/Player/ModalForm';
 
 import { leaveRoom } from '../../Data/PlaySession/reducer.js';
 import { enterRoom } from '../../Data/Auth';
-import { fetchGame, findGameById } from '../../Data/Games/reducer';
 import { FlexContainer, FlexItem } from '../../utils/FlexContainer';
 import styled from 'styled-components';
 import { AuthContext, checkIsAdmin, LOG_STATUS } from '../../Data/Auth/AuthContext';
+import Axios from 'axios';
+import { useAsyncEffect } from '../../utils/hooks/useAsyncEffect';
+import { message } from 'antd';
+import { GamesContext, useCurrentGame } from '../../Data/Games/GamesContext';
+import { updateGame } from '../../Data/Games/reducer';
 
-const mapStateToProps = (state, { match: { params } }) => ({
-    game: findGameById(params.gameID, state.games),
+const mapStateToProps = state => ({
     isPlaying: state.playSession.isPlaying,
 });
 
 const mapDispatchToProps = {
-    fetchGame,
     leaveRoom,
     enterRoom,
+    tempUpdateGame: updateGame,
 };
 
 const PlayersWrapper = styled.div`
@@ -33,20 +36,29 @@ const PlayersWrapper = styled.div`
     justify-content: space-between;
 `;
 
-export const BoardContainer = ({ game, isPlaying, match, enterRoom, leaveRoom, fetchGame }) => {
+export const BoardContainer = ({ isPlaying, match, enterRoom, leaveRoom, tempUpdateGame }) => {
     const user = useContext(AuthContext);
+    const { updateGame } = useContext(GamesContext);
+    const currentGameId = match.params.gameID;
+    const game = useCurrentGame(currentGameId);
     useEffect(() => {
         enterRoom({ gameID: match.params.gameID, user });
         return leaveRoom;
     }, []);
-    useEffect(
-        () => {
-            fetchGame({
-                login: match.params.user,
-                gameID: match.params.gameID,
-            });
+    useAsyncEffect(
+        async () => {
+            try {
+                const { data } = await Axios.post('/api/game/find', {
+                    login: match.params.user,
+                    gameID: match.params.gameID,
+                });
+                updateGame(data.game);
+                tempUpdateGame(data.game);
+            } catch (error) {
+                message.error(error.message);
+            }
         },
-        [match.params.gameID],
+        [currentGameId],
     );
     const isAdmin = checkIsAdmin(user, match.params.user);
     if (!game) {
@@ -74,9 +86,6 @@ export const BoardContainer = ({ game, isPlaying, match, enterRoom, leaveRoom, f
 };
 
 BoardContainer.propTypes = {
-    game: PropTypes.object,
-    user: PropTypes.object,
-    fetchGame: PropTypes.func,
     addUnauthorizedUser: PropTypes.func,
     enterRoom: PropTypes.func,
 };

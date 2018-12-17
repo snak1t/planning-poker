@@ -6,7 +6,6 @@ import thunk from 'redux-thunk';
 
 //reducers
 import { stories } from './Stories/reducer';
-import games from './Games/reducer';
 import playSession from './PlaySession/reducer';
 
 import openSocket from 'socket.io-client';
@@ -15,7 +14,6 @@ const middlewares = [thunk, createSocketIoMiddleware(socket, '[sockets] ')];
 
 const reducers = {
     stories,
-    games,
     playSession,
 };
 

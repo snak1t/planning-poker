@@ -5,9 +5,11 @@ import { withRouter } from 'react-router-dom';
 import { Button } from '../../../../Shared/Components/Controls';
 import { Report } from './Component';
 import { getAllStories } from '../../../../Data/Stories/reducer';
+import { useCurrentGame } from '../../../../Data/Games/GamesContext';
 
-export function ReportContainer({ game, stories }) {
+export function ReportContainer({ stories, match: { params } }) {
     const [reportVisibilityStatus, setReportVisibilityStatus] = useState(false);
+    const game = useCurrentGame(params.gameID);
 
     const prepareReport = () => setReportVisibilityStatus(true);
     const closeReport = () => setReportVisibilityStatus(false);
@@ -22,16 +24,8 @@ export function ReportContainer({ game, stories }) {
     );
 }
 
-const mapStateToProp = (store, props) => ({
-    game: store.games.find(g => g._id === props.match.params.gameID),
+const mapStateToProp = store => ({
     stories: getAllStories(store),
 });
 
-const mapDispatchToProps = {};
-
-export default withRouter(
-    connect(
-        mapStateToProp,
-        mapDispatchToProps,
-    )(ReportContainer),
-);
+export default withRouter(connect(mapStateToProp)(ReportContainer));

@@ -1,17 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
 import Axios from 'axios';
-import { addUserToStore } from './actions';
 import { message } from 'antd';
-
-/**
- * TODO: Right now during the fetch of the user,
- * we also get the games array that currently stored inside redux.
- * During Games Store refactoring remove the connect from here
- */
-const mapDTP = {
-    addUserToStore,
-};
+import { useAsyncEffect } from '../../utils/hooks/useAsyncEffect';
 
 export const LOG_STATUS = {
     NOT_ASKED: 'NOT_ASKED',
@@ -29,31 +19,25 @@ const AUTH_URLS = {
     signOut: '/api/logout',
 };
 
-export const AuthProvider = connect(
-    null,
-    mapDTP,
-)(function AuthProvider({ children, addUserToStore }) {
+export const AuthProvider = function AuthProvider({ children }) {
     const [user, setUser] = useState({ login: '', logStatus: LOG_STATUS.NOT_ASKED });
 
-    useEffect(() => {
-        (async () => {
-            try {
-                const { data: userData } = await Axios.get(AUTH_URLS.getUser);
-                addUserToStore(userData);
-                if (userData.login) {
-                    return setUser({
-                        logStatus: LOG_STATUS.LOGGED_IN,
-                        login: userData.login,
-                    });
-                }
-                setUser({
-                    login: '',
-                    logStatus: LOG_STATUS.LOGGED_OUT,
+    useAsyncEffect(async () => {
+        try {
+            const { data: userData } = await Axios.get(AUTH_URLS.getUser);
+            if (userData.login) {
+                return setUser({
+                    logStatus: LOG_STATUS.LOGGED_IN,
+                    login: userData.login,
                 });
-            } catch (error) {
-                console.error(error);
             }
-        })();
+            setUser({
+                login: '',
+                logStatus: LOG_STATUS.LOGGED_OUT,
+            });
+        } catch (error) {
+            console.error(error);
+        }
     }, []);
 
     const makeResponse = url => async userData => {
@@ -62,8 +46,6 @@ export const AuthProvider = connect(
             if (userResponse.error) {
                 throw new Error(userResponse.error);
             }
-            addUserToStore(userResponse);
-
             setUser({ login: userResponse.login, logStatus: LOG_STATUS.LOGGED_IN });
         } catch (error) {
             message.error(error.message);
@@ -90,7 +72,7 @@ export const AuthProvider = connect(
     return (
         <AuthContext.Provider value={{ ...user, setUser, signIn, signUp, signOut }}>{children}</AuthContext.Provider>
     );
-});
+};
 
 export const AuthConsumer = AuthContext.Consumer;
 

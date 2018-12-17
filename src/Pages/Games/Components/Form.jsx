@@ -1,19 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { Modal, Input, Icon, Radio } from 'antd';
 import { FormGroup } from '../../../Shared/Components/Controls';
-import { saveGame } from '../../../Data/Games/reducer.js';
 import { useTextField } from '../../../utils/hooks/useTextField';
+import { GamesContext } from '../../../Data/Games/GamesContext';
 
 const auditIcon = <Icon type="audit" style={{ color: 'rgba(0,0,0,.25)' }} />;
 
-export function GameForm({ saveGame, onClose }) {
+export function GameForm({ onClose }) {
     const [description, setDescription] = useTextField('');
     const [title, setTitle] = useTextField('');
-
+    const { addGame } = useContext(GamesContext);
     const onSubmit = () => {
-        saveGame({ description, title });
+        addGame({ description, title });
         onClose();
     };
     return (
@@ -49,14 +48,4 @@ export function GameForm({ saveGame, onClose }) {
 
 GameForm.propTypes = {
     onClose: PropTypes.func.isRequired,
-    saveGame: PropTypes.func,
 };
-
-const mapDispatchToProps = {
-    saveGame,
-};
-
-export default connect(
-    null,
-    mapDispatchToProps,
-)(GameForm);
