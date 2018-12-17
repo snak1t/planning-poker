@@ -3,6 +3,8 @@ import Axios from 'axios';
 import { message } from 'antd';
 import { useAsyncEffect } from '../../utils/hooks/useAsyncEffect';
 
+const merge = chunk => otherChunk => ({ ...otherChunk, ...chunk });
+
 export const LOG_STATUS = {
     NOT_ASKED: 'NOT_ASKED',
     LOGGED_IN: 'LOGGED_IN',
@@ -19,22 +21,27 @@ const AUTH_URLS = {
     signOut: '/api/logout',
 };
 
+const generateRandomId = () => Math.round(Math.random() * 23);
 export const AuthProvider = function AuthProvider({ children }) {
-    const [user, setUser] = useState({ login: '', logStatus: LOG_STATUS.NOT_ASKED });
+    const [user, setUser] = useState({ login: '', logStatus: LOG_STATUS.NOT_ASKED, avatar: generateRandomId() });
 
     useAsyncEffect(async () => {
         try {
             const { data: userData } = await Axios.get(AUTH_URLS.getUser);
             if (userData.login) {
-                return setUser({
-                    logStatus: LOG_STATUS.LOGGED_IN,
-                    login: userData.login,
-                });
+                return setUser(
+                    merge({
+                        logStatus: LOG_STATUS.LOGGED_IN,
+                        login: userData.login,
+                    }),
+                );
             }
-            setUser({
-                login: '',
-                logStatus: LOG_STATUS.LOGGED_OUT,
-            });
+            setUser(
+                merge({
+                    login: '',
+                    logStatus: LOG_STATUS.LOGGED_OUT,
+                }),
+            );
         } catch (error) {
             console.error(error);
         }
@@ -46,7 +53,7 @@ export const AuthProvider = function AuthProvider({ children }) {
             if (userResponse.error) {
                 throw new Error(userResponse.error);
             }
-            setUser({ login: userResponse.login, logStatus: LOG_STATUS.LOGGED_IN });
+            setUser(merge({ login: userResponse.login, logStatus: LOG_STATUS.LOGGED_IN }));
         } catch (error) {
             message.error(error.message);
         }
@@ -60,17 +67,23 @@ export const AuthProvider = function AuthProvider({ children }) {
             if (!data.logout) {
                 throw new Error('Unable to logout');
             }
-            setUser({
-                login: '',
-                logStatus: LOG_STATUS.LOGGED_OUT,
-            });
+            setUser(
+                merge({
+                    login: '',
+                    logStatus: LOG_STATUS.LOGGED_OUT,
+                }),
+            );
         } catch (error) {
             message.error(error.message);
         }
     };
 
+    const mergedSetUser = data => setUser(merge(data));
+
     return (
-        <AuthContext.Provider value={{ ...user, setUser, signIn, signUp, signOut }}>{children}</AuthContext.Provider>
+        <AuthContext.Provider value={{ ...user, setUser: mergedSetUser, signIn, signUp, signOut }}>
+            {children}
+        </AuthContext.Provider>
     );
 };
 
