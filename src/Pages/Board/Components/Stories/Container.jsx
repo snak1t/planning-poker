@@ -7,7 +7,7 @@ import { saveStory, getAllStories } from '../../../../Data/Stories/reducer';
 import { StoryList } from './List';
 import './styles.css';
 import { storyType } from '../../../../Data/Stories/type';
-import { Wrapper, ScrollableContent, Panel } from './atoms';
+import { Panel } from './atoms';
 import { StoriesForm } from './Form';
 
 export function StoriesContainer({ saveStory, admin, stories, match: { params } }) {
@@ -21,12 +21,8 @@ export function StoriesContainer({ saveStory, admin, stories, match: { params } 
 
     return (
         <Panel>
+            <StoryList stories={stories} admin={admin} />
             <StoriesForm handleSubmit={addStory} toggleMode={setMode} isAdmin={admin} mode={isAddingStoryMode} />
-            <ScrollableContent limit="100%">
-                <Wrapper title="Game stories">
-                    <StoryList stories={stories} admin={admin} />
-                </Wrapper>
-            </ScrollableContent>
         </Panel>
     );
 }

@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Input, Icon, Radio } from 'antd';
-import { FormGroup } from '../../../Shared/Components/Controls';
+import { Modal, Input, Icon, Radio, Form } from 'antd';
 import { useTextField } from '../../../utils/hooks/useTextField';
 import { GamesContext } from '../../../Data/Games/GamesContext';
 
@@ -17,7 +16,7 @@ export function GameForm({ onClose }) {
     };
     return (
         <Modal visible={true} title="Create new game" onCancel={onClose} onOk={onSubmit}>
-            <FormGroup>
+            <Form.Item>
                 <Input
                     prefix={auditIcon}
                     id="title"
@@ -26,8 +25,8 @@ export function GameForm({ onClose }) {
                     value={title}
                     onChange={setTitle}
                 />
-            </FormGroup>
-            <FormGroup>
+            </Form.Item>
+            <Form.Item>
                 <Input.TextArea
                     id="description"
                     name="description"
@@ -35,13 +34,13 @@ export function GameForm({ onClose }) {
                     value={description}
                     onChange={setDescription}
                 />
-            </FormGroup>
-            <FormGroup>
+            </Form.Item>
+            <Form.Item>
                 <Radio.Group defaultValue="fibonaci" buttonStyle="solid">
                     <Radio.Button value="fibonaci">Fibbonacci</Radio.Button>
                     <Radio.Button value="sizes">Sizes</Radio.Button>
                 </Radio.Group>
-            </FormGroup>
+            </Form.Item>
         </Modal>
     );
 }

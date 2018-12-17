@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Layout, Menu, Icon } from 'antd';
 import styled from 'styled-components';
-import { SimpleLink } from '../Shared/Components/Controls';
 
 const { Content, Footer, Sider } = Layout;
 
@@ -26,10 +26,10 @@ export function PageLayout({ children }) {
                 <div className="logo" />
                 <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
                     <Menu.Item key="1">
-                        <SimpleLink to="/">
+                        <Link to="/">
                             <Icon type="pie-chart" />
                             <span>Main</span>
-                        </SimpleLink>
+                        </Link>
                     </Menu.Item>
                 </Menu>
             </Sider>

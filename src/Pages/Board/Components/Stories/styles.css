@@ -1,5 +1,7 @@
 .Stories-storyHeader {
     line-height: 2rem;
+    display: flex;
+    justify-content: space-between;
 }
 
 .Stories-storyDescription {

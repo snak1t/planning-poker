@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CloseButton } from '../../../../Shared/Components/Controls';
 
 import './styles.css';
-import { Card, Divider } from 'antd';
+import { Card, Divider, Button, Icon } from 'antd';
 
 export const CurrentStory = ({ title, score, description, onResetCurrent, children }) => {
     return (
@@ -12,7 +11,9 @@ export const CurrentStory = ({ title, score, description, onResetCurrent, childr
                 <h4 className="Stories-storyTitle">
                     {title} {score !== 0 ? ` - ${score} sp` : ''}
                 </h4>
-                <CloseButton onClick={onResetCurrent} topRight />
+                <Button onClick={onResetCurrent}>
+                    <Icon type="close-circle" theme="twoTone" />
+                </Button>
             </header>
             <div className="Stories-storyDescription">{description}</div>
             <Divider />

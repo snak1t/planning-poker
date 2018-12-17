@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { Button } from '../../../../Shared/Components/Controls';
 import { Report } from './Component';
 import { getAllStories } from '../../../../Data/Stories/reducer';
 import { useCurrentGame } from '../../../../Data/Games/GamesContext';
+import { Icon } from 'antd';
 
 export function ReportContainer({ stories, match: { params } }) {
     const [reportVisibilityStatus, setReportVisibilityStatus] = useState(false);
@@ -15,12 +15,10 @@ export function ReportContainer({ stories, match: { params } }) {
     const closeReport = () => setReportVisibilityStatus(false);
 
     return (
-        <div style={{ textAlign: 'center' }}>
-            <Button outline onClick={prepareReport}>
-                Show Report
-            </Button>
+        <>
+            <Icon type="printer" onClick={prepareReport} />
             {reportVisibilityStatus ? <Report game={game} stories={stories} onClose={closeReport} /> : null}
-        </div>
+        </>
     );
 }
 

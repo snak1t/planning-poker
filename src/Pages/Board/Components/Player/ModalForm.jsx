@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
-import { Modal, Input } from 'antd';
-import { FormGroup } from '../../../../Shared/Components/Controls';
+import { Modal, Input, Form } from 'antd';
 import { useTextField } from '../../../../utils/hooks/useTextField';
 import { AuthContext, LOG_STATUS } from '../../../../Data/Auth/AuthContext';
 
@@ -19,9 +18,9 @@ export const TemporaryLoginForm = ({ history: { replace } }) => {
     return (
         <div>
             <Modal visible={true} title="Sit a game in progress" onCancel={() => replace('/')} onOk={onSubmit}>
-                <FormGroup>
+                <Form.Item>
                     <Input id="login" name="login" placeholder="Your desired login" value={login} onChange={setLogin} />
-                </FormGroup>
+                </Form.Item>
             </Modal>
         </div>
     );
