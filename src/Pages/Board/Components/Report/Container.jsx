@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import React, { useState, useContext } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import { Report } from './Component';
-import { getAllStories } from '../../../../Data/Stories/reducer';
 import { useCurrentGame } from '../../../../Data/Games/GamesContext';
 import { Icon } from 'antd';
+import { StoriesContext } from '../../../../Data/Stories/StoriesContext';
 
-export function ReportContainer({ stories, match: { params } }) {
+export function ReportContainer({ match: { params } }) {
     const [reportVisibilityStatus, setReportVisibilityStatus] = useState(false);
+    const { stories } = useContext(StoriesContext);
     const game = useCurrentGame(params.gameID);
 
     const prepareReport = () => setReportVisibilityStatus(true);
@@ -22,8 +22,4 @@ export function ReportContainer({ stories, match: { params } }) {
     );
 }
 
-const mapStateToProp = store => ({
-    stories: getAllStories(store),
-});
-
-export default withRouter(connect(mapStateToProp)(ReportContainer));
+export default withRouter(ReportContainer);

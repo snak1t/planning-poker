@@ -1,23 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { saveStory, getAllStories } from '../../../../Data/Stories/reducer';
 import { StoryList } from './List';
 import './styles.css';
 import { storyType } from '../../../../Data/Stories/type';
 import { Panel } from './atoms';
 import { StoriesForm } from './Form';
+import { StoriesContext } from '../../../../Data/Stories/StoriesContext';
 
-export function StoriesContainer({ saveStory, admin, stories, match: { params } }) {
+export function StoriesContainer({ admin, match: { params } }) {
     const [isAddingStoryMode, setMode] = useState(false);
-
-    const addStory = titles =>
-        saveStory({
-            all: titles,
-            gameID: params.gameID,
-        });
+    const { stories, addStories } = useContext(StoriesContext);
+    const addStory = addStories(params.gameID);
 
     return (
         <Panel>
@@ -30,18 +25,6 @@ export function StoriesContainer({ saveStory, admin, stories, match: { params } 
 StoriesContainer.propTypes = {
     stories: PropTypes.arrayOf(storyType),
     admin: PropTypes.bool.isRequired,
-    saveStory: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = store => ({
-    stories: getAllStories(store),
-});
-
-const mapDispatchToProps = {
-    saveStory,
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(withRouter(StoriesContainer));
+export default withRouter(StoriesContainer);

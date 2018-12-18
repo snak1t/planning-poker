@@ -1,6 +1,4 @@
 import React, { useEffect, useContext } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Axios from 'axios';
 import styled from 'styled-components';
 import { message } from 'antd';
@@ -14,12 +12,8 @@ import { FlexContainer, FlexItem } from '../../utils/FlexContainer';
 import { AuthContext, checkIsAdmin, LOG_STATUS } from '../../Data/Auth/AuthContext';
 import { useAsyncEffect } from '../../utils/hooks/useAsyncEffect';
 import { GamesContext, useCurrentGame } from '../../Data/Games/GamesContext';
-import { updateGame } from '../../Data/Games/reducer';
 import { PlayRoomProvider, PlayRoomContext, leaveRoom, enterRoom } from '../../Data/PlaySession/PlayRoomContext';
-
-const mapDispatchToProps = {
-    tempUpdateGame: updateGame,
-};
+import { StoriesProvider } from '../../Data/Stories/StoriesContext';
 
 const PlayersWrapper = styled.div`
     flex-basis: 350px;
@@ -46,7 +40,6 @@ export const BoardContainer = ({ match, tempUpdateGame }) => {
                     gameID: match.params.gameID,
                 });
                 updateGame(data.game);
-                tempUpdateGame(data.game);
             } catch (error) {
                 message.error(error.message);
             }
@@ -58,32 +51,29 @@ export const BoardContainer = ({ match, tempUpdateGame }) => {
         return <h1>No game</h1>;
     }
     return (
-        <FlexContainer vertical justify="center">
-            <FlexItem basis="64px">
-                <header>
-                    <h2>{game.title}</h2>
-                </header>
-            </FlexItem>
-            <FlexItem asContainer grow="1" style={{ maxHeight: '38rem' }}>
-                <StoriesContainer admin={isAdmin} />
-                <FlexItem grow="1">
-                    <TableContainer admin={isAdmin} />
+        <StoriesProvider gameId={currentGameId}>
+            <FlexContainer vertical justify="center">
+                <FlexItem basis="64px">
+                    <header>
+                        <h2>{game.title}</h2>
+                    </header>
                 </FlexItem>
-                <PlayersWrapper>
-                    <PlayersContainer />
-                </PlayersWrapper>
-            </FlexItem>
-            {isPlaying ? <DeckContainer /> : null}
-        </FlexContainer>
+                <FlexItem asContainer grow="1" style={{ maxHeight: '38rem' }}>
+                    <StoriesContainer admin={isAdmin} />
+                    <FlexItem grow="1">
+                        <TableContainer admin={isAdmin} />
+                    </FlexItem>
+                    <PlayersWrapper>
+                        <PlayersContainer />
+                    </PlayersWrapper>
+                </FlexItem>
+                {isPlaying ? <DeckContainer /> : null}
+            </FlexContainer>
+        </StoriesProvider>
     );
 };
 
-BoardContainer.propTypes = {
-    addUnauthorizedUser: PropTypes.func,
-    enterRoom: PropTypes.func,
-};
-
-function BranchBoard(props) {
+export default function BranchBoard(props) {
     const { logStatus } = useContext(AuthContext);
     if ([LOG_STATUS.LOGGED_IN, LOG_STATUS.TEMP_USER].includes(logStatus)) {
         return (
@@ -94,8 +84,3 @@ function BranchBoard(props) {
     }
     return <TemporaryLoginForm {...props} />;
 }
-
-export default connect(
-    null,
-    mapDispatchToProps,
-)(BranchBoard);

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
+import { Divider } from 'antd';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import merge from 'ramda/src/merge';
 import { withRouter } from 'react-router-dom';
 
@@ -10,9 +10,6 @@ import { TableButtons } from './ButtonBar';
 import { CurrentStory } from '../Stories/CurrentStory';
 
 // Actions
-import { getCurrentStory } from '../../../../Data/Stories/reducer';
-import { updateStory } from '../../../../Data/Stories/reducer';
-import { Divider } from 'antd';
 import {
     PlayRoomContext,
     setStoryToPlay,
@@ -21,10 +18,13 @@ import {
     revealCards,
 } from '../../../../Data/PlaySession/PlayRoomContext';
 import { calculateAverage } from '../../../../utils/average.score';
+import { StoriesContext } from '../../../../Data/Stories/StoriesContext';
 
-export function TableContainer(props) {
+export function TableContainer({ admin, match: { params } }) {
     const { dispatch, scores, isRevealing, isCompleted, currentStory } = useContext(PlayRoomContext);
-    const story = getCurrentStory(currentStory, props.stories);
+    const { stories, updateStory } = useContext(StoriesContext);
+    const updateStoryForUser = updateStory(params.user, params.gameID);
+    const story = currentStory === '' ? null : stories.find(story => story._id === currentStory);
     const average = isCompleted && scores.length > 0 ? calculateAverage(scores) : 0;
     const resetCurrentStory = () => dispatch(setStoryToPlay(''));
     const startToPlay = () => dispatch(startPlaying());
@@ -37,11 +37,7 @@ export function TableContainer(props) {
             active: true,
             score,
         });
-        props.updateStory({
-            login: props.match.params.user,
-            gameID: props.match.params.gameID,
-            story: updatedStory,
-        });
+        updateStoryForUser(updatedStory);
         resetCurrentStory();
     };
 
@@ -49,7 +45,7 @@ export function TableContainer(props) {
     return (
         <section style={{ margin: '0 10px' }}>
             <CurrentStory {...story} onResetCurrent={resetCurrentStory}>
-                {props.admin ? (
+                {admin ? (
                     <TableButtons
                         completed={isCompleted}
                         reveal={isRevealing}
@@ -74,18 +70,6 @@ export function TableContainer(props) {
 
 TableContainer.propTypes = {
     admin: PropTypes.bool.isRequired,
-    updateStory: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = store => ({
-    stories: store.stories.all,
-});
-
-const mapDispatchToProps = {
-    updateStory,
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(withRouter(TableContainer));
+export default withRouter(TableContainer);

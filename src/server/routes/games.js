@@ -63,9 +63,29 @@ module.exports = app => {
         }
     });
 
+    app.delete('/api/game/story', async (req, res) => {
+        try {
+            const { login, gameID, storyID } = req.query;
+            const user = await User.findOne({ login });
+            const idNotEquals = compose(
+                not,
+                ifIdEquals(storyID),
+            );
+            const removeStory = when(ifIdEquals(gameID), over(storiesLens, filter(idNotEquals)));
+            const updateUserGames = over(gameLens, map(removeStory));
+            updateUserGames(user);
+            await user.save();
+            res.json({
+                deleted: true,
+                id: storyID,
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    });
+
     app.delete('/api/game/:gameId', async (req, res) => {
         const { gameId } = req.params;
-        console.log(gameId);
         const userID = req.session.passport.user;
         try {
             const user = await User.findOne({ _id: userID });
@@ -131,26 +151,5 @@ module.exports = app => {
         });
         await user.save();
         res.json({ story: updatedStory.toObject() });
-    });
-
-    app.delete('/api/game/story', async (req, res) => {
-        try {
-            const { login, gameID, storyID } = req.body;
-            const user = await User.findOne({ login });
-            const idNotEquals = compose(
-                not,
-                ifIdEquals(storyID),
-            );
-            const removeStory = when(ifIdEquals(gameID), over(storiesLens, filter(idNotEquals)));
-            const updateUserGames = over(gameLens, map(removeStory));
-            updateUserGames(user);
-            await user.save();
-            res.json({
-                deleted: true,
-                id: storyID,
-            });
-        } catch (error) {
-            console.log(error);
-        }
     });
 };

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { socket } from '../../Data/store';
+import { socket } from '../../Data/socket';
 
 export const useSocket = (types, cb) => {
     useEffect(() => {
