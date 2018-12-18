@@ -73,7 +73,6 @@ export function StoriesProvider({ children, gameId }) {
             message.error(error.message);
         }
     };
-    console.log(stories);
     return (
         <StoriesContext.Provider value={{ stories, addStories, updateStory, removeStory }}>
             {children}
