@@ -1,24 +1,15 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import pick from 'ramda/src/pick';
+import React, { useContext } from 'react';
 
 import ChatContainer from '../Chat/Container';
 import PlayersList from './PlayersList';
+import { PlayRoomContext } from '../../../../Data/PlaySession/PlayRoomContext';
 
-export const PlayersContainer = ({ playSession: { scores } }) => {
+export function PlayersContainer() {
+    const { scores } = useContext(PlayRoomContext);
     return (
         <React.Fragment>
             <PlayersList players={scores} />
             <ChatContainer />
         </React.Fragment>
     );
-};
-
-const mapStateToProps = pick(['playSession']);
-
-const mapDispatchToProps = {};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(PlayersContainer);
+}

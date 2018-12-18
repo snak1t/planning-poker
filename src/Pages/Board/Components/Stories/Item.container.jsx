@@ -4,16 +4,11 @@ import { connect } from 'react-redux';
 
 import { Item } from './Item';
 import { ItemEdit } from './Item.form';
-import { updateStory, removeStory, emitCurrentStory } from '../../../../Data/Stories/reducer';
-
-const mapStateToProps = state => ({
-    currentStory: state.playSession.currentStory,
-});
+import { updateStory, removeStory } from '../../../../Data/Stories/reducer';
 
 const mapDispatchToProps = {
     updateStory,
     deleteStory: removeStory,
-    setCurrentStory: emitCurrentStory,
 };
 
 function StoryItem(props) {
@@ -36,7 +31,7 @@ function StoryItem(props) {
 
 export default withRouter(
     connect(
-        mapStateToProps,
+        null,
         mapDispatchToProps,
     )(StoryItem),
 );

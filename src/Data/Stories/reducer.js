@@ -135,14 +135,8 @@ export const removeStory = deleteFetch(
     ),
 );
 
-export const emitCurrentStory = payload => ({
-    type: socketConstants.EMIT_CURRENT_STORY,
-    payload,
-});
-
 //Selectors
 
-export const getCurrentStory = ({ playSession: { currentStory }, stories: { all } }) =>
-    currentStory === '' ? null : all[currentStory];
+export const getCurrentStory = (currentStoryId, stories) => (currentStoryId === '' ? null : stories[currentStoryId]);
 
 export const getAllStories = ({ stories: { all, ids } }) => ids.map(id => all[id]);

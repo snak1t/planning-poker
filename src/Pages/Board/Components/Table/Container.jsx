@@ -1,12 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import merge from 'ramda/src/merge';
 import { withRouter } from 'react-router-dom';
-
-import { isGameCompleted, calculateScore, getScores } from '../../../../Data/PlaySession/reducer';
-
-import { storyType } from '../../../../Data/Stories/type';
 
 // Elements
 import { Card } from '../Deck/Card';
@@ -15,52 +11,61 @@ import { CurrentStory } from '../Stories/CurrentStory';
 
 // Actions
 import { getCurrentStory } from '../../../../Data/Stories/reducer';
-import { updateStory, emitCurrentStory } from '../../../../Data/Stories/reducer';
-import { emitResetBids, emitReadyToPlay, showPlayedCards } from '../../../../Data/PlaySession/reducer';
+import { updateStory } from '../../../../Data/Stories/reducer';
 import { Divider } from 'antd';
+import {
+    PlayRoomContext,
+    setStoryToPlay,
+    startPlaying,
+    resetThePlay,
+    revealCards,
+} from '../../../../Data/PlaySession/PlayRoomContext';
+import { calculateAverage } from '../../../../utils/average.score';
 
 export function TableContainer(props) {
-    const resetCurrentStory = () => props.setCurrentStory('');
+    const { dispatch, scores, isRevealing, isCompleted, currentStory } = useContext(PlayRoomContext);
+    const story = getCurrentStory(currentStory, props.stories);
+    const average = isCompleted && scores.length > 0 ? calculateAverage(scores) : 0;
+    const resetCurrentStory = () => dispatch(setStoryToPlay(''));
+    const startToPlay = () => dispatch(startPlaying());
+    const resetGame = () => dispatch(resetThePlay());
+    const showPlayedCards = () => dispatch(revealCards());
 
     const acceptScore = () => {
-        const score = props.averageScore;
-        const story = merge(props.story, {
+        const score = average;
+        const updatedStory = merge(story, {
             active: true,
             score,
         });
         props.updateStory({
             login: props.match.params.user,
             gameID: props.match.params.gameID,
-            story,
+            story: updatedStory,
         });
         resetCurrentStory();
     };
 
-    if (!props.story) return null;
+    if (!story) return null;
     return (
         <section style={{ margin: '0 10px' }}>
-            <CurrentStory {...props.story} onResetCurrent={resetCurrentStory}>
+            <CurrentStory {...story} onResetCurrent={resetCurrentStory}>
                 {props.admin ? (
                     <TableButtons
-                        completed={props.completed}
-                        reveal={props.revealCards}
-                        onStartToPlay={props.startToPlay}
-                        onRevealCards={props.showPlayedCards}
-                        onResetCurrent={props.resetBids}
+                        completed={isCompleted}
+                        reveal={isRevealing}
+                        onStartToPlay={startToPlay}
+                        onRevealCards={showPlayedCards}
+                        onResetCurrent={resetGame}
                         onAcceptScore={acceptScore}
                     />
                 ) : null}
-                {props.revealCards ? <Divider>Average Score is {props.averageScore}</Divider> : null}
+                {isRevealing ? <Divider>Average Score is {average}</Divider> : null}
             </CurrentStory>
 
             {/*Players */}
             <div style={{ display: 'flex', height: '200px' }}>
-                {props.players.map((p, id) =>
-                    p.score !== null ? (
-                        <Card key={id} value={p.score} name={p.user} back={!props.revealCards} />
-                    ) : (
-                        undefined
-                    ),
+                {scores.map((p, id) =>
+                    p.score !== null ? <Card key={id} value={p.score} name={p.user} back={!isRevealing} /> : undefined,
                 )}
             </div>
         </section>
@@ -68,36 +73,16 @@ export function TableContainer(props) {
 }
 
 TableContainer.propTypes = {
-    players: PropTypes.arrayOf(
-        PropTypes.shape({
-            user: PropTypes.string.isRequired,
-            score: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-        }),
-    ),
-    story: storyType,
     admin: PropTypes.bool.isRequired,
-    revealCards: PropTypes.bool.isRequired,
     updateStory: PropTypes.func.isRequired,
-    setCurrentStory: PropTypes.func.isRequired,
-    resetBids: PropTypes.func.isRequired,
-    startToPlay: PropTypes.func.isRequired,
-    showPlayedCards: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = store => ({
-    players: getScores(store),
-    story: getCurrentStory(store),
-    revealCards: store.playSession.isRevealing,
-    completed: isGameCompleted(store),
-    averageScore: calculateScore(store),
+    stories: store.stories.all,
 });
 
 const mapDispatchToProps = {
     updateStory,
-    setCurrentStory: emitCurrentStory,
-    resetBids: emitResetBids,
-    startToPlay: emitReadyToPlay,
-    showPlayedCards,
 };
 
 export default connect(

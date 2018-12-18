@@ -1,18 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { List, Icon } from 'antd';
+import { PlayRoomContext, setStoryToPlay } from '../../../../Data/PlaySession/PlayRoomContext';
 
-export const Item = ({
-    _id,
-    title,
-    score,
-    description,
-    setEditMode,
-    deleteStory,
-    setCurrentStory,
-    currentStory,
-    admin,
-}) => {
+export const Item = ({ _id, title, score, description, setEditMode, deleteStory, admin }) => {
+    const { currentStory, dispatch } = useContext(PlayRoomContext);
+    const setCurrentStory = id => dispatch(setStoryToPlay(id));
     const actionsForOtherStories = [
         <Icon type="play-circle" onClick={() => setCurrentStory(_id)} />,
         <Icon type="delete" onClick={() => deleteStory(_id)} />,

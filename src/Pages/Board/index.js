@@ -1,31 +1,23 @@
 import React, { useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Axios from 'axios';
+import styled from 'styled-components';
+import { message } from 'antd';
 
-import DeckContainer from './Components/Deck/Container';
+import { DeckContainer } from './Components/Deck/Container';
 import TableContainer from './Components/Table/Container';
-import PlayersContainer from './Components/Player/Container';
+import { PlayersContainer } from './Components/Player/Container';
 import StoriesContainer from './Components/Stories/Container';
 import { TemporaryLoginForm } from './Components/Player/ModalForm';
-
-import { leaveRoom } from '../../Data/PlaySession/reducer.js';
-import { enterRoom } from '../../Data/Auth';
 import { FlexContainer, FlexItem } from '../../utils/FlexContainer';
-import styled from 'styled-components';
 import { AuthContext, checkIsAdmin, LOG_STATUS } from '../../Data/Auth/AuthContext';
-import Axios from 'axios';
 import { useAsyncEffect } from '../../utils/hooks/useAsyncEffect';
-import { message } from 'antd';
 import { GamesContext, useCurrentGame } from '../../Data/Games/GamesContext';
 import { updateGame } from '../../Data/Games/reducer';
-
-const mapStateToProps = state => ({
-    isPlaying: state.playSession.isPlaying,
-});
+import { PlayRoomProvider, PlayRoomContext, leaveRoom, enterRoom } from '../../Data/PlaySession/PlayRoomContext';
 
 const mapDispatchToProps = {
-    leaveRoom,
-    enterRoom,
     tempUpdateGame: updateGame,
 };
 
@@ -36,14 +28,15 @@ const PlayersWrapper = styled.div`
     justify-content: space-between;
 `;
 
-export const BoardContainer = ({ isPlaying, match, enterRoom, leaveRoom, tempUpdateGame }) => {
+export const BoardContainer = ({ match, tempUpdateGame }) => {
     const user = useContext(AuthContext);
+    const { isPlaying, dispatch } = useContext(PlayRoomContext);
     const { updateGame } = useContext(GamesContext);
     const currentGameId = match.params.gameID;
     const game = useCurrentGame(currentGameId);
     useEffect(() => {
-        enterRoom({ gameID: match.params.gameID, user });
-        return leaveRoom;
+        dispatch(enterRoom({ gameID: match.params.gameID, user }));
+        return () => dispatch(leaveRoom());
     }, []);
     useAsyncEffect(
         async () => {
@@ -93,12 +86,16 @@ BoardContainer.propTypes = {
 function BranchBoard(props) {
     const { logStatus } = useContext(AuthContext);
     if ([LOG_STATUS.LOGGED_IN, LOG_STATUS.TEMP_USER].includes(logStatus)) {
-        return <BoardContainer {...props} />;
+        return (
+            <PlayRoomProvider>
+                <BoardContainer {...props} />
+            </PlayRoomProvider>
+        );
     }
     return <TemporaryLoginForm {...props} />;
 }
 
 export default connect(
-    mapStateToProps,
+    null,
     mapDispatchToProps,
 )(BranchBoard);
