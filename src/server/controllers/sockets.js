@@ -76,7 +76,11 @@ module.exports = io => {
         const setScore = user => {
             const scores = rooms
                 .get(roomID)
-                .scores.map(player => (player.user === user.login ? { user: user.login, score: user.score } : player));
+                .scores.map(player =>
+                    player.user === user.login
+                        ? { user: user.login, score: user.score, avatar: player.avatar }
+                        : player,
+                );
             return rooms.update(roomID, { scores });
         };
 

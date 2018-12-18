@@ -7,6 +7,7 @@ import { DeckContainer } from './Components/Deck/Container';
 import TableContainer from './Components/Table/Container';
 import { PlayersContainer } from './Components/Player/Container';
 import StoriesContainer from './Components/Stories/Container';
+import { Chat } from './Components/Chat';
 import { TemporaryLoginForm } from './Components/Player/ModalForm';
 import { FlexContainer, FlexItem } from '../../utils/FlexContainer';
 import { AuthContext, checkIsAdmin, LOG_STATUS } from '../../Data/Auth/AuthContext';
@@ -69,6 +70,7 @@ export const BoardContainer = ({ match, tempUpdateGame }) => {
                 </FlexItem>
                 {isPlaying ? <DeckContainer /> : null}
             </FlexContainer>
+            <Chat />
         </StoriesProvider>
     );
 };

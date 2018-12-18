@@ -7,7 +7,7 @@ import { AuthContext } from '../../../../Data/Auth/AuthContext';
 import { useSocket } from '../../../../utils/hooks/useSocket';
 import { ChatButton } from './atoms';
 
-export function ChatContainer() {
+export function Chat() {
     const user = useContext(AuthContext);
     const [messages, addMessage] = useState([]);
     const [isOpened, setOpen] = useState(false);

@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Card as ACard } from 'antd';
 
 const CardListWrapper = styled.section`
     position: absolute;
@@ -12,12 +11,15 @@ const CardListWrapper = styled.section`
     padding: 1rem;
 `;
 
-const Container = styled(ACard)`
+const Container = styled.div`
+    border: 1px solid #e8e8e8
     max-width: 9rem;
     flex: 1 0 9rem;
     box-sizing: border-box;
     margin: 0 0.2rem !important;
+    padding: 1.5rem;
     box-shadow: ${({ cardPicked }) => (cardPicked ? '0px 4px 12px rgba(25, 88, 203, 0.27)' : '')};
+    transform: translateY(${({ cardPicked }) => (cardPicked ? '-2rem' : 0)});
     cursor: pointer;
     background-color: ${props => (props.back ? '#e0e0e0' : 'white')};
 `;
