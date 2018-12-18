@@ -20,7 +20,7 @@ export function ChatInputArea({ onSendMessage }) {
     };
 
     return (
-        <React.Fragment>
+        <>
             <Divider />
             <InputGroup>
                 <Input name="chat" onKeyPress={handleKeyDown} value={value} onChange={setValue} />
@@ -32,7 +32,7 @@ export function ChatInputArea({ onSendMessage }) {
                     style={{ flexShrink: 0, marginLeft: '0.6rem' }}
                 />
             </InputGroup>
-        </React.Fragment>
+        </>
     );
 }
 

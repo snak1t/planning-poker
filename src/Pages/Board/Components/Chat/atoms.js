@@ -1,8 +1,13 @@
 import styled from 'styled-components';
+import { Badge } from 'antd';
 
-const InputGroup = styled.div`
+export const InputGroup = styled.div`
     display: flex;
     justify-content: space-between;
 `;
 
-export { InputGroup };
+export const ChatButton = styled(Badge)`
+    position: fixed !important;
+    right: 2rem;
+    bottom: 2rem;
+`;

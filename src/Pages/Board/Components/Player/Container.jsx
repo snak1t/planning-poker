@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 
-import ChatContainer from '../Chat/Container';
+import { ChatContainer } from '../Chat';
 import PlayersList from './PlayersList';
 import { PlayRoomContext } from '../../../../Data/PlaySession/PlayRoomContext';
 

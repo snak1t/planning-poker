@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { List, AutoSizer } from 'react-virtualized';
 
-import { ChatMessage } from './Message';
+import { ChatMessage } from './ChatMessage';
 
-export const ChatThreads = ({ threads }) => {
+export const ChatThread = ({ threads }) => {
     const renderRow = ({ index, key, style }) => {
         return <ChatMessage {...threads[index]} key={key} style={style} />;
     };
@@ -16,7 +16,7 @@ export const ChatThreads = ({ threads }) => {
     };
 
     return (
-        <div style={{ height: '300px' }}>
+        <div style={{ flexGrow: 1 }}>
             <AutoSizer>
                 {({ width, height }) => (
                     <List
@@ -33,7 +33,7 @@ export const ChatThreads = ({ threads }) => {
     );
 };
 
-ChatThreads.propTypes = {
+ChatThread.propTypes = {
     threads: PropTypes.arrayOf(
         PropTypes.shape({
             user: PropTypes.shape({
