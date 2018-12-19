@@ -1,0 +1,14 @@
+{
+  "type": "mysql",
+  "host": "localhost",
+  "port": 3306,
+  "username": "planningpoker",
+  "password": "planningpoker",
+  "database": "planningpoker",
+  "entities": ["./**/*.entity{.ts,.js}"],
+  "migrationsTableName": "custom_migration_table",
+  "migrations": ["./migration/*.ts"],
+  "cli": {
+    "migrationsDir": "migration"
+  }
+}
