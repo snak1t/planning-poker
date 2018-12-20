@@ -12,6 +12,9 @@ const CenterContent = styled.div`
 const AuthFormWrapper = styled(Card)`
     max-width: 320px;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;
 
 export { CenterContent, AuthFormWrapper };

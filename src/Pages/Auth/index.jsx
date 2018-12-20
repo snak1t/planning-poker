@@ -1,31 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { Route } from 'react-router-dom';
-import { Tabs } from 'antd';
-
-import LoginComponent from './Components/Login';
-import RegistrationComponent from './Components/Registration';
+import React, { useContext } from 'react';
 import { CenterContent, AuthFormWrapper } from './atoms';
+import { Button } from 'antd';
+import { AuthContext } from '../../Data/Auth/AuthContext';
 
-export function AuthContainer({ history, match }) {
-    const [activeKey, setActiveKey] = useState('sign-in');
-
-    useEffect(
-        () => {
-            history.push(`/auth/${activeKey}`);
-        },
-        [activeKey],
-    );
+export function AuthContainer() {
+    const { login } = useContext(AuthContext);
     return (
         <CenterContent>
             <AuthFormWrapper>
-                <Tabs activeKey={activeKey} onChange={setActiveKey} animated={false}>
-                    <Tabs.TabPane tab="Sign in" key="sign-in">
-                        <Route path={`${match.url}/sign-in`} component={LoginComponent} />
-                    </Tabs.TabPane>
-                    <Tabs.TabPane tab="Sign up" key="sign-up">
-                        <Route path={`${match.url}/sign-up`} component={RegistrationComponent} />
-                    </Tabs.TabPane>
-                </Tabs>
+                <Button type="primary" onClick={login}>
+                    Sign in
+                </Button>
             </AuthFormWrapper>
         </CenterContent>
     );

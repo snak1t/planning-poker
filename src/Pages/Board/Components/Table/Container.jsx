@@ -23,8 +23,7 @@ import { StoriesContext } from '../../../../Data/Stories/StoriesContext';
 export function TableContainer({ admin, match: { params } }) {
     const { dispatch, scores, isRevealing, isCompleted, currentStory } = useContext(PlayRoomContext);
     const { stories, updateStory } = useContext(StoriesContext);
-    const updateStoryForUser = updateStory(params.user, params.gameID);
-    const story = currentStory === '' ? null : stories.find(story => story._id === currentStory);
+    const story = currentStory === '' ? null : stories.find(story => story.id === currentStory);
     const average = isCompleted && scores.length > 0 ? calculateAverage(scores) : 0;
     const resetCurrentStory = () => dispatch(setStoryToPlay(''));
     const startToPlay = () => dispatch(startPlaying());
@@ -32,12 +31,12 @@ export function TableContainer({ admin, match: { params } }) {
     const showPlayedCards = () => dispatch(revealCards());
 
     const acceptScore = () => {
-        const score = average;
-        const updatedStory = merge(story, {
-            active: true,
-            score,
-        });
-        updateStoryForUser(updatedStory);
+        updateStory(
+            merge(story, {
+                active: true,
+                score: average,
+            }),
+        );
         resetCurrentStory();
     };
 

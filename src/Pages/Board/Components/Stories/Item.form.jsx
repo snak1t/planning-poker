@@ -1,18 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './styles.css';
-
 import { Input, Button, Form } from 'antd';
+
+import './styles.css';
 import { useTextField } from '../../../../utils/hooks/useTextField';
 
-export function ItemEdit({ title, description, _id, updateStory, setEditMode }) {
+export function ItemEdit({ title, description, id, updateStory, setEditMode }) {
     const [newTitle, setTitle] = useTextField(title || '');
     const [newDescription, setDescription] = useTextField(description || '');
 
     const saveItem = e => {
         e.preventDefault();
         updateStory({
-            _id,
+            id,
             title: newTitle,
             description: newDescription,
         });
@@ -38,7 +38,7 @@ export function ItemEdit({ title, description, _id, updateStory, setEditMode }) 
 }
 
 ItemEdit.propTypes = {
-    _id: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     description: PropTypes.string,
     setEditMode: PropTypes.func.isRequired,

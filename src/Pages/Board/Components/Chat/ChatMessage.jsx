@@ -5,11 +5,7 @@ import { List, Avatar } from 'antd';
 export const ChatMessage = ({ user, message, style }) => {
     return (
         <List.Item style={style}>
-            <List.Item.Meta
-                avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                title={user.login}
-                description={message}
-            />
+            <List.Item.Meta avatar={<Avatar src={user.picture} />} title={user.name} description={message} />
         </List.Item>
     );
 };

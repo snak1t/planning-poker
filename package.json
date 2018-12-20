@@ -4,6 +4,7 @@
     "private": true,
     "dependencies": {
         "antd": "^3.11.2",
+        "auth0-js": "^9.8.2",
         "axios": "^0.18.0",
         "bcrypt-nodejs": "0.0.3",
         "body-parser": "1.18.3",
@@ -34,10 +35,10 @@
         "yup": "^0.26.6"
     },
     "scripts": {
-        "start": "cross-env NODE_ENV=production node ./src/server/index.js",
+        "start": "cross-env NODE_ENV=production node ./src/socket_server/index.js",
         "dev": "run-p dev:devserver dev:client",
-        "dev:client": "react-scripts start",
-        "dev:devserver": "cross-env PORT=3100 nodemon ./src/server/index.js",
+        "dev:client": "cross-env PORT=3100 react-scripts start",
+        "dev:devserver": "cross-env PORT=3200 nodemon ./src/socket_server/index.js",
         "build": "react-scripts build",
         "clean": "rimraf build",
         "test": "react-scripts test --env=jsdom",

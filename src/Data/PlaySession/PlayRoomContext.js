@@ -18,7 +18,10 @@ export const PlayRoomContext = React.createContext(initialState);
 const SYNC_GAME_SESSION = '[sockets] SYNC_GAME_SESSION';
 export function PlayRoomProvider({ children }) {
     const [gameStatus, setGameStatus] = useState(initialState);
-    const emitSocket = useSocket([SYNC_GAME_SESSION], ({ payload }) => setGameStatus(updateState(payload)));
+    const emitSocket = useSocket([SYNC_GAME_SESSION], ({ payload }) => {
+        // console.log(payload);
+        return setGameStatus(updateState(payload));
+    });
     const isCompleted = gameStatus.scores.every(player => player.score !== null);
     return (
         <PlayRoomContext.Provider value={{ ...gameStatus, isCompleted, dispatch: emitSocket }}>
