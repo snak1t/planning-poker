@@ -19,6 +19,10 @@ const useAuthSession = async cb => {
     }, []);
 };
 
+const generateRandomId = () => Math.round(Math.random() * 11);
+const maleAvatars = [1, 3, 5, 8, 10, 12, 13, 15, 17, 20, 22, 24];
+const femaleAvatars = [2, 3, 6, 7, 8, 11, 14, 16, 18, 19, 21, 23];
+
 const login = () => {
     auth0Client.authorize();
 };
@@ -66,13 +70,13 @@ export function AuthProvider({ children }) {
             window.location.hash = '';
         } catch (error) {}
     });
-    const setTempUser = login => {
+    const setTempUser = (login, gender) => {
         setUser({
             loginStatus: LOGIN_STATUS.TEMP_USER,
             info: {
                 name: login,
                 email: login,
-                avatar: '',
+                picture: gender === 'male' ? maleAvatars[generateRandomId()] : femaleAvatars[generateRandomId()],
             },
         });
     };

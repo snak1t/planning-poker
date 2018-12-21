@@ -17,6 +17,15 @@ const UserAvatar = styled.div`
     background-size: contain;
     border-radius: 50%;
 `;
+
+export const UserDefaultAvatar = styled.div`
+    width: 6.6rem;
+    height: 6.6rem;
+    background-image: url(/assets/avatars.jpg);
+    background-position-y: ${({ avatar }) => `-${55 + Math.floor(avatar / 6) * 130}px`};
+    background-position-x: ${({ avatar }) => `-${15 + ((avatar + 6) % 6) * 95}px`};
+    background-size: 600px;
+`;
 const UserName = styled.div`
     text-align: center;
 `;
