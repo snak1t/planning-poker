@@ -2,7 +2,6 @@ import React from 'react';
 import { Tabs, List } from 'antd';
 import PropTypes from 'prop-types';
 import partition from 'ramda/src/partition';
-import propEq from 'ramda/src/propEq';
 import length from 'ramda/src/length';
 import styled from 'styled-components';
 
@@ -12,7 +11,7 @@ import { storyType } from '../../../../Data/Stories/type';
 import { Wrapper } from './atoms';
 import ReportContainer from '../Report/Container';
 
-const separateStoriesByActivity = partition(propEq('active', false));
+const separateStoriesByActivity = partition(story => story.score === 0);
 
 const StyledList = styled(List)`
     height: 370px;
@@ -26,7 +25,7 @@ const StoriesPane = ({ stories, admin }) =>
         <StyledList
             itemLayout="vertical"
             dataSource={stories}
-            renderItem={story => <StoryItem admin={admin} key={story._id} {...story} />}
+            renderItem={story => <StoryItem admin={admin} key={story.id} {...story} />}
         />
     );
 

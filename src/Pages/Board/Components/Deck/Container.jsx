@@ -1,8 +1,8 @@
 import React, { useState, useContext } from 'react';
 import { CardList } from './List';
 import { CardListWrapper } from './atoms';
-import { AuthContext } from '../../../../Data/Auth/AuthContext.js';
-import { PlayRoomContext, setScore } from '../../../../Data/PlaySession/PlayRoomContext.js';
+import { AuthContext } from '../../../../Data/Auth/AuthContext';
+import { PlayRoomContext, setScore } from '../../../../Data/PlaySession/PlayRoomContext';
 
 const DECK = [
     { value: 1 },
@@ -21,12 +21,12 @@ const DECK = [
 ];
 
 export function DeckContainer() {
-    const user = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     const { dispatch } = useContext(PlayRoomContext);
     const [myScore, setMyScore] = useState(null);
     const handleCardPick = score => {
         setMyScore(score);
-        dispatch(setScore({ ...user, score }));
+        dispatch(setScore({ login: user.info.name, avatar: user.info.picture, score }));
     };
     return (
         <CardListWrapper>

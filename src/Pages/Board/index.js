@@ -1,5 +1,4 @@
 import React, { useEffect, useContext } from 'react';
-import Axios from 'axios';
 import styled from 'styled-components';
 import { message } from 'antd';
 
@@ -10,11 +9,12 @@ import StoriesContainer from './Components/Stories/Container';
 import { Chat } from './Components/Chat';
 import { TemporaryLoginForm } from './Components/Player/ModalForm';
 import { FlexContainer, FlexItem } from '../../utils/FlexContainer';
-import { AuthContext, checkIsAdmin, LOG_STATUS } from '../../Data/Auth/AuthContext';
 import { useAsyncEffect } from '../../utils/hooks/useAsyncEffect';
 import { GamesContext, useCurrentGame } from '../../Data/Games/GamesContext';
 import { PlayRoomProvider, PlayRoomContext, leaveRoom, enterRoom } from '../../Data/PlaySession/PlayRoomContext';
 import { StoriesProvider } from '../../Data/Stories/StoriesContext';
+import { AuthContext, LOGIN_STATUS, checkIsAdmin } from '../../Data/Auth/AuthContext';
+import { ApiClient } from '../../utils/api-client';
 
 const PlayersWrapper = styled.div`
     flex-basis: 350px;
@@ -23,24 +23,29 @@ const PlayersWrapper = styled.div`
     justify-content: space-between;
 `;
 
-export const BoardContainer = ({ match, tempUpdateGame }) => {
-    const user = useContext(AuthContext);
+export const BoardContainer = ({ match }) => {
+    const { user } = useContext(AuthContext);
     const { isPlaying, dispatch } = useContext(PlayRoomContext);
     const { updateGame } = useContext(GamesContext);
     const currentGameId = match.params.gameID;
     const game = useCurrentGame(currentGameId);
     useEffect(() => {
-        dispatch(enterRoom({ gameID: match.params.gameID, user }));
+        dispatch(
+            enterRoom({
+                gameID: match.params.gameID,
+                user: {
+                    login: user.info.name,
+                    avatar: user.info.picture,
+                },
+            }),
+        );
         return () => dispatch(leaveRoom());
     }, []);
     useAsyncEffect(
         async () => {
             try {
-                const { data } = await Axios.post('/api/game/find', {
-                    login: match.params.user,
-                    gameID: match.params.gameID,
-                });
-                updateGame(data.game);
+                const { data } = await ApiClient.get(`/api/game/${currentGameId}`);
+                updateGame(data);
             } catch (error) {
                 message.error(error.message);
             }
@@ -76,8 +81,8 @@ export const BoardContainer = ({ match, tempUpdateGame }) => {
 };
 
 export default function BranchBoard(props) {
-    const { logStatus } = useContext(AuthContext);
-    if ([LOG_STATUS.LOGGED_IN, LOG_STATUS.TEMP_USER].includes(logStatus)) {
+    const { user } = useContext(AuthContext);
+    if ([LOGIN_STATUS.LOGGED_IN, LOGIN_STATUS.TEMP_USER].includes(user.loginStatus)) {
         return (
             <PlayRoomProvider>
                 <BoardContainer {...props} />

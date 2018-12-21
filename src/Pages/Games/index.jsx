@@ -17,9 +17,9 @@ const AddGameIcon = styled(Icon)`
 `;
 
 export default function GamesContainer({ history }) {
-    const { login, signOut } = useContext(AuthContext);
+    const { logout, user } = useContext(AuthContext);
     const [modalWindow, setModalWindowVisibility] = useState(false);
-    const navigateToGame = id => history.push(`/game/${login}/${id}`);
+    const navigateToGame = id => history.push(`/game/${user.info.email}/${id}`);
     const toggleModalWindow = () => setModalWindowVisibility(not);
 
     return (
@@ -28,7 +28,7 @@ export default function GamesContainer({ history }) {
             <GamesHeader>
                 <h2>Your games</h2>
                 <QuickGame />
-                <Button onClick={signOut}>Sign out</Button>
+                <Button onClick={logout}>Sign out</Button>
                 <AddGameIcon type="folder-add" onClick={toggleModalWindow} title="Add new game" />
             </GamesHeader>
             <GamesList onPlayGame={navigateToGame} />

@@ -8,10 +8,10 @@ import { GamesContext } from '../../../Data/Games/GamesContext';
 export function GamesList({ onPlayGame }) {
     const { games, removeGame } = useContext(GamesContext);
     const displayGamesList = map(game => {
-        const { _id } = game;
+        const { id } = game;
         return (
-            <GameGridItem key={_id}>
-                <GameItem game={game} onPlayGame={() => onPlayGame(_id)} onDeleteGame={() => removeGame(_id)} />
+            <GameGridItem key={id}>
+                <GameItem game={game} onPlayGame={() => onPlayGame(id)} onDeleteGame={() => removeGame(id)} />
             </GameGridItem>
         );
     });

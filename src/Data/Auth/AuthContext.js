@@ -1,11 +1,45 @@
-import React, { useState } from 'react';
-import Axios from 'axios';
-import { message } from 'antd';
-import { useAsyncEffect } from '../../utils/hooks/useAsyncEffect';
+import React, { useState, useEffect } from 'react';
 
-const merge = chunk => otherChunk => ({ ...otherChunk, ...chunk });
+import { WebAuth } from 'auth0-js';
 
-export const LOG_STATUS = {
+const properties = {
+    clientID: process.env.REACT_APP_AUTH_CLIENT_ID,
+    domain: process.env.REACT_APP_AUTH_DOMAIN,
+    responseType: 'token id_token',
+    audience: process.env.REACT_APP_AUTH_AUDIENCE,
+    redirectUri: process.env.REACT_APP_AUTH_REDIRECT_URL,
+    scope: 'openid profile email',
+};
+
+const auth0Client = new WebAuth({ ...properties });
+
+const useAuthSession = async cb => {
+    useEffect(() => {
+        auth0Client.checkSession({ prompt: 'none' }, cb);
+    }, []);
+};
+
+const login = () => {
+    auth0Client.authorize();
+};
+
+const logout = () => {
+    auth0Client.logout();
+};
+
+const parseHash = () => {
+    return new Promise((resolve, reject) => {
+        auth0Client.parseHash((err, authResult) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(authResult);
+            }
+        });
+    });
+};
+
+export const LOGIN_STATUS = {
     NOT_ASKED: 'NOT_ASKED',
     LOGGED_IN: 'LOGGED_IN',
     LOGGED_OUT: 'LOGGED_OUT',
@@ -13,80 +47,39 @@ export const LOG_STATUS = {
 };
 
 export const AuthContext = React.createContext();
+export function AuthProvider({ children }) {
+    const [user, setUser] = useState({ loginStatus: LOGIN_STATUS.NOT_ASKED, info: null });
+    // const [accessToken, setAccessToken] = useState(null);
+    // const [idToken, setIdToken] = useState(null);
 
-const AUTH_URLS = {
-    getUser: '/api/user',
-    signIn: '/api/login',
-    signUp: '/api/signup',
-    signOut: '/api/logout',
-};
-
-const generateRandomId = () => Math.round(Math.random() * 23);
-export const AuthProvider = function AuthProvider({ children }) {
-    const [user, setUser] = useState({ login: '', logStatus: LOG_STATUS.NOT_ASKED, avatar: generateRandomId() });
-
-    useAsyncEffect(async () => {
+    useAuthSession(async (err, authData) => {
         try {
-            const { data: userData } = await Axios.get(AUTH_URLS.getUser);
-            if (userData.login) {
-                return setUser(
-                    merge({
-                        logStatus: LOG_STATUS.LOGGED_IN,
-                        login: userData.login,
-                    }),
-                );
+            const parsedData = err ? await parseHash() : authData;
+            // setAccessToken(parsedData.accessToken);
+            // setIdToken(parsedData.idToken);
+            if (parsedData) {
+                setUser({ loginStatus: LOGIN_STATUS.LOGGED_IN, info: parsedData.idTokenPayload });
+            } else {
+                setUser({ loginStatus: LOGIN_STATUS.LOGGED_OUT, info: null });
             }
-            setUser(
-                merge({
-                    login: '',
-                    logStatus: LOG_STATUS.LOGGED_OUT,
-                }),
-            );
-        } catch (error) {
-            console.error(error);
-        }
-    }, []);
 
-    const makeResponse = url => async userData => {
-        try {
-            const { data: userResponse } = await Axios.post(url, userData);
-            if (userResponse.error) {
-                throw new Error(userResponse.error);
-            }
-            setUser(merge({ login: userResponse.login, logStatus: LOG_STATUS.LOGGED_IN }));
-        } catch (error) {
-            message.error(error.message);
-        }
+            window.location.hash = '';
+        } catch (error) {}
+    });
+    const setTempUser = login => {
+        setUser({
+            loginStatus: LOGIN_STATUS.TEMP_USER,
+            info: {
+                name: login,
+                email: login,
+                avatar: '',
+            },
+        });
     };
-
-    const signIn = makeResponse(AUTH_URLS.signIn);
-    const signUp = makeResponse(AUTH_URLS.signUp);
-    const signOut = async () => {
-        try {
-            const { data } = await Axios.get(AUTH_URLS.signOut);
-            if (!data.logout) {
-                throw new Error('Unable to logout');
-            }
-            setUser(
-                merge({
-                    login: '',
-                    logStatus: LOG_STATUS.LOGGED_OUT,
-                }),
-            );
-        } catch (error) {
-            message.error(error.message);
-        }
-    };
-
-    const mergedSetUser = data => setUser(merge(data));
-
-    return (
-        <AuthContext.Provider value={{ ...user, setUser: mergedSetUser, signIn, signUp, signOut }}>
-            {children}
-        </AuthContext.Provider>
-    );
-};
+    return <AuthContext.Provider value={{ login, logout, user, setTempUser }}>{children}</AuthContext.Provider>;
+}
 
 export const AuthConsumer = AuthContext.Consumer;
 
-export const checkIsAdmin = (user, userToMatch) => user.logStatus === 'LOGGED_IN' && userToMatch === user.login;
+export const checkIsAdmin = (user, userToMatch) =>
+    user.loginStatus === LOGIN_STATUS.LOGGED_IN && userToMatch === user.info.email;

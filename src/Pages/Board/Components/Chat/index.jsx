@@ -8,7 +8,7 @@ import { useSocket } from '../../../../utils/hooks/useSocket';
 import { ChatButton } from './atoms';
 
 export function Chat() {
-    const user = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     const [messages, addMessage] = useState([]);
     const [isOpened, setOpen] = useState(false);
     const [unreadMessages, setUnreadMessages] = useState(messages.length);
@@ -21,7 +21,8 @@ export function Chat() {
             return [...prevMessages, data.payload];
         });
     });
-    const sendMessage = message => emitMessage({ type: '[sockets] MESSAGE_RECEIVED', payload: { user, message } });
+    const sendMessage = message =>
+        emitMessage({ type: '[sockets] MESSAGE_RECEIVED', payload: { user: user.info, message } });
     return (
         <>
             <ChatButton count={unreadMessages}>

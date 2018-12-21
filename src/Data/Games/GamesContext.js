@@ -1,22 +1,23 @@
 import React, { useState, useContext } from 'react';
-import Axios from 'axios';
 import { message } from 'antd';
 import filter from 'ramda/src/filter';
 import append from 'ramda/src/append';
 import { useAsyncEffect } from '../../utils/hooks/useAsyncEffect';
+import { AuthContext } from '../Auth/AuthContext';
+import { ApiClient } from '../../utils/api-client';
 export const GamesContext = React.createContext();
 
 export function GamesProvider({ initialGames = [], children, readyToFetch }) {
     const [games, setGames] = useState(initialGames);
+    const { user } = useContext(AuthContext);
     useAsyncEffect(
         async () => {
             if (!readyToFetch) {
                 return;
             }
             try {
-                const { data: userData } = await Axios.get('/api/user');
-                const gamesToSet = userData.login ? userData.games : [];
-                return setGames(gamesToSet);
+                const { data } = await ApiClient.get(`/api/game/user/${user.info.email}`);
+                return setGames(data.games);
             } catch (error) {
                 console.error(error);
             }
@@ -26,15 +27,15 @@ export function GamesProvider({ initialGames = [], children, readyToFetch }) {
 
     const removeGame = async gameId => {
         try {
-            const { data } = await Axios.delete(`/api/game/${gameId}`);
-            setGames(filter(game => game._id !== data.id));
+            const { data } = await ApiClient.delete(`/api/game/`, { params: { gameId } });
+            setGames(filter(game => game.id !== data.id));
         } catch (error) {
             message.error(error.message);
         }
     };
     const addGame = async formData => {
         try {
-            const { data } = await Axios.post('/api/game', formData);
+            const { data } = await ApiClient.post('/api/game', { ...formData, user: user.info.email });
             setGames(append(data.game));
         } catch (error) {
             message.error(error.message);
@@ -43,9 +44,9 @@ export function GamesProvider({ initialGames = [], children, readyToFetch }) {
 
     const updateGame = updatedGame => {
         setGames(prevGames => {
-            const isGamePresent = prevGames.find(game => game._id === updatedGame._id);
+            const isGamePresent = prevGames.find(game => game.id === updatedGame.id);
             if (isGamePresent) {
-                return prevGames.map(game => (game._id === updatedGame._id ? updatedGame : game));
+                return prevGames.map(game => (game.id === updatedGame.id ? updatedGame : game));
             } else {
                 return prevGames.concat(updatedGame);
             }
@@ -56,6 +57,6 @@ export function GamesProvider({ initialGames = [], children, readyToFetch }) {
 
 export const useCurrentGame = gameId => {
     const { games } = useContext(GamesContext);
-    const game = games.find(game => game._id === gameId);
+    const game = games.find(game => game.id.toString() === gameId);
     return game;
 };

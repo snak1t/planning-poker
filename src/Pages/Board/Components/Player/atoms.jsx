@@ -13,10 +13,9 @@ const UserItem = styled.li``;
 const UserAvatar = styled.div`
     width: 6.6rem;
     height: 6.6rem;
-    background-image: url(/assets/avatars.jpg);
-    background-position-y: ${({ avatar }) => `-${55 + Math.floor(avatar / 6) * 130}px`};
-    background-position-x: ${({ avatar }) => `-${15 + ((avatar + 6) % 6) * 95}px`};
-    background-size: 600px;
+    background-image: url(${({ avatar }) => avatar});
+    background-size: contain;
+    border-radius: 50%;
 `;
 const UserName = styled.div`
     text-align: center;
