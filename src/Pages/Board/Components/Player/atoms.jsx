@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 const UserList = styled.ul`
     list-style-type: none;
-    padding: 0;
     padding: 1rem;
     background-color: #fff;
     display: flex;

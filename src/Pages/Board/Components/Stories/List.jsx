@@ -25,7 +25,7 @@ const StoriesPane = ({ stories, admin }) =>
         <StyledList
             itemLayout="vertical"
             dataSource={stories}
-            renderItem={story => <StoryItem admin={admin} key={story.id} {...story} />}
+            renderItem={story => <StoryItem admin={admin} key={story.id} story={story} />}
         />
     );
 

@@ -8,7 +8,10 @@ import { StoriesContext } from '../../../../Data/Stories/StoriesContext';
 function StoryItem(props) {
     const [editMode, setEditMode] = useState(false);
     const { updateStory, removeStory } = useContext(StoriesContext);
-    const allProps = { ...props, updateStory, deleteStory: removeStory, setEditMode, editMode };
+    const onUpdateStory = partialStory => {
+        updateStory({ ...props.story, ...partialStory });
+    };
+    const allProps = { ...props, onUpdateStory, deleteStory: removeStory, setEditMode, editMode };
     return editMode ? <ItemEdit {...allProps} /> : <Item {...allProps} />;
 }
 

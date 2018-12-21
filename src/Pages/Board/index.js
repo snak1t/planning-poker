@@ -3,25 +3,38 @@ import styled from 'styled-components';
 import { message } from 'antd';
 
 import { DeckContainer } from './Components/Deck/Container';
-import TableContainer from './Components/Table/Container';
-import { PlayersContainer } from './Components/Player/Container';
+import { TableContainer } from './Components/Table/Container';
 import StoriesContainer from './Components/Stories/Container';
 import { Chat } from './Components/Chat';
 import { TemporaryLoginForm } from './Components/Player/ModalForm';
-import { FlexContainer, FlexItem } from '../../utils/FlexContainer';
 import { useAsyncEffect } from '../../utils/hooks/useAsyncEffect';
 import { GamesContext, useCurrentGame } from '../../Data/Games/GamesContext';
 import { PlayRoomProvider, PlayRoomContext, leaveRoom, enterRoom } from '../../Data/PlaySession/PlayRoomContext';
 import { StoriesProvider } from '../../Data/Stories/StoriesContext';
 import { AuthContext, LOGIN_STATUS, checkIsAdmin } from '../../Data/Auth/AuthContext';
 import { ApiClient } from '../../utils/api-client';
+import { PlayersList } from './Components/Player/PlayersList';
 
-const PlayersWrapper = styled.div`
-    flex-basis: 350px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+const GridWrapper = styled.section`
+    display: grid;
+    height: 100%;
+    grid-gap: 2rem;
+    grid-template-columns: 20rem 1fr;
+    grid-template-rows: 4rem 1fr 1fr;
 `;
+
+const GridHeader = styled.header`
+    grid-column: 1 / span 2;
+`;
+
+const GridStories = styled.section`
+    grid-row: 2 / span 2;
+    background-color: pink;
+`;
+
+const GridPlayers = styled.section``;
+
+const GridDeck = styled.section``;
 
 export const BoardContainer = ({ match }) => {
     const { user } = useContext(AuthContext);
@@ -58,23 +71,19 @@ export const BoardContainer = ({ match }) => {
     }
     return (
         <StoriesProvider gameId={currentGameId}>
-            <FlexContainer vertical justify="center">
-                <FlexItem basis="64px">
-                    <header>
-                        <h2>{game.title}</h2>
-                    </header>
-                </FlexItem>
-                <FlexItem asContainer grow="1" style={{ maxHeight: '38rem' }}>
+            <GridWrapper>
+                <GridHeader>
+                    <h2>{game.title}</h2>
+                </GridHeader>
+                <GridStories>
                     <StoriesContainer admin={isAdmin} />
-                    <FlexItem grow="1">
-                        <TableContainer admin={isAdmin} />
-                    </FlexItem>
-                    <PlayersWrapper>
-                        <PlayersContainer />
-                    </PlayersWrapper>
-                </FlexItem>
-                {isPlaying ? <DeckContainer /> : null}
-            </FlexContainer>
+                </GridStories>
+                <GridPlayers as={PlayersList} />
+                <GridDeck>
+                    <TableContainer admin={isAdmin} />
+                    {isPlaying ? <DeckContainer /> : null}
+                </GridDeck>
+            </GridWrapper>
             <Chat />
         </StoriesProvider>
     );

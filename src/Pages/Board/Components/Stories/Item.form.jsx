@@ -4,15 +4,15 @@ import { Input, Button, Form } from 'antd';
 
 import './styles.css';
 import { useTextField } from '../../../../utils/hooks/useTextField';
+import { storyType } from '../../../../Data/Stories/type';
 
-export function ItemEdit({ title, description, id, updateStory, setEditMode }) {
-    const [newTitle, setTitle] = useTextField(title || '');
-    const [newDescription, setDescription] = useTextField(description || '');
+export function ItemEdit({ story, onUpdateStory, setEditMode }) {
+    const [newTitle, setTitle] = useTextField(story.title || '');
+    const [newDescription, setDescription] = useTextField(story.description || '');
 
     const saveItem = e => {
         e.preventDefault();
-        updateStory({
-            id,
+        onUpdateStory({
             title: newTitle,
             description: newDescription,
         });
@@ -38,9 +38,7 @@ export function ItemEdit({ title, description, id, updateStory, setEditMode }) {
 }
 
 ItemEdit.propTypes = {
-    id: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string,
+    story: storyType,
     setEditMode: PropTypes.func.isRequired,
-    updateStory: PropTypes.func.isRequired,
+    onUpdateStory: PropTypes.func.isRequired,
 };
