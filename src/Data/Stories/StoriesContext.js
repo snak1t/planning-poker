@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import socketConstants from '../../socket.constants';
+import socketConstants from '../../socket.es6';
 import { useSocket } from '../../utils/hooks/useSocket';
 import { message } from 'antd';
 import { useAsyncEffect } from '../../utils/hooks/useAsyncEffect';

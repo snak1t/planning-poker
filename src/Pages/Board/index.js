@@ -1,12 +1,11 @@
 import React, { useEffect, useContext } from 'react';
-import styled from 'styled-components';
 import { message } from 'antd';
 
 import { DeckContainer } from './Components/Deck/Container';
 import { TableContainer } from './Components/Table/Container';
-import StoriesContainer from './Components/Stories/Container';
+import { StoriesContainer } from './Components/Stories/Container';
 import { Chat } from './Components/Chat';
-import { TemporaryLoginForm } from './Components/Player/ModalForm';
+import { TemporaryLoginForm } from './Components/Player/TemporaryLoginForm';
 import { useAsyncEffect } from '../../utils/hooks/useAsyncEffect';
 import { GamesContext, useCurrentGame } from '../../Data/Games/GamesContext';
 import { PlayRoomProvider, PlayRoomContext, leaveRoom, enterRoom } from '../../Data/PlaySession/PlayRoomContext';
@@ -14,26 +13,7 @@ import { StoriesProvider } from '../../Data/Stories/StoriesContext';
 import { AuthContext, LOGIN_STATUS, checkIsAdmin } from '../../Data/Auth/AuthContext';
 import { ApiClient } from '../../utils/api-client';
 import { PlayersList } from './Components/Player/PlayersList';
-
-const GridWrapper = styled.section`
-    display: grid;
-    height: 100%;
-    grid-gap: 2rem;
-    grid-template-columns: 20rem 1fr;
-    grid-template-rows: 4rem 1fr 1fr;
-`;
-
-const GridHeader = styled.header`
-    grid-column: 1 / span 2;
-`;
-
-const GridStories = styled.section`
-    grid-row: 2 / span 2;
-`;
-
-const GridPlayers = styled.section``;
-
-const GridDeck = styled.section``;
+import * as Atoms from './atoms';
 
 export const BoardContainer = ({ match }) => {
     const { user } = useContext(AuthContext);
@@ -70,19 +50,21 @@ export const BoardContainer = ({ match }) => {
     }
     return (
         <StoriesProvider gameId={currentGameId}>
-            <GridWrapper>
-                <GridHeader>
+            <Atoms.GridWrapper>
+                <Atoms.GridHeader>
                     <h2>{game.title}</h2>
-                </GridHeader>
-                <GridStories>
+                </Atoms.GridHeader>
+                <Atoms.GridStories>
                     <StoriesContainer admin={isAdmin} />
-                </GridStories>
-                <GridPlayers as={PlayersList} />
-                <GridDeck>
+                </Atoms.GridStories>
+                <Atoms.GridPlayers>
+                    <PlayersList />
+                </Atoms.GridPlayers>
+                <Atoms.GridDeck>
                     <TableContainer admin={isAdmin} />
                     {isPlaying ? <DeckContainer /> : null}
-                </GridDeck>
-            </GridWrapper>
+                </Atoms.GridDeck>
+            </Atoms.GridWrapper>
             <Chat />
         </StoriesProvider>
     );

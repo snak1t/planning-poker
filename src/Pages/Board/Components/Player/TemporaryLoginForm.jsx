@@ -23,8 +23,8 @@ export const TemporaryLoginForm = ({ history: { replace } }) => {
                     <Switch
                         checked={gender === 'female'}
                         onChange={handleChange}
-                        checkedChildren={<Icon type="man" />}
-                        unCheckedChildren={<Icon type="woman" />}
+                        checkedChildren={<Icon type="woman" />}
+                        unCheckedChildren={<Icon type="man" />}
                     />
                 </Form.Item>
             </Modal>

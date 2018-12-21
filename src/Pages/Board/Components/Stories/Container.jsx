@@ -9,7 +9,7 @@ import { Panel } from './atoms';
 import { StoriesForm } from './Form';
 import { StoriesContext } from '../../../../Data/Stories/StoriesContext';
 
-export function StoriesContainer({ admin, match: { params } }) {
+export const StoriesContainer = withRouter(function StoriesContainer({ admin, match: { params } }) {
     const [isAddingStoryMode, setMode] = useState(false);
     const { stories, addStories } = useContext(StoriesContext);
     const addStory = addStories(params.gameID);
@@ -20,11 +20,4 @@ export function StoriesContainer({ admin, match: { params } }) {
             <StoriesForm handleSubmit={addStory} toggleMode={setMode} isAdmin={admin} mode={isAddingStoryMode} />
         </Panel>
     );
-}
-
-StoriesContainer.propTypes = {
-    stories: PropTypes.arrayOf(storyType),
-    admin: PropTypes.bool.isRequired,
-};
-
-export default withRouter(StoriesContainer);
+});

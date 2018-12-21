@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import merge from 'ramda/src/merge';
 import flip from 'ramda/src/flip';
 import { useSocket } from '../../utils/hooks/useSocket';
-import socketTypes from '../../socket.constants';
+import socketTypes from '../../socket.es6';
 
 const updateState = flip(merge);
 
