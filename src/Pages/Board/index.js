@@ -29,7 +29,6 @@ const GridHeader = styled.header`
 
 const GridStories = styled.section`
     grid-row: 2 / span 2;
-    background-color: pink;
 `;
 
 const GridPlayers = styled.section``;
