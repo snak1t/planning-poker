@@ -1,10 +1,8 @@
 import React, { useState, useContext } from 'react';
-import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
 import { StoryList } from './List';
 import './styles.css';
-import { storyType } from '../../../../Data/Stories/type';
 import { Panel } from './atoms';
 import { StoriesForm } from './Form';
 import { StoriesContext } from '../../../../Data/Stories/StoriesContext';

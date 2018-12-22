@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Card } from 'antd';
 
 const Wrapper = styled(Card)`
-    width: 340px;
+    width: 100%;
 `;
 
 const Panel = styled.div`
