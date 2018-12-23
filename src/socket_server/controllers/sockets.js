@@ -73,14 +73,10 @@ module.exports = io => {
             return rooms.update(roomID, room);
         };
 
-        const setScore = user => {
+        const setScore = playerInfo => {
             const scores = rooms
                 .get(roomID)
-                .scores.map(player =>
-                    player.user === user.login
-                        ? { user: user.login, score: user.score, avatar: player.avatar }
-                        : player,
-                );
+                .scores.map(player => (player.user === playerInfo.user ? playerInfo : player));
             return rooms.update(roomID, { scores });
         };
 

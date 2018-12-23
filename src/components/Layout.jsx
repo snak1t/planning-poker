@@ -9,8 +9,8 @@ const StyledLayout = styled(Layout)`
     min-height: 100vh !important;
 `;
 const StyledContent = styled(Content)`
-    margin: 16px;
     height: 100%;
+    padding: 1rem;
     position: relative;
 `;
 const StyledFooter = styled(Footer)`

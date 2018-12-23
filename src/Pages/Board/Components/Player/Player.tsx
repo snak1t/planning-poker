@@ -1,11 +1,6 @@
 import * as React from 'react';
 import * as Atoms from './atoms';
-import { PlayRoomContext } from '../../../../Data/PlaySession/PlayRoomContext';
-export type User = {
-    avatar: string | number;
-    user: string;
-    score: string | number | null;
-};
+import { PlayRoomContext, User } from '../../../../Data/PlaySession/PlayRoomContext';
 
 type Props = {
     user: User;

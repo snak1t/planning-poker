@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 import { message } from 'antd';
 
-import { DeckContainer } from './Components/Deck/Container';
+import { DeckContainer } from './Components/Deck';
 import { TableContainer } from './Components/Table/Container';
 import { StoriesContainer } from './Components/Stories/Container';
 import { Chat } from './Components/Chat';
