@@ -6,7 +6,7 @@ before_deploy:
     - 'npm run build'
 deploy:
     provider: pages
-    local-dir: public
+    local-dir: build
     skip-cleanup: true
     github-token: $SECRET_GH_PAGE_TOKEN
     keep-history: true
