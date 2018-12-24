@@ -5,8 +5,9 @@ cache: yarn
 before_deploy:
     - 'npm run build'
 deploy:
-    provider: heroku
-    api_key: $DEPLOY_KEY
-    on: master
-    app: snaks-planning-poker
-    skip_cleanup: true
+    provider: pages
+    skip-cleanup: true
+    github-token: $SECRET_GH_PAGE_TOKEN
+    keep-history: true
+    on:
+        branch: master

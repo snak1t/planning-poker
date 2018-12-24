@@ -1,5 +1,5 @@
 import React, { useContext, Suspense } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { HashRouter as Router, Route } from 'react-router-dom';
 
 import { AuthContainer } from './Pages/Auth';
 import { forNotLogged, forLoggedOnly } from './utils/router.guards';
