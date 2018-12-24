@@ -28,7 +28,9 @@ const login = () => {
 };
 
 const logout = () => {
-    auth0Client.logout();
+    auth0Client.logout({
+        returnTo: process.env.REACT_APP_AUTH_REDIRECT_URL,
+    });
 };
 
 const parseHash = () => {
