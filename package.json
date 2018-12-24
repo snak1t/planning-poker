@@ -1,6 +1,6 @@
 {
     "name": "planning-poker",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "private": true,
     "dependencies": {
         "@types/antd": "^1.0.0",
@@ -11,20 +11,6 @@
         "antd": "^3.11.2",
         "auth0-js": "^9.8.2",
         "axios": "^0.18.0",
-        "bcrypt-nodejs": "0.0.3",
-        "body-parser": "1.18.3",
-        "connect-flash": "0.1.1",
-        "cookie-parser": "1.4.3",
-        "cross-env": "^5.2.0",
-        "dotenv": "6.2.0",
-        "express": "4.16.4",
-        "express-session": "1.15.6",
-        "formik": "^1.4.0",
-        "http-proxy-middleware": "^0.19.1",
-        "mongoose": "5.3.15",
-        "npm-run-all": "^4.1.5",
-        "passport": "0.4.0",
-        "passport-local": "1.0.0",
         "prop-types": "15.6.2",
         "ramda": "0.26.1",
         "react": "16.7.0-alpha.2",
@@ -32,29 +18,16 @@
         "react-router-dom": "4.3.1",
         "react-scripts": "2.1.1",
         "react-virtualized": "9.21.0",
-        "rxjs": "^6.3.3",
-        "serve": "^10.1.1",
         "socket.io": "2.2.0",
         "socket.io-client": "2.2.0",
         "styled-components": "4.1.2",
-        "typescript": "^3.2.2",
-        "yup": "^0.26.6"
+        "typescript": "^3.2.2"
     },
     "scripts": {
-        "start": "cross-env NODE_ENV=production node ./src/socket_server/index.js",
-        "dev": "run-p dev:devserver dev:client",
-        "dev:client": "cross-env PORT=3100 react-scripts start",
-        "dev:devserver": "cross-env PORT=3200 nodemon ./src/socket_server/index.js",
+        "start": "react-scripts start",
         "build": "react-scripts build",
-        "clean": "rimraf build",
-        "test": "react-scripts test --env=jsdom",
-        "eject": "react-scripts eject",
-        "storybook": "start-storybook -p 6006",
-        "build-storybook": "build-storybook"
-    },
-    "devDependencies": {
-        "nodemon": "1.18.8",
-        "rimraf": "2.6.2"
+        "test": "react-scripts test",
+        "eject": "react-scripts eject"
     },
     "browserslist": [
         ">0.2%",

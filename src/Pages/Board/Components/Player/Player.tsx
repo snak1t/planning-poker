@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as Atoms from './atoms';
-import { PlayRoomContext, User } from '../../../../Data/PlaySession/PlayRoomContext';
+import { PlayRoomContext, Player } from '../../../../Data/PlaySession/PlayRoomContext';
 
 type Props = {
-    user: User;
+    user: Player;
 };
 
 const renderScore = (score: string | number, shouldShowScore: boolean): string => {
@@ -16,16 +16,17 @@ const renderScore = (score: string | number, shouldShowScore: boolean): string =
     return score[0];
 };
 
-export const Player: React.SFC<Props> = ({ user }) => {
+export const PlayerComponent: React.SFC<Props> = ({ user }) => {
     const { isRevealing } = React.useContext(PlayRoomContext);
+    const { picture, login } = user.info;
     return (
         <Atoms.UserItem>
-            {typeof user.avatar === 'number' ? (
-                <Atoms.UserDefaultAvatar avatar={user.avatar} />
+            {typeof picture === 'number' ? (
+                <Atoms.UserDefaultAvatar avatar={picture} />
             ) : (
-                <Atoms.UserAvatar avatar={user.avatar} />
+                <Atoms.UserAvatar avatar={picture} />
             )}
-            <Atoms.UserName>{user.user}</Atoms.UserName>
+            <Atoms.UserName>{login}</Atoms.UserName>
             {user.score !== null ? <Atoms.UserScore>{renderScore(user.score, isRevealing)}</Atoms.UserScore> : null}
         </Atoms.UserItem>
     );

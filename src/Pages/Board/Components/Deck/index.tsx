@@ -3,7 +3,7 @@ import React, { useState, useContext } from 'react';
 import * as Atoms from './atoms';
 
 import { AuthContext } from '../../../../Data/Auth/AuthContext';
-import { PlayRoomContext, setScore } from '../../../../Data/PlaySession/PlayRoomContext';
+import { PlayRoomContext } from '../../../../Data/PlaySession/PlayRoomContext';
 import { Score, DECK } from './deck';
 import { Card } from './Card';
 
@@ -18,11 +18,18 @@ type TempUser = {
 
 export function DeckContainer() {
     const { user } = useContext(AuthContext) as TempUser;
-    const { dispatch } = useContext(PlayRoomContext);
+    const { actions } = useContext(PlayRoomContext);
     const [myScore, setMyScore] = useState<Score | null>(null);
     const handleCardPick = (score: Score) => {
         setMyScore(score);
-        dispatch(setScore({ user: user.info.name, avatar: user.info.picture, score }));
+        actions.setPlayerScore({
+            info: {
+                login: user.info.name,
+                picture: user.info.picture,
+            },
+            score,
+            id: `temp__${Math.random() * 100}`,
+        });
     };
     return (
         <Atoms.CardListContainer>

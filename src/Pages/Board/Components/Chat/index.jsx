@@ -4,8 +4,8 @@ import { Drawer, Button } from 'antd';
 import { ChatInputArea } from './ChatInputArea';
 import { ChatThread } from './ChatThread';
 import { AuthContext } from '../../../../Data/Auth/AuthContext';
-import { useSocket } from '../../../../utils/hooks/useSocket';
 import { ChatButton } from './atoms';
+import { useSocket } from '../../../../utils/hooks/useSocket';
 
 export function Chat() {
     const { user } = useContext(AuthContext);
@@ -15,14 +15,22 @@ export function Chat() {
     if (isOpened && unreadMessages !== 0) {
         setUnreadMessages(0);
     }
-    const emitMessage = useSocket(['[sockets] BROADCAST_MESSAGE'], data => {
+    const addMessageToStore = message => {
         addMessage(prevMessages => {
-            setUnreadMessages(prev => prev + 1);
-            return [...prevMessages, data.payload];
+            return [...prevMessages, message];
         });
+    };
+    const emitMessage = useSocket({
+        'message-received': message => {
+            setUnreadMessages(prev => prev + 1);
+            addMessageToStore(message);
+        },
     });
-    const sendMessage = message =>
-        emitMessage({ type: '[sockets] MESSAGE_RECEIVED', payload: { user: user.info, message } });
+    const sendMessage = message => {
+        const newMessage = { user: user.info, message };
+        addMessageToStore(newMessage);
+        emitMessage('send-message', newMessage);
+    };
     return (
         <>
             <ChatButton count={unreadMessages}>

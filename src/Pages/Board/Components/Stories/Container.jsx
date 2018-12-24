@@ -9,13 +9,17 @@ import { StoriesContext } from '../../../../Data/Stories/StoriesContext';
 
 export const StoriesContainer = withRouter(function StoriesContainer({ admin, match: { params } }) {
     const [isAddingStoryMode, setMode] = useState(false);
-    const { stories, addStories } = useContext(StoriesContext);
-    const addStory = addStories(params.gameID);
+    const { stories, actions } = useContext(StoriesContext);
 
     return (
         <Panel>
             <StoryList stories={stories} admin={admin} />
-            <StoriesForm handleSubmit={addStory} toggleMode={setMode} isAdmin={admin} mode={isAddingStoryMode} />
+            <StoriesForm
+                handleSubmit={actions.addStories}
+                toggleMode={setMode}
+                isAdmin={admin}
+                mode={isAddingStoryMode}
+            />
         </Panel>
     );
 });

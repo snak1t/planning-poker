@@ -8,7 +8,7 @@ import { Chat } from './Components/Chat';
 import { TemporaryLoginForm } from './Components/Player/TemporaryLoginForm';
 import { useAsyncEffect } from '../../utils/hooks/useAsyncEffect';
 import { GamesContext, useCurrentGame } from '../../Data/Games/GamesContext';
-import { PlayRoomProvider, PlayRoomContext, leaveRoom, enterRoom } from '../../Data/PlaySession/PlayRoomContext';
+import { PlayRoomProvider, PlayRoomContext } from '../../Data/PlaySession/PlayRoomContext';
 import { StoriesProvider } from '../../Data/Stories/StoriesContext';
 import { AuthContext, LOGIN_STATUS, checkIsAdmin } from '../../Data/Auth/AuthContext';
 import { ApiClient } from '../../utils/api-client';
@@ -17,21 +17,18 @@ import * as Atoms from './atoms';
 
 export const BoardContainer = ({ match }) => {
     const { user } = useContext(AuthContext);
-    const { isPlaying, dispatch } = useContext(PlayRoomContext);
+    const { isPlaying, actions } = useContext(PlayRoomContext);
     const { updateGame } = useContext(GamesContext);
     const currentGameId = match.params.gameID;
     const game = useCurrentGame(currentGameId);
     useEffect(() => {
-        dispatch(
-            enterRoom({
-                gameID: match.params.gameID,
-                user: {
-                    login: user.info.name,
-                    avatar: user.info.picture,
-                },
-            }),
-        );
-        return () => dispatch(leaveRoom());
+        actions.enterRoom({
+            info: {
+                login: user.info.name,
+                picture: user.info.picture,
+            },
+        });
+        return actions.leaveRoom;
     }, []);
     useAsyncEffect(
         async () => {
@@ -72,9 +69,10 @@ export const BoardContainer = ({ match }) => {
 
 export default function BranchBoard(props) {
     const { user } = useContext(AuthContext);
+    const isAdmin = checkIsAdmin(user, props.match.params.user);
     if ([LOGIN_STATUS.LOGGED_IN, LOGIN_STATUS.TEMP_USER].includes(user.loginStatus)) {
         return (
-            <PlayRoomProvider>
+            <PlayRoomProvider gameId={props.match.params.gameID} isAdmin={isAdmin}>
                 <BoardContainer {...props} />
             </PlayRoomProvider>
         );

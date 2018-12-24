@@ -1,14 +1,14 @@
 import * as React from 'react';
 import * as Atoms from './atoms';
 import { PlayRoomContext } from '../../../../Data/PlaySession/PlayRoomContext';
-import { Player } from './Player';
+import { PlayerComponent } from './Player';
 
 export const PlayersList: React.SFC<{}> = () => {
-    const { scores: players } = React.useContext(PlayRoomContext);
+    const { players } = React.useContext(PlayRoomContext);
     return (
         <Atoms.UserList>
-            {players.map(player => (
-                <Player key={player.user} user={player} />
+            {players.map((player, index) => (
+                <PlayerComponent key={index} user={player} />
             ))}
         </Atoms.UserList>
     );
