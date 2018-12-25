@@ -17,6 +17,8 @@ export const Card: React.SFC<Props> = ({ value, onClick = () => {}, cardPicked }
             ) : (
                 value
             )
+        ) : value === null ? (
+            ''
         ) : (
             value.toString()
         );

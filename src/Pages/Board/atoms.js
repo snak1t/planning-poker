@@ -6,7 +6,7 @@ export const GridWrapper = styled.section`
     height: 100%;
     grid-gap: 2rem;
     grid-template-columns: 20rem 1fr;
-    grid-template-rows: 2rem;
+    grid-template-rows: 2rem max-content auto;
 `;
 
 export const GridHeader = styled.header`

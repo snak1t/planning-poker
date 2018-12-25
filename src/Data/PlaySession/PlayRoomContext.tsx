@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useSocket } from '../../utils/hooks/useSocket';
+import { Score } from '../../Pages/Board/Components/Deck/deck';
 
 export type Player = {
     id: string;
@@ -7,7 +8,7 @@ export type Player = {
         picture: string | number;
         login: string;
     };
-    score: string | number | null;
+    score: Score;
 };
 
 interface PlayRoomState {
