@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { List, Icon } from 'antd';
 import { PlayRoomContext } from '../../../../Data/PlaySession/PlayRoomContext';
-import { calculateAverage } from '../../../../utils/average.score';
 import { Story, StoryId } from './story.type';
 
 type Props = {
