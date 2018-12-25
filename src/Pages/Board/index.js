@@ -4,7 +4,6 @@ import { message } from 'antd';
 import { DeckContainer } from './Components/Deck';
 import { TableContainer } from './Components/Table/Container';
 import { StoriesContainer } from './Components/Stories/Container';
-import { Chat } from './Components/Chat';
 import { TemporaryLoginForm } from './Components/Player/TemporaryLoginForm';
 import { useAsyncEffect } from '../../utils/hooks/useAsyncEffect';
 import { GamesContext, useCurrentGame } from '../../Data/Games/GamesContext';
@@ -14,6 +13,7 @@ import { AuthContext, LOGIN_STATUS, checkIsAdmin } from '../../Data/Auth/AuthCon
 import { ApiClient } from '../../utils/api-client';
 import { PlayersList } from './Components/Player/PlayersList';
 import * as Atoms from './atoms';
+import { ActionButtons } from './Components/ActionButton/ActionButtons';
 
 export const BoardContainer = ({ match }) => {
     const { user } = useContext(AuthContext);
@@ -62,7 +62,7 @@ export const BoardContainer = ({ match }) => {
                     {isPlaying ? <DeckContainer /> : null}
                 </Atoms.GridDeck>
             </Atoms.GridWrapper>
-            <Chat />
+            <ActionButtons />
         </StoriesProvider>
     );
 };

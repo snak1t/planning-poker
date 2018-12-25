@@ -5,7 +5,7 @@ import partition from 'ramda/src/partition';
 import length from 'ramda/src/length';
 import styled from 'styled-components';
 
-import StoryItem from './Item.container';
+import StoryItem from './StoryItem';
 import './styles.css';
 import { storyType } from '../../../../Data/Stories/type';
 import { Wrapper } from './atoms';
@@ -25,7 +25,7 @@ const StoriesPane = ({ stories, admin }) =>
         <StyledList
             itemLayout="vertical"
             dataSource={stories}
-            renderItem={story => <StoryItem admin={admin} key={story.id} story={story} />}
+            renderItem={story => <StoryItem isAdmin={admin} key={story.id} story={story} />}
         />
     );
 

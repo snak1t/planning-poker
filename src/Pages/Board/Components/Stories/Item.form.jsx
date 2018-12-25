@@ -1,12 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Input, Button, Form } from 'antd';
 
 import './styles.css';
 import { useTextField } from '../../../../utils/hooks/useTextField';
-import { storyType } from '../../../../Data/Stories/type';
 
-export function ItemEdit({ story, onUpdateStory, setEditMode }) {
+export function ItemEdit({ story, onUpdateStory, onSetEditMode }) {
     const [newTitle, setTitle] = useTextField(story.title || '');
     const [newDescription, setDescription] = useTextField(story.description || '');
 
@@ -16,7 +14,7 @@ export function ItemEdit({ story, onUpdateStory, setEditMode }) {
             title: newTitle,
             description: newDescription,
         });
-        setEditMode();
+        onSetEditMode(false);
     };
 
     return (
@@ -28,7 +26,7 @@ export function ItemEdit({ story, onUpdateStory, setEditMode }) {
                 <Input.TextArea placeholder="Description" value={newDescription} onChange={setDescription} />
             </div>
             <footer className="Stories-storyFooter">
-                <Button onClick={() => setEditMode(false)}>Cancel</Button>
+                <Button onClick={() => onSetEditMode(false)}>Cancel</Button>
                 <Button htmlType="submit" type="primary">
                     Save
                 </Button>
@@ -36,9 +34,3 @@ export function ItemEdit({ story, onUpdateStory, setEditMode }) {
         </Form>
     );
 }
-
-ItemEdit.propTypes = {
-    story: storyType,
-    setEditMode: PropTypes.func.isRequired,
-    onUpdateStory: PropTypes.func.isRequired,
-};

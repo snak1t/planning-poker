@@ -6,8 +6,4 @@ export const InputGroup = styled.div`
     justify-content: space-between;
 `;
 
-export const ChatButton = styled(Badge)`
-    position: fixed !important;
-    right: 2rem;
-    bottom: 2rem;
-`;
+export const ChatButton = styled(Badge)``;

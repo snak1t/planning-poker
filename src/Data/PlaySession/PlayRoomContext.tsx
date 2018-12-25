@@ -25,10 +25,10 @@ interface PlayRoom extends PlayRoomState {
     isCompleted: boolean;
     actions: {
         enterRoom: Action<Player>;
-        leaveRoom: Action<undefined>;
+        leaveRoom: Action<any>;
         setStory: Action<string | null>;
-        startPlayRound: Action<undefined>;
-        showPlayedCards: Action<undefined>;
+        startPlayRound: Action<any>;
+        showPlayedCards: Action<any>;
         setPlayerScore: Action<Player>;
     };
 }
@@ -116,7 +116,7 @@ export const PlayRoomProvider: React.SFC<Props> = ({ children, gameId, isAdmin }
         emitSocket2('enter-room', { gameId, newPlayer });
     };
 
-    const leaveRoom: Action<undefined> = () => {
+    const leaveRoom: Action<any> = () => {
         emitSocket2('leave-room', { gameId });
     };
 
@@ -143,7 +143,7 @@ export const PlayRoomProvider: React.SFC<Props> = ({ children, gameId, isAdmin }
         }));
     };
 
-    const startPlayRound: Action<undefined> = () => {
+    const startPlayRound: Action<any> = () => {
         setAndEmitPatch(prevState => ({
             isPlaying: true,
             isRevealing: false,
@@ -151,7 +151,7 @@ export const PlayRoomProvider: React.SFC<Props> = ({ children, gameId, isAdmin }
         }));
     };
 
-    const showPlayedCards: Action<undefined> = () => {
+    const showPlayedCards: Action<any> = () => {
         setAndEmitPatch(() => ({
             isPlaying: false,
             isRevealing: true,
