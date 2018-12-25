@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { WebAuth } from 'auth0-js';
+import { withRouter } from 'react-router';
 
 const properties = {
     clientID: process.env.REACT_APP_AUTH_CLIENT_ID,
@@ -53,7 +54,7 @@ export const LOGIN_STATUS = {
 };
 
 export const AuthContext = React.createContext();
-export function AuthProvider({ children }) {
+export const AuthProvider = withRouter(function AuthProvider({ children, history, location }) {
     const [user, setUser] = useState({ loginStatus: LOGIN_STATUS.NOT_ASKED, info: null });
     // const [accessToken, setAccessToken] = useState(null);
     // const [idToken, setIdToken] = useState(null);
@@ -68,8 +69,7 @@ export function AuthProvider({ children }) {
             } else {
                 setUser({ loginStatus: LOGIN_STATUS.LOGGED_OUT, info: null });
             }
-
-            window.location.hash = '';
+            history.replace(location.pathname);
         } catch (error) {}
     });
     const setTempUser = (login, gender) => {
@@ -83,7 +83,7 @@ export function AuthProvider({ children }) {
         });
     };
     return <AuthContext.Provider value={{ login, logout, user, setTempUser }}>{children}</AuthContext.Provider>;
-}
+});
 
 export const AuthConsumer = AuthContext.Consumer;
 

@@ -1,5 +1,5 @@
 import React, { useContext, Suspense } from 'react';
-import { HashRouter as Router, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 import { AuthContainer } from './Pages/Auth';
 import { forNotLogged, forLoggedOnly } from './utils/router.guards';
@@ -20,22 +20,20 @@ export default function App() {
     } = useContext(AuthContext);
     const isUserLoggedIn = loginStatus === LOGIN_STATUS.LOGGED_IN;
     return (
-        <Router>
-            <PageLayout>
-                {loginStatus !== LOGIN_STATUS.NOT_ASKED ? (
-                    <Suspense fallback={<div>loading ...</div>}>
-                        <GamesProvider readyToFetch={isUserLoggedIn}>
-                            <Route
-                                exact={true}
-                                path="/"
-                                render={forLoggedOnly(GamesContainer, '/sign-in', { loginStatus })}
-                            />
-                            <Route path="/game/:user/:gameID" render={props => <BoardContainer {...props} />} />
-                        </GamesProvider>
-                        <Route path="/sign-in" render={forNotLogged(AuthContainer, '/', { loginStatus })} />
-                    </Suspense>
-                ) : null}
-            </PageLayout>
-        </Router>
+        <PageLayout>
+            {loginStatus !== LOGIN_STATUS.NOT_ASKED ? (
+                <Suspense fallback={<div>loading ...</div>}>
+                    <GamesProvider readyToFetch={isUserLoggedIn}>
+                        <Route
+                            exact={true}
+                            path="/"
+                            render={forLoggedOnly(GamesContainer, '/sign-in', { loginStatus })}
+                        />
+                        <Route path="/game/:user/:gameID" render={props => <BoardContainer {...props} />} />
+                    </GamesProvider>
+                    <Route path="/sign-in" render={forNotLogged(AuthContainer, '/', { loginStatus })} />
+                </Suspense>
+            ) : null}
+        </PageLayout>
     );
 }
