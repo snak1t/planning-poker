@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { List, Icon } from 'antd';
+import { List, Icon, Popconfirm } from 'antd';
 import { PlayRoomContext } from '../../../../Data/PlaySession/PlayRoomContext';
 import { Story, StoryId } from './story.type';
 
@@ -18,7 +18,15 @@ export const Item: React.SFC<Props> = ({ story, onSetEditMode, deleteStory, isAd
         ? []
         : [
               isStoryActive ? null : <Icon type="star" onClick={() => actions.setStory(story.id)} />,
-              isStoryActive ? null : <Icon type="delete" onClick={() => deleteStory(story.id)} />,
+              isStoryActive ? null : (
+                  <Popconfirm
+                      title="Are you sure you want to delete the story?"
+                      onConfirm={() => deleteStory(story.id)}
+                      placement="topRight"
+                  >
+                      <Icon type="delete" />
+                  </Popconfirm>
+              ),
               <Icon type="edit" onClick={() => onSetEditMode(true)} />,
           ].filter(Boolean);
 
