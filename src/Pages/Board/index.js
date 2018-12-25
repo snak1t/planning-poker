@@ -1,16 +1,13 @@
 import React, { useEffect, useContext } from 'react';
-import { message } from 'antd';
 
 import { DeckContainer } from './Components/Deck';
 import { TableContainer } from './Components/Table/Container';
 import { StoriesContainer } from './Components/Stories/Container';
 import { TemporaryLoginForm } from './Components/Player/TemporaryLoginForm';
-import { useAsyncEffect } from '../../utils/hooks/useAsyncEffect';
-import { GamesContext, useCurrentGame } from '../../Data/Games/GamesContext';
+import { useCurrentGame } from '../../Data/Games/GamesContext';
 import { PlayRoomProvider, PlayRoomContext } from '../../Data/PlaySession/PlayRoomContext';
 import { StoriesProvider } from '../../Data/Stories/StoriesContext';
 import { AuthContext, LOGIN_STATUS, checkIsAdmin } from '../../Data/Auth/AuthContext';
-import { ApiClient } from '../../utils/api-client';
 import { PlayersList } from './Components/Player/PlayersList';
 import * as Atoms from './atoms';
 import { ActionButtons } from './Components/ActionButton/ActionButtons';
@@ -18,7 +15,6 @@ import { ActionButtons } from './Components/ActionButton/ActionButtons';
 export const BoardContainer = ({ match }) => {
     const { user } = useContext(AuthContext);
     const { isPlaying, actions } = useContext(PlayRoomContext);
-    const { updateGame } = useContext(GamesContext);
     const currentGameId = match.params.gameID;
     const game = useCurrentGame(currentGameId);
     useEffect(() => {
@@ -30,17 +26,6 @@ export const BoardContainer = ({ match }) => {
         });
         return actions.leaveRoom;
     }, []);
-    useAsyncEffect(
-        async () => {
-            try {
-                const { data } = await ApiClient.get(`/api/game/${currentGameId}`);
-                updateGame(data);
-            } catch (error) {
-                message.error(error.message);
-            }
-        },
-        [currentGameId],
-    );
     const isAdmin = checkIsAdmin(user, match.params.user);
     if (!game) {
         return <h1>No game</h1>;

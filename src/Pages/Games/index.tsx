@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import not from 'ramda/src/not';
+import { not } from 'ramda';
 import { Icon, Button } from 'antd';
 
 import './styles.css';
@@ -10,16 +9,16 @@ import { GameForm } from './Components/Form';
 import { GamesHeader } from './atoms';
 import { QuickGame } from '../../components/Game/Quick.game';
 import { AuthContext } from '../../Data/Auth/AuthContext';
+import { RouteComponentProps } from 'react-router';
 
 const AddGameIcon = styled(Icon)`
     font-size: 1.4rem;
     cursor: pointer;
 `;
 
-export default function GamesContainer({ history }) {
-    const { logout, user } = useContext(AuthContext);
+const GamesContainer: React.SFC<RouteComponentProps> = () => {
+    const { logout } = useContext(AuthContext);
     const [modalWindow, setModalWindowVisibility] = useState(false);
-    const navigateToGame = id => history.push(`/game/${user.info.email}/${id}`);
     const toggleModalWindow = () => setModalWindowVisibility(not);
 
     return (
@@ -31,11 +30,9 @@ export default function GamesContainer({ history }) {
                 <Button onClick={logout}>Sign out</Button>
                 <AddGameIcon type="folder-add" onClick={toggleModalWindow} title="Add new game" />
             </GamesHeader>
-            <GamesList onPlayGame={navigateToGame} />
+            <GamesList />
         </div>
     );
-}
-
-GamesContainer.propTypes = {
-    history: PropTypes.object.isRequired,
 };
+
+export default GamesContainer;

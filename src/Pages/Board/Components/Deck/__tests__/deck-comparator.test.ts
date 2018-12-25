@@ -1,6 +1,6 @@
 import { comparator, Score } from '../deck';
 
-describe('Fibonaci deck comparator: ', () => {
+describe('Fibonacci deck comparator: ', () => {
     it('should exist', () => {
         expect(comparator).toBeDefined();
     });

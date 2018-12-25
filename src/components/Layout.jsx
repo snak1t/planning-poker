@@ -27,7 +27,7 @@ export function PageLayout({ children }) {
                 <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
                     <Menu.Item key="1">
                         <Link to="/">
-                            <Icon type="pie-chart" />
+                            <Icon type="home" />
                             <span>Main</span>
                         </Link>
                     </Menu.Item>

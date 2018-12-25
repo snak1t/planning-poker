@@ -36,8 +36,8 @@ export function GameForm({ onClose }) {
                 />
             </Form.Item>
             <Form.Item>
-                <Radio.Group defaultValue="fibonaci" buttonStyle="solid">
-                    <Radio.Button value="fibonaci">Fibbonacci</Radio.Button>
+                <Radio.Group defaultValue="fibonacci" buttonStyle="solid">
+                    <Radio.Button value="fibonacci">Fibonacci</Radio.Button>
                     <Radio.Button value="sizes">Sizes</Radio.Button>
                 </Radio.Group>
             </Form.Item>
