@@ -23,12 +23,14 @@ type GameContextType = {
     games: Game[];
     removeGame: (id: string) => Promise<void>;
     addGame: (game: Game) => Promise<void>;
+    updateGame: (game: Game) => void;
 };
 
 export const GamesContext = React.createContext<GameContextType>({
     games: [],
     removeGame: () => Promise.resolve(),
     addGame: () => Promise.resolve(),
+    updateGame: () => {},
 });
 
 export const GamesProvider: React.SFC<Props> = ({ initialGames = [], children, readyToFetch }) => {
@@ -66,18 +68,18 @@ export const GamesProvider: React.SFC<Props> = ({ initialGames = [], children, r
         }
     };
 
-    // const updateGame = (updatedGame: Game) => {
-    //     setGames(prevGames => {
-    //         const isGamePresent = prevGames.find(game => game.id === updatedGame.id);
-    //         if (isGamePresent) {
-    //             return prevGames.map(game => (game.id === updatedGame.id ? { ...game, ...updatedGame } : game));
-    //         } else {
-    //             return prevGames.concat(updatedGame);
-    //         }
-    //     });
-    // };
+    const updateGame = (updatedGame: Game) => {
+        setGames(prevGames => {
+            const isGamePresent = prevGames.find(game => game.id === updatedGame.id);
+            if (isGamePresent) {
+                return prevGames.map(game => (game.id === updatedGame.id ? { ...game, ...updatedGame } : game));
+            } else {
+                return prevGames.concat(updatedGame);
+            }
+        });
+    };
 
-    return <GamesContext.Provider value={{ games, removeGame, addGame }}>{children}</GamesContext.Provider>;
+    return <GamesContext.Provider value={{ games, removeGame, addGame, updateGame }}>{children}</GamesContext.Provider>;
 };
 
 export const useCurrentGame = (gameId: string) => {
