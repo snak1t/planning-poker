@@ -7,7 +7,7 @@ import './styles.css';
 import { GamesList } from './Components/List';
 import { GameForm } from './Components/Form';
 import { GamesHeader } from './atoms';
-import { QuickGame } from '../../components/Game/Quick.game';
+import { QuickGame } from '../../components/QuickGame';
 import { AuthContext } from '../../Data/Auth/AuthContext';
 import { RouteComponentProps } from 'react-router';
 

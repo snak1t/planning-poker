@@ -17,7 +17,7 @@ const StyledFooter = styled(Footer)`
     text-align: center;
 `;
 
-export function PageLayout({ children }) {
+export const PageLayout: React.SFC<{}> = ({ children }) => {
     const [collapsed, setCollapsedState] = useState(true);
 
     return (
@@ -39,4 +39,4 @@ export function PageLayout({ children }) {
             </Layout>
         </StyledLayout>
     );
-}
+};

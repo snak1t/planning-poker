@@ -5,6 +5,7 @@
     "private": true,
     "dependencies": {
         "@types/antd": "^1.0.0",
+        "@types/auth0-js": "^8.11.8",
         "@types/axios": "^0.14.0",
         "@types/jest": "^23.3.10",
         "@types/ramda": "^0.25.45",
@@ -26,6 +27,7 @@
         "socket.io": "2.2.0",
         "socket.io-client": "2.2.0",
         "styled-components": "4.1.2",
+        "tslint": "^5.12.0",
         "typescript": "^3.2.2"
     },
     "scripts": {
