@@ -1,10 +1,14 @@
 import { useState, ChangeEvent } from 'react';
 
-type UseTextFieldHandler = (inputValue: ChangeEvent<HTMLInputElement>) => void;
+type InputElements = HTMLInputElement | HTMLTextAreaElement;
 
-export const useTextField = (initialValue: string): [string, UseTextFieldHandler] => {
+interface UseTextFieldHandler<T> {
+    (inputValue: ChangeEvent<T>): void;
+}
+
+export const useTextField = <T extends InputElements>(initialValue: string): [string, UseTextFieldHandler<T>] => {
     const [value, setValue] = useState(initialValue);
-    const handler: UseTextFieldHandler = inputValue => {
+    const handler: UseTextFieldHandler<T> = inputValue => {
         const valueToSet = inputValue ? inputValue.target.value : '';
         setValue(valueToSet);
     };

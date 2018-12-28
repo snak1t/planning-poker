@@ -3,7 +3,7 @@ import { not } from 'ramda';
 import { Button } from 'antd';
 
 import { GamesList } from './Components/List';
-import { GameForm } from './Components/Form';
+import { GameAddForm } from './Components/GameAddForm/GameAddForm';
 import * as Atoms from './atoms';
 import { QuickGame } from '../../components/QuickGame';
 import { RouteComponentProps } from 'react-router';
@@ -15,7 +15,7 @@ const GamesContainer: React.SFC<RouteComponentProps> = () => {
 
     return (
         <>
-            {modalWindow ? <GameForm onClose={toggleModalWindow} /> : null}
+            {modalWindow ? <GameAddForm onClose={toggleModalWindow} /> : null}
             <Atoms.GamesHeader>
                 <h2>Your games</h2>
                 <QuickGame />

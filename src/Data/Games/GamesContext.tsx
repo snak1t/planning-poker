@@ -22,7 +22,7 @@ type Props = {
 type GameContextType = {
     games: Game[];
     removeGame: (id: string) => Promise<void>;
-    addGame: (game: Game) => Promise<void>;
+    addGame: (game: Partial<Game>) => Promise<void>;
     updateGame: (game: Game) => void;
 };
 
@@ -59,9 +59,9 @@ export const GamesProvider: React.SFC<Props> = ({ initialGames = [], children, r
             message.error(error.message);
         }
     };
-    const addGame = async (formData: Game) => {
+    const addGame = async (formData: Partial<Game>) => {
         try {
-            const { data } = await ApiClient.post<Game, { game: Game }>('/api/game', {
+            const { data } = await ApiClient.post<Partial<Game>, { game: Game }>('/api/game', {
                 ...formData,
                 user: user.info.email,
             });
