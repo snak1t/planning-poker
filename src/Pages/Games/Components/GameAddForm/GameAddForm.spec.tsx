@@ -50,8 +50,12 @@ describe('<GameAddForm /> ', () => {
     };
 
     it('should be rendered', () => {
-        const { container } = render(<GameAddForm onClose={onClose} />);
-        expect(container.firstChild).toMatchSnapshot();
+        const { baseElement } = render(
+            <GamesContext.Provider value={gamesProvidesMock}>
+                <GameAddForm onClose={onClose} />
+            </GamesContext.Provider>,
+        );
+        expect(baseElement).toMatchSnapshot();
     });
 
     it('should trigger on close button on closing the window', () => {
