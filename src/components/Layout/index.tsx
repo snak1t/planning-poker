@@ -13,18 +13,10 @@ const StyledContent = styled(Content)`
     height: 100%;
     padding: 1rem;
     position: relative;
-    padding-left: 96px;
 `;
 const StyledFooter = styled(Footer)`
     text-align: center;
 `;
-const FixedSidebar = styled(Sider)`
-    overflow: auto;
-    height: 100vh;
-    position: fixed !important;
-    left: 0;
-`;
-
 export const PageLayout: React.SFC<{}> = ({ children }) => {
     const [collapsed, setCollapsedState] = useState(true);
     const {
@@ -35,7 +27,7 @@ export const PageLayout: React.SFC<{}> = ({ children }) => {
 
     return (
         <StyledLayout>
-            <FixedSidebar collapsible collapsed={collapsed} onCollapse={setCollapsedState}>
+            <Sider collapsible collapsed={collapsed} onCollapse={setCollapsedState}>
                 <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
                     <Menu.Item key="1">
                         <Link to="/">
@@ -65,7 +57,7 @@ export const PageLayout: React.SFC<{}> = ({ children }) => {
                         </Menu.Item>
                     )}
                 </Menu>
-            </FixedSidebar>
+            </Sider>
             <Layout>
                 <StyledContent>{children}</StyledContent>
                 <StyledFooter>Planning Poker</StyledFooter>
