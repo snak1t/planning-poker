@@ -1,20 +1,14 @@
 import React, { useState, useContext } from 'react';
-import styled from 'styled-components';
 import { not } from 'ramda';
-import { Icon, Button } from 'antd';
+import { Button } from 'antd';
 
-import './styles.css';
 import { GamesList } from './Components/List';
 import { GameForm } from './Components/Form';
-import { GamesHeader } from './atoms';
+import * as Atoms from './atoms';
 import { QuickGame } from '../../components/QuickGame';
 import { AuthContext } from '../../Data/Auth/AuthContext';
 import { RouteComponentProps } from 'react-router';
-
-const AddGameIcon = styled(Icon)`
-    font-size: 1.4rem;
-    cursor: pointer;
-`;
+import { FloatButtonsContainer } from '../../components/FloatButtonsContainer/FloatButtonsContainer';
 
 const GamesContainer: React.SFC<RouteComponentProps> = () => {
     const { logout } = useContext(AuthContext);
@@ -22,16 +16,18 @@ const GamesContainer: React.SFC<RouteComponentProps> = () => {
     const toggleModalWindow = () => setModalWindowVisibility(not);
 
     return (
-        <div className="Games-container">
+        <>
             {modalWindow ? <GameForm onClose={toggleModalWindow} /> : null}
-            <GamesHeader>
+            <Atoms.GamesHeader>
                 <h2>Your games</h2>
                 <QuickGame />
                 <Button onClick={logout}>Sign out</Button>
-                <AddGameIcon type="folder-add" onClick={toggleModalWindow} title="Add new game" />
-            </GamesHeader>
+            </Atoms.GamesHeader>
             <GamesList />
-        </div>
+            <FloatButtonsContainer>
+                <Button onClick={toggleModalWindow} type="primary" shape="circle" icon="plus" size="large" />
+            </FloatButtonsContainer>
+        </>
     );
 };
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Tabs, List } from 'antd';
-import PropTypes from 'prop-types';
 import partition from 'ramda/src/partition';
 import length from 'ramda/src/length';
 import styled from 'styled-components';

@@ -1,15 +1,15 @@
 import React, { useContext } from 'react';
 import { Chat } from '../Chat';
 import { PlayRoomContext } from '../../../../Data/PlaySession/PlayRoomContext';
-import { FloatContainer } from './atoms';
-import { Icon, Button, Tooltip } from 'antd';
+import { Button, Tooltip } from 'antd';
 import { StoriesContext } from '../../../../Data/Stories/StoriesContext';
 import { calculateAverage } from '../../../../utils/average.score';
+import { FloatButtonsContainer } from '../../../../components/FloatButtonsContainer/FloatButtonsContainer';
 
 export const ActionButtons = () => {
     const { currentStory, isRevealing, isCompleted, players, actions } = useContext(PlayRoomContext);
-
     const { actions: storiesActions, stories } = useContext(StoriesContext);
+
     const activeStory = stories.find(story => story.id === currentStory);
     const isStoryActive = currentStory !== '' && currentStory !== null;
     const resetCurrentStory = () => actions.setStory(null);
@@ -23,7 +23,7 @@ export const ActionButtons = () => {
         }
     };
     return (
-        <FloatContainer>
+        <FloatButtonsContainer>
             {isStoryActive && !isCompleted ? (
                 <Tooltip title="Start the game round" placement="left">
                     <Button
@@ -62,6 +62,6 @@ export const ActionButtons = () => {
                 </Tooltip>
             ) : null}
             <Chat />
-        </FloatContainer>
+        </FloatButtonsContainer>
     );
 };
