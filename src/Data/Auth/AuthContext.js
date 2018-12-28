@@ -69,8 +69,10 @@ export const AuthProvider = withRouter(function AuthProvider({ children, history
             } else {
                 setUser({ loginStatus: LOGIN_STATUS.LOGGED_OUT, info: null });
             }
-            history.replace(location.pathname);
-        } catch (error) {}
+            history.replace('/');
+        } catch (error) {
+            console.log(error);
+        }
     });
     const setTempUser = (login, gender) => {
         setUser({
