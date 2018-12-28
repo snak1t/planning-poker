@@ -11,7 +11,7 @@ import { StoriesProvider } from '../../Data/Stories/StoriesContext';
 import { AuthContext, LOGIN_STATUS, checkIsAdmin } from '../../Data/Auth/AuthContext';
 import { PlayersList } from './Components/Player/PlayersList';
 import * as Atoms from './atoms';
-import { ActionButtons } from './Components/ActionButton/ActionButtons';
+import { ActionButtons } from './Components/ActionButtons/ActionButtons';
 import { useAsyncEffect } from '../../utils/hooks/useAsyncEffect';
 import { ApiClient } from '../../utils/api/api-client';
 
