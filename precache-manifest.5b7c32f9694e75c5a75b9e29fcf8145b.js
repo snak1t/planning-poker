@@ -12,12 +12,12 @@ self.__precacheManifest = [
     "url": "/planning-poker/static/js/main.c7ea810f.chunk.js"
   },
   {
-    "revision": "b7ddccfaeefd24cc2eaf",
-    "url": "/planning-poker/static/js/2.b7ddccfa.chunk.js"
+    "revision": "e0161047e883f9929115",
+    "url": "/planning-poker/static/js/2.e0161047.chunk.js"
   },
   {
-    "revision": "79a32b915bd8d2cb2293",
-    "url": "/planning-poker/static/js/runtime~main.79a32b91.js"
+    "revision": "14c7403aff1e4b761518",
+    "url": "/planning-poker/static/js/runtime~main.14c7403a.js"
   },
   {
     "revision": "b5bd42677d467d389d58",
@@ -44,7 +44,7 @@ self.__precacheManifest = [
     "url": "/planning-poker/static/css/3.1546c9a8.chunk.css"
   },
   {
-    "revision": "952f0f4adf1ff824f03402422cf13abf",
+    "revision": "7a6f89868eb36a4867396324fdfe04aa",
     "url": "/planning-poker/index.html"
   }
 ];
