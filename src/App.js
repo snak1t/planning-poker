@@ -6,7 +6,6 @@ import { forNotLogged, forLoggedOnly } from './utils/router.guards';
 import { PageLayout } from './components/Layout';
 
 import './app.css';
-import './default.css';
 import { GamesProvider } from './Data/Games/GamesContext';
 import { AuthContext, LOGIN_STATUS } from './Data/Auth/AuthContext';
 

@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import '../styles.css';
 import { GamesWrapper } from '../atoms';
 import { GamesContext, Game } from '../../../Data/Games/GamesContext';
 import { Table, Button } from 'antd';
