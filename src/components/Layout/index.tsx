@@ -13,6 +13,7 @@ const StyledContent = styled(Content)`
     height: 100%;
     padding: 1rem;
     position: relative;
+    padding-left: 96px;
 `;
 const StyledFooter = styled(Footer)`
     text-align: center;
@@ -20,7 +21,7 @@ const StyledFooter = styled(Footer)`
 const FixedSidebar = styled(Sider)`
     overflow: auto;
     height: 100vh;
-    position: fixed;
+    position: fixed !important;
     left: 0;
 `;
 
