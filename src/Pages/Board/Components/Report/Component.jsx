@@ -3,6 +3,7 @@ import compose from 'ramda/src/compose';
 import pluck from 'ramda/src/pluck';
 import sum from 'ramda/src/sum';
 import { Modal, Button, Table } from 'antd';
+import { comparator } from '../Deck/deck';
 
 const showTotalScore = compose(
     sum,
@@ -24,7 +25,7 @@ export const Report = ({ game, stories, onClose }) => {
             title: 'Story Points',
             dataIndex: 'score',
             defaultSortOrder: 'descend',
-            sorter: (a, b) => a.score - b.score,
+            sorter: (a, b) => comparator(a.score, b.score),
         },
     ];
     const dataSource = stories.map((story, index) => ({ ...story, key: index }));
