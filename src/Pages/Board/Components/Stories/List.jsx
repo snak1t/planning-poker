@@ -7,7 +7,6 @@ import styled from 'styled-components';
 
 import StoryItem from './StoryItem';
 import './styles.css';
-import { storyType } from '../../../../Data/Stories/type';
 import { Wrapper } from './atoms';
 import ReportContainer from '../Report/Container';
 
@@ -44,9 +43,4 @@ export const StoryList = ({ stories, admin }) => {
             </Tabs>
         </Wrapper>
     );
-};
-
-StoryList.propTypes = {
-    stories: PropTypes.arrayOf(storyType),
-    admin: PropTypes.bool.isRequired,
 };

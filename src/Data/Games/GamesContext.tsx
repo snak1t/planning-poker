@@ -3,7 +3,7 @@ import { message } from 'antd';
 import { filter, append } from 'ramda';
 import { useAsyncEffect } from '../../utils/hooks/useAsyncEffect';
 import { AuthContext } from '../Auth/AuthContext';
-import { ApiClient } from '../../utils/api-client';
+import { ApiClient } from '../../utils/api/api-client';
 
 export type Game = {
     id: string;
@@ -42,7 +42,7 @@ export const GamesProvider: React.SFC<Props> = ({ initialGames = [], children, r
                 return;
             }
             try {
-                const { data } = await ApiClient.get(`/api/game/user/${user.info.email}`);
+                const { data } = await ApiClient.get<{ games: Game[] }>(`/api/game/user/${user.info.email}`);
                 return setGames(data.games);
             } catch (error) {
                 console.error(error);
@@ -53,7 +53,7 @@ export const GamesProvider: React.SFC<Props> = ({ initialGames = [], children, r
 
     const removeGame = async (gameId: string) => {
         try {
-            const { data }: { data: Game } = await ApiClient.delete(`/api/game/`, { params: { gameId } });
+            const { data } = await ApiClient.delete<Game>(`/api/game/`, { params: { gameId } });
             setGames(filter<Game>(game => game.id !== data.id));
         } catch (error) {
             message.error(error.message);
@@ -61,7 +61,10 @@ export const GamesProvider: React.SFC<Props> = ({ initialGames = [], children, r
     };
     const addGame = async (formData: Game) => {
         try {
-            const { data } = await ApiClient.post('/api/game', { ...formData, user: user.info.email });
+            const { data } = await ApiClient.post<Game, { game: Game }>('/api/game', {
+                ...formData,
+                user: user.info.email,
+            });
             setGames(append(data.game));
         } catch (error) {
             message.error(error.message);

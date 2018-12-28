@@ -13,7 +13,7 @@ import { PlayersList } from './Components/Player/PlayersList';
 import * as Atoms from './atoms';
 import { ActionButtons } from './Components/ActionButton/ActionButtons';
 import { useAsyncEffect } from '../../utils/hooks/useAsyncEffect';
-import { ApiClient } from '../../utils/api-client';
+import { ApiClient } from '../../utils/api/api-client';
 
 export const BoardContainer = ({ match }) => {
     const { user } = useContext(AuthContext);
@@ -33,7 +33,7 @@ export const BoardContainer = ({ match }) => {
     useAsyncEffect(
         async () => {
             try {
-                const { data } = await ApiClient.get(`/api/game/${currentGameId}`);
+                const { data } = await ApiClient.get(`/api/game/${currentGameId}`); // TODO: add generic type here too
                 updateGame(data);
             } catch (error) {
                 message.error(error.message);

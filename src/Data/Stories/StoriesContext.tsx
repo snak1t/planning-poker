@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { message } from 'antd';
 import { useAsyncEffect } from '../../utils/hooks/useAsyncEffect';
-import { ApiClient } from '../../utils/api-client';
+import { ApiClient } from '../../utils/api/api-client';
 import { useSocket } from '../../utils/hooks/useSocket';
 
 type Story = {
@@ -43,7 +43,7 @@ export const StoriesProvider: React.SFC<Props> = ({ children, gameId }) => {
     const [stories, setStories] = React.useState<Story[]>([]);
     useAsyncEffect(
         async () => {
-            const { data } = await ApiClient.get(`/api/game/${gameId}`);
+            const { data } = await ApiClient.get<{ stories: Story[] }>(`/api/game/${gameId}`);
             setStories(data.stories || []);
         },
         [gameId],
@@ -83,20 +83,24 @@ export const StoriesProvider: React.SFC<Props> = ({ children, gameId }) => {
             score: 0,
             ...story,
         }));
-        const { data }: { data: Story[] } = await ApiClient.post('/api/story', { stories, gameId });
+        type RequestStoryAddType = { stories: Partial<Story>[]; gameId: string };
+        const { data } = await ApiClient.post<RequestStoryAddType, Story[]>('/api/story', {
+            stories,
+            gameId,
+        });
         setStories(prevStories => prevStories.concat(data));
         emitSocket('emit-add-story', { stories: data });
     };
 
     const updateStory = async (story: Story) => {
-        const { data }: { data: Story } = await ApiClient.put('/api/story', story);
+        const { data } = await ApiClient.put<Story, Story>('/api/story', story);
         setUpdatedStoryToStore(data);
         emitSocket('emit-update-story', { story: data });
     };
 
     const removeStory = async (storyId: string) => {
         try {
-            const { data } = await ApiClient.delete('/api/story', { params: { storyId } });
+            const { data } = await ApiClient.delete<{ id: string }>('/api/story', { params: { storyId } });
             removeStoryFromState(data.id);
             emitSocket('emit-remove-story', data);
         } catch (error) {
