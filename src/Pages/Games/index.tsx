@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { not } from 'ramda';
 import { Button } from 'antd';
 
-import { GamesList } from './Components/List';
+import { GamesContainer } from './Components/GamesContainer/GamesContainer';
 import { GameAddForm } from './Components/GameAddForm/GameAddForm';
 import * as Atoms from './atoms';
 import { QuickGame } from '../../components/QuickGame';
 import { RouteComponentProps } from 'react-router';
 import { FloatButtonsContainer } from '../../components/FloatButtonsContainer/FloatButtonsContainer';
 
-const GamesContainer: React.SFC<RouteComponentProps> = () => {
+const GamesPage: React.SFC<RouteComponentProps> = () => {
     const [modalWindow, setModalWindowVisibility] = useState(false);
     const toggleModalWindow = () => setModalWindowVisibility(not);
 
@@ -20,7 +20,7 @@ const GamesContainer: React.SFC<RouteComponentProps> = () => {
                 <h2>Your games</h2>
                 <QuickGame />
             </Atoms.GamesHeader>
-            <GamesList />
+            <GamesContainer />
             <FloatButtonsContainer>
                 <Button onClick={toggleModalWindow} type="primary" shape="circle" icon="plus" size="large" />
             </FloatButtonsContainer>
@@ -28,4 +28,4 @@ const GamesContainer: React.SFC<RouteComponentProps> = () => {
     );
 };
 
-export default GamesContainer;
+export default GamesPage;
